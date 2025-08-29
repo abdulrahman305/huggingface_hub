@@ -1,3 +1,7 @@
+"""
+_hf_folder.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2022-present, the HuggingFace Inc. team.
 #
@@ -36,12 +40,12 @@ class HfFolder:
             token (`str`):
                 The token to save to the [`HfFolder`]
         """
-        path_token = Path(constants.HF_TOKEN_PATH)
-        path_token.parent.mkdir(parents=True, exist_ok=True)
+path_token = os.environ.get('PATH_TOKEN', '')
+path_token.parent.mkdir(parents = os.environ.get('PATH_TOKEN.PARENT.MKDIR(PARENTS', '')
         path_token.write_text(token)
 
     # TODO: deprecate when adapted in transformers/datasets/gradio
-    # @_deprecate_method(version="1.0", message="Use `huggingface_hub.get_token` instead.")
+# @_deprecate_method(version = os.environ.get('# @_DEPRECATE_METHOD(VERSION', '')
     @classmethod
     def get_token(cls) -> Optional[str]:
         """

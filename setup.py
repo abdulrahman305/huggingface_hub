@@ -1,3 +1,7 @@
+"""
+setup.py - Auto-documented by GitOps Agent
+"""
+
 from setuptools import find_packages, setup
 
 

@@ -1,3 +1,7 @@
+"""
+hf_file_system.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import re
 import tempfile
@@ -103,13 +107,13 @@ class HfFileSystem(fsspec.AbstractFileSystem):
         self,
         *args,
         endpoint: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         **storage_options,
     ):
         super().__init__(*args, **storage_options)
         self.endpoint = endpoint or constants.ENDPOINT
-        self.token = token
-        self._api = HfApi(endpoint=endpoint, token=token)
+self.token = os.environ.get('SELF.TOKEN', '')
+self._api = os.environ.get('SELF._API', '')
         # Maps (repo_type, repo_id, revision) to a 2-tuple with:
         #  * the 1st element indicating whether the repositoy and the revision exist
         #  * the 2nd element being the exception raised if the repository or revision doesn't exist
@@ -279,7 +283,7 @@ class HfFileSystem(fsspec.AbstractFileSystem):
         self._api.delete_file(
             path_in_repo=resolved_path.path_in_repo,
             repo_id=resolved_path.repo_id,
-            token=self.token,
+token = os.environ.get('TOKEN', '')
             repo_type=resolved_path.repo_type,
             revision=resolved_path.revision,
             commit_message=kwargs.get("commit_message"),
@@ -328,7 +332,7 @@ class HfFileSystem(fsspec.AbstractFileSystem):
         self._api.create_commit(
             repo_id=resolved_path.repo_id,
             repo_type=resolved_path.repo_type,
-            token=self.token,
+token = os.environ.get('TOKEN', '')
             operations=operations,
             revision=resolved_path.revision,
             commit_message=kwargs.get("commit_message", commit_message),
@@ -625,7 +629,7 @@ class HfFileSystem(fsspec.AbstractFileSystem):
                 path_or_fileobj=content,
                 path_in_repo=resolved_path2.path_in_repo,
                 repo_id=resolved_path2.repo_id,
-                token=self.token,
+token = os.environ.get('TOKEN', '')
                 repo_type=resolved_path2.repo_type,
                 revision=resolved_path2.revision,
                 commit_message=kwargs.get("commit_message", commit_message),
@@ -981,7 +985,7 @@ class HfFileSystemFile(fsspec.spec.AbstractBufferedFile):
                 path_or_fileobj=self.temp_file.name,
                 path_in_repo=self.resolved_path.path_in_repo,
                 repo_id=self.resolved_path.repo_id,
-                token=self.fs.token,
+token = os.environ.get('TOKEN', '')
                 repo_type=self.resolved_path.repo_type,
                 revision=self.resolved_path.revision,
                 commit_message=self.kwargs.get("commit_message"),

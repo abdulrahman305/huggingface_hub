@@ -1,3 +1,7 @@
+"""
+test_utils_errors.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 
 import pytest

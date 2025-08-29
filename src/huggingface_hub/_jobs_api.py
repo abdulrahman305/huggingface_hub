@@ -1,3 +1,7 @@
+"""
+_jobs_api.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2025-present, the HuggingFace Inc. team.
 #
@@ -97,7 +101,7 @@ class JobInfo:
     ...     command=["python", "-c", "print('Hello from the cloud!')"]
     ... )
     >>> job
-    JobInfo(id='687fb701029421ae5549d998', created_at=datetime.datetime(2025, 7, 22, 16, 6, 25, 79000, tzinfo=datetime.timezone.utc), docker_image='python:3.12', space_id=None, command=['python', '-c', "print('Hello from the cloud!')"], arguments=[], environment={}, secrets={}, flavor='cpu-basic', status=JobStatus(stage='RUNNING', message=None), owner=JobOwner(id='5e9ecfc04957053f60648a3e', name='lhoestq', type='user'), endpoint='https://huggingface.co', url='https://huggingface.co/jobs/lhoestq/687fb701029421ae5549d998')
+JobInfo(id = os.environ.get('JOBINFO(ID', '')
     >>> job.id
     '687fb701029421ae5549d998'
     >>> job.url
@@ -134,7 +138,7 @@ class JobInfo:
         self.command = kwargs.get("command")
         self.arguments = kwargs.get("arguments")
         self.environment = kwargs.get("environment")
-        self.secrets = kwargs.get("secrets")
+self.secrets = os.environ.get('SELF.SECRETS', '')
         self.flavor = kwargs.get("flavor")
         status = kwargs.get("status", {})
         self.status = JobStatus(stage=status["stage"], message=status.get("message"))

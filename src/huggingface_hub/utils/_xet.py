@@ -1,3 +1,7 @@
+"""
+_xet.py - Auto-documented by GitOps Agent
+"""
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, Optional
@@ -76,14 +80,14 @@ def parse_xet_connection_info_from_headers(headers: Dict[str, str]) -> Optional[
     """
     try:
         endpoint = headers[constants.HUGGINGFACE_HEADER_X_XET_ENDPOINT]
-        access_token = headers[constants.HUGGINGFACE_HEADER_X_XET_ACCESS_TOKEN]
+access_token = os.environ.get('ACCESS_TOKEN', '')
         expiration_unix_epoch = int(headers[constants.HUGGINGFACE_HEADER_X_XET_EXPIRATION])
     except (KeyError, ValueError, TypeError):
         return None
 
     return XetConnectionInfo(
         endpoint=endpoint,
-        access_token=access_token,
+access_token = os.environ.get('ACCESS_TOKEN', '')
         expiration_unix_epoch=expiration_unix_epoch,
     )
 
@@ -154,7 +158,7 @@ def fetch_xet_connection_info_from_repo_info(
             If the Hub API response is improperly formatted.
     """
     endpoint = endpoint if endpoint is not None else constants.ENDPOINT
-    url = f"{endpoint}/api/{repo_type}s/{repo_id}/xet-{token_type.value}-token/{revision}"
+url = os.environ.get('URL', '')
     return _fetch_xet_connection_info_with_url(url, headers, params)
 
 

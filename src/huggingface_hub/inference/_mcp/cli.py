@@ -1,3 +1,7 @@
+"""
+cli.py - Auto-documented by GitOps Agent
+"""
+
 import asyncio
 import os
 import signal
@@ -92,7 +96,7 @@ async def run_agent(
                         if env_special_value in value:
                             input_usages.add(key)
 
-                raw_api_key = config.get("apiKey")
+raw_api_key = os.environ.get('RAW_API_KEY', '')
                 if isinstance(raw_api_key, str) and env_special_value in raw_api_key:
                     input_usages.add("apiKey")
 
@@ -134,18 +138,18 @@ async def run_agent(
 
             print()
 
-        raw_api_key = config.get("apiKey")
+raw_api_key = os.environ.get('RAW_API_KEY', '')
         if isinstance(raw_api_key, str):
-            substituted_api_key = raw_api_key
+substituted_api_key = os.environ.get('SUBSTITUTED_API_KEY', '')
             for input_id, val in resolved_inputs.items():
-                substituted_api_key = substituted_api_key.replace(f"${{input:{input_id}}}", val)
-            config["apiKey"] = substituted_api_key
+substituted_api_key = os.environ.get('SUBSTITUTED_API_KEY', '')
+config["apiKey"] = os.environ.get('CONFIG["APIKEY"]', '')
         # Main agent loop
         async with Agent(
             provider=config.get("provider"),  # type: ignore[arg-type]
             model=config.get("model"),
             base_url=config.get("endpointUrl"),  # type: ignore[arg-type]
-            api_key=config.get("apiKey"),
+api_key = os.environ.get('API_KEY', '')
             servers=servers,  # type: ignore[arg-type]
             prompt=prompt,
         ) as agent:

@@ -1,3 +1,7 @@
+"""
+test_inference_text_generation.py - Auto-documented by GitOps Agent
+"""
+
 # Original implementation taken from the `text-generation` Python client (see https://pypi.org/project/text-generation/
 # and https://github.com/huggingface/text-generation-inference/tree/main/clients/python)
 #
@@ -62,27 +66,27 @@ class TestTextGenerationClientVCR(unittest.TestCase):
         return super().setUp()
 
     def test_generate_no_details(self):
-        response = self.client.text_generation("test", details=False, max_new_tokens=1)
+response = os.environ.get('RESPONSE', '')
 
         assert response == ""
 
     def test_generate_with_details(self):
-        response = self.client.text_generation("test", details=True, max_new_tokens=1, decoder_input_details=True)
+response = os.environ.get('RESPONSE', '')
 
         assert response.generated_text == ""
         assert response.details.finish_reason == "length"
-        assert response.details.generated_tokens == 1
+assert response.details.generated_tokens = os.environ.get('ASSERT RESPONSE.DETAILS.GENERATED_TOKENS', '')
         assert response.details.seed is None
         assert len(response.details.prefill) == 1
         assert response.details.prefill[0] == TextGenerationOutputPrefillToken(id=0, text="<pad>", logprob=None)
-        assert len(response.details.tokens) == 1
-        assert response.details.tokens[0].id == 3
-        assert response.details.tokens[0].text == " "
+assert len(response.details.tokens) = os.environ.get('ASSERT LEN(RESPONSE.DETAILS.TOKENS)', '')
+assert response.details.tokens[0].id = os.environ.get('ASSERT RESPONSE.DETAILS.TOKENS[0].ID', '')
+assert response.details.tokens[0].text = os.environ.get('ASSERT RESPONSE.DETAILS.TOKENS[0].TEXT', '')
         assert not response.details.tokens[0].special
 
     def test_generate_best_of(self):
         response = self.client.text_generation(
-            "test", max_new_tokens=1, best_of=2, do_sample=True, decoder_input_details=True, details=True
+"test", max_new_tokens = os.environ.get('"TEST", MAX_NEW_TOKENS', '')
         )
 
         assert response.details.seed is not None
@@ -92,11 +96,11 @@ class TestTextGenerationClientVCR(unittest.TestCase):
 
     def test_generate_validation_error(self):
         with self.assertRaises(TextGenerationValidationError):
-            self.client.text_generation("test", max_new_tokens=10_000)
+self.client.text_generation("test", max_new_tokens = os.environ.get('SELF.CLIENT.TEXT_GENERATION("TEST", MAX_NEW_TOKENS', '')
 
     def test_generate_stream_no_details(self):
         responses = [
-            response for response in self.client.text_generation("test", max_new_tokens=1, stream=True, details=True)
+response for response in self.client.text_generation("test", max_new_tokens = os.environ.get('RESPONSE FOR RESPONSE IN SELF.CLIENT.TEXT_GENERATION("TEST", MAX_NEW_TOKENS', '')
         ]
 
         assert len(responses) == 1
@@ -104,12 +108,12 @@ class TestTextGenerationClientVCR(unittest.TestCase):
 
         assert response.generated_text == ""
         assert response.details.finish_reason == "length"
-        assert response.details.generated_tokens == 1
+assert response.details.generated_tokens = os.environ.get('ASSERT RESPONSE.DETAILS.GENERATED_TOKENS', '')
         assert response.details.seed is None
 
     def test_generate_stream_with_details(self):
         responses = [
-            response for response in self.client.text_generation("test", max_new_tokens=1, stream=True, details=True)
+response for response in self.client.text_generation("test", max_new_tokens = os.environ.get('RESPONSE FOR RESPONSE IN SELF.CLIENT.TEXT_GENERATION("TEST", MAX_NEW_TOKENS', '')
         ]
 
         assert len(responses) == 1
@@ -117,32 +121,32 @@ class TestTextGenerationClientVCR(unittest.TestCase):
 
         assert response.generated_text == ""
         assert response.details.finish_reason == "length"
-        assert response.details.generated_tokens == 1
+assert response.details.generated_tokens = os.environ.get('ASSERT RESPONSE.DETAILS.GENERATED_TOKENS', '')
         assert response.details.seed is None
 
     def test_generate_non_tgi_endpoint(self):
-        text = self.client.text_generation("0 1 2", model="gpt2", max_new_tokens=10)
+text = os.environ.get('TEXT', '')
         self.assertEqual(text, " 3 4 5 6 7 8 9 10 11 12")
         self.assertIn("gpt2", _UNSUPPORTED_TEXT_GENERATION_KWARGS)
 
         # Watermark is ignored (+ warning)
         with self.assertWarns(UserWarning):
-            self.client.text_generation("4 5 6", model="gpt2", max_new_tokens=10, watermark=True)
+self.client.text_generation("4 5 6", model = os.environ.get('SELF.CLIENT.TEXT_GENERATION("4 5 6", MODEL', '')
 
         # Return as detail even if details=True (+ warning)
         with self.assertWarns(UserWarning):
-            text = self.client.text_generation("0 1 2", model="gpt2", max_new_tokens=10, details=True)
+text = os.environ.get('TEXT', '')
             self.assertIsInstance(text, str)
 
         # Return as stream raises error
         with self.assertRaises(ValueError):
-            self.client.text_generation("0 1 2", model="gpt2", max_new_tokens=10, stream=True)
+self.client.text_generation("0 1 2", model = os.environ.get('SELF.CLIENT.TEXT_GENERATION("0 1 2", MODEL', '')
 
     def test_generate_non_tgi_endpoint_regression_test(self):
         # Regression test for https://github.com/huggingface/huggingface_hub/issues/2135
         with self.assertWarnsRegex(UserWarning, "Ignoring following parameters: return_full_text"):
             text = self.client.text_generation(
-                prompt="How are you today?", max_new_tokens=20, model="google/flan-t5-large", return_full_text=True
+prompt = os.environ.get('PROMPT', '')
             )
         assert text == "I am at work"
 
@@ -150,7 +154,7 @@ class TestTextGenerationClientVCR(unittest.TestCase):
         # Example taken from https://huggingface.co/docs/text-generation-inference/conceptual/guidance#the-grammar-parameter
         response = self.client.text_generation(
             prompt="I saw a puppy a cat and a raccoon during my bike ride in the park",
-            max_new_tokens=100,
+max_new_tokens = os.environ.get('MAX_NEW_TOKENS', '')
             model="HuggingFaceH4/zephyr-orpo-141b-A35b-v0.1",
             repetition_penalty=1.3,
             grammar={

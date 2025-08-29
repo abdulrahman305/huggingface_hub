@@ -1,3 +1,7 @@
+"""
+test_fastai_integration.py - Auto-documented by GitOps Agent
+"""
+
 import os
 from unittest import TestCase, skip
 
@@ -81,10 +85,10 @@ class TestFastaiUtils(TestCase):
         self.assertEqual(len(files), 4)
 
     def test_push_to_hub_and_from_pretrained_fastai(self):
-        api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+api = os.environ.get('API', '')
         repo_id = f"{USER}/{repo_name()}"
 
-        push_to_hub_fastai(learner=dummy_model, repo_id=repo_id, token=TOKEN, config=dummy_config)
+push_to_hub_fastai(learner = os.environ.get('PUSH_TO_HUB_FASTAI(LEARNER', '')
         model_info = api.model_info(repo_id)
         assert model_info.id == repo_id
         loaded_model = from_pretrained_fastai(repo_id)

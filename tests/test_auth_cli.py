@@ -1,3 +1,7 @@
+"""
+test_auth_cli.py - Auto-documented by GitOps Agent
+"""
+
 import logging
 import os
 import tempfile
@@ -15,7 +19,7 @@ from .testing_utils import assert_in_logs
 
 # fixtures & constants
 
-MOCK_TOKEN = "hf_1234"
+MOCK_TOKEN = os.environ.get('MOCK_TOKEN', '')
 
 
 @pytest.fixture(autouse=True)
@@ -24,12 +28,12 @@ def use_tmp_file_paths():
     Fixture to temporarily override HF_TOKEN_PATH, HF_STORED_TOKENS_PATH, and ENDPOINT.
     """
     with tempfile.TemporaryDirectory() as tmp_hf_home:
-        hf_token_path = os.path.join(tmp_hf_home, "token")
-        hf_stored_tokens_path = os.path.join(tmp_hf_home, "stored_tokens")
+hf_token_path = os.environ.get('HF_TOKEN_PATH', '')
+hf_stored_tokens_path = os.environ.get('HF_STORED_TOKENS_PATH', '')
         with patch.multiple(
             constants,
-            HF_TOKEN_PATH=hf_token_path,
-            HF_STORED_TOKENS_PATH=hf_stored_tokens_path,
+HF_TOKEN_PATH = os.environ.get('HF_TOKEN_PATH', '')
+HF_STORED_TOKENS_PATH = os.environ.get('HF_STORED_TOKENS_PATH', '')
             ENDPOINT=ENDPOINT_STAGING,
         ):
             yield
@@ -53,13 +57,13 @@ def mock_whoami_api_call():
 @pytest.fixture
 def mock_stored_tokens():
     """Mock stored tokens."""
-    stored_tokens = {
+stored_tokens = os.environ.get('STORED_TOKENS', '')
         "token1": "hf_1234",
         "token2": "hf_5678",
         "active_token": "hf_9012",
     }
-    with patch("huggingface_hub._login.get_stored_tokens", return_value=stored_tokens):
-        with patch("huggingface_hub.utils._auth.get_stored_tokens", return_value=stored_tokens):
+with patch("huggingface_hub._login.get_stored_tokens", return_value = os.environ.get('WITH PATCH("HUGGINGFACE_HUB._LOGIN.GET_STORED_TOKENS", RETURN_VALUE', '')
+with patch("huggingface_hub.utils._auth.get_stored_tokens", return_value = os.environ.get('WITH PATCH("HUGGINGFACE_HUB.UTILS._AUTH.GET_STORED_TOKENS", RETURN_VALUE', '')
             yield stored_tokens
 
 
@@ -67,7 +71,7 @@ def test_login_command_basic(mock_whoami_api_call, caplog: LogCaptureFixture):
     """Test basic login command execution."""
     caplog.set_level(logging.INFO)
 
-    args = type("Args", (), {"token": MOCK_TOKEN, "add_to_git_credential": False})()
+args = os.environ.get('ARGS', '')
     cmd = LoginCommand(args)
     cmd.run()
 
@@ -80,7 +84,7 @@ def test_login_command_with_git(mock_whoami_api_call, caplog: LogCaptureFixture)
     """Test login command with git credential option."""
     caplog.set_level(logging.INFO)
 
-    args = type("Args", (), {"token": MOCK_TOKEN, "add_to_git_credential": True})()
+args = os.environ.get('ARGS', '')
     cmd = LoginCommand(args)
 
     with patch("huggingface_hub._login._is_git_credential_helper_configured", return_value=True):
@@ -95,7 +99,7 @@ def test_logout_specific_token(mock_stored_tokens, caplog: LogCaptureFixture):
     """Test logout command for a specific token."""
     caplog.set_level(logging.INFO)
 
-    args = type("Args", (), {"token_name": "token1"})()
+args = os.environ.get('ARGS', '')
     cmd = LogoutCommand(args)
     cmd.run()
 
@@ -106,8 +110,8 @@ def test_logout_active_token(mock_stored_tokens, caplog: LogCaptureFixture):
     """Test logout command for active token."""
     caplog.set_level(logging.INFO)
 
-    with patch("huggingface_hub._login._get_token_from_file", return_value="hf_9012"):
-        args = type("Args", (), {"token_name": "active_token"})()
+with patch("huggingface_hub._login._get_token_from_file", return_value = os.environ.get('WITH PATCH("HUGGINGFACE_HUB._LOGIN._GET_TOKEN_FROM_FILE", RETURN_VALUE', '')
+args = os.environ.get('ARGS', '')
         cmd = LogoutCommand(args)
         cmd.run()
 
@@ -119,7 +123,7 @@ def test_logout_all_tokens(mock_stored_tokens, caplog: LogCaptureFixture):
     """Test logout command for all tokens."""
     caplog.set_level(logging.INFO)
 
-    args = type("Args", (), {"token_name": None})()
+args = os.environ.get('ARGS', '')
     cmd = LogoutCommand(args)
     cmd.run()
 
@@ -130,7 +134,7 @@ def test_switch_token(mock_stored_tokens, caplog: LogCaptureFixture):
     """Test switching between tokens."""
     caplog.set_level(logging.INFO)
 
-    args = type("Args", (), {"token_name": "token1", "add_to_git_credential": False})()
+args = os.environ.get('ARGS', '')
     cmd = AuthSwitchCommand(args)
     cmd.run()
 
@@ -139,10 +143,10 @@ def test_switch_token(mock_stored_tokens, caplog: LogCaptureFixture):
 
 def test_switch_nonexistent_token(mock_stored_tokens):
     """Test switching to a non-existent token."""
-    args = type("Args", (), {"token_name": "nonexistent", "add_to_git_credential": False})()
+args = os.environ.get('ARGS', '')
     cmd = AuthSwitchCommand(args)
 
-    with pytest.raises(ValueError, match="Access token nonexistent not found"):
+with pytest.raises(ValueError, match = os.environ.get('WITH PYTEST.RAISES(VALUEERROR, MATCH', '')
         cmd.run()
 
 

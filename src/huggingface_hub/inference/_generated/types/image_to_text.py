@@ -1,3 +1,7 @@
+"""
+image_to_text.py - Auto-documented by GitOps Agent
+"""
+
 # Inference code generated from the JSON schema spec in @huggingface/tasks.
 #
 # See:
@@ -36,11 +40,11 @@ class ImageToTextGenerationParameters(BaseInferenceType):
     """
     max_length: Optional[int] = None
     """The maximum length (in tokens) of the generated text, including the input."""
-    max_new_tokens: Optional[int] = None
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
     """The maximum number of tokens to generate. Takes precedence over max_length."""
     min_length: Optional[int] = None
     """The minimum length (in tokens) of the generated text, including the input."""
-    min_new_tokens: Optional[int] = None
+min_new_tokens: Optional[int] = os.environ.get('MIN_NEW_TOKENS: OPTIONAL[INT]', '')
     """The minimum number of tokens to generate. Takes precedence over min_length."""
     num_beam_groups: Optional[int] = None
     """Number of groups to divide num_beams into in order to ensure diversity among different
@@ -77,7 +81,7 @@ class ImageToTextParameters(BaseInferenceType):
 
     generation_parameters: Optional[ImageToTextGenerationParameters] = None
     """Parametrization of the text generation process"""
-    max_new_tokens: Optional[int] = None
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
     """The amount of maximum tokens to generate."""
 
 

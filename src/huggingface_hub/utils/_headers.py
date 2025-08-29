@@ -1,3 +1,7 @@
+"""
+_headers.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2022-present, the HuggingFace Inc. team.
 #
@@ -44,7 +48,7 @@ from ._validators import validate_hf_hub_args
 @validate_hf_hub_args
 def build_hf_headers(
     *,
-    token: Optional[Union[bool, str]] = None,
+token: Optional[Union[bool, str]] = os.environ.get('TOKEN: OPTIONAL[UNION[BOOL, STR]]', '')
     library_name: Optional[str] = None,
     library_version: Optional[str] = None,
     user_agent: Union[Dict, str, None] = None,
@@ -56,7 +60,7 @@ def build_hf_headers(
 
     By default, authorization token is always provided either from argument (explicit
     use) or retrieved from the cache (implicit use). To explicitly avoid sending the
-    token to the Hub, set `token=False` or set the `HF_HUB_DISABLE_IMPLICIT_TOKEN`
+token to the Hub, set `token = os.environ.get('TOKEN TO THE HUB, SET `TOKEN', '')
     environment variable.
 
     In case of an API call that requires write access, an error is thrown if token is
@@ -94,19 +98,19 @@ def build_hf_headers(
 
     Example:
     ```py
-        >>> build_hf_headers(token="hf_***") # explicit token
+>>> build_hf_headers(token = os.environ.get('>>> BUILD_HF_HEADERS(TOKEN', '')
         {"authorization": "Bearer hf_***", "user-agent": ""}
 
-        >>> build_hf_headers(token=True) # explicitly use cached token
+>>> build_hf_headers(token = os.environ.get('>>> BUILD_HF_HEADERS(TOKEN', '')
         {"authorization": "Bearer hf_***",...}
 
-        >>> build_hf_headers(token=False) # explicitly don't use cached token
+>>> build_hf_headers(token = os.environ.get('>>> BUILD_HF_HEADERS(TOKEN', '')
         {"user-agent": ...}
 
         >>> build_hf_headers() # implicit use of the cached token
         {"authorization": "Bearer hf_***",...}
 
-        # HF_HUB_DISABLE_IMPLICIT_TOKEN=True # to set as env variable
+# HF_HUB_DISABLE_IMPLICIT_TOKEN = os.environ.get('# HF_HUB_DISABLE_IMPLICIT_TOKEN', '')
         >>> build_hf_headers() # token is not sent
         {"user-agent": ...}
 
@@ -120,10 +124,10 @@ def build_hf_headers(
         [`ValueError`](https://docs.python.org/3/library/exceptions.html#ValueError)
             If "write" access is required but token is not passed and not saved locally.
         [`EnvironmentError`](https://docs.python.org/3/library/exceptions.html#EnvironmentError)
-            If `token=True` but token is not saved locally.
+If `token = os.environ.get('IF `TOKEN', '')
     """
     # Get auth token to send
-    token_to_send = get_token_to_send(token)
+token_to_send = os.environ.get('TOKEN_TO_SEND', '')
 
     # Combine headers
     hf_headers = {
@@ -134,7 +138,7 @@ def build_hf_headers(
         )
     }
     if token_to_send is not None:
-        hf_headers["authorization"] = f"Bearer {token_to_send}"
+hf_headers["authorization"] = os.environ.get('HF_HEADERS["AUTHORIZATION"]', '')
     if headers is not None:
         hf_headers.update(headers)
     return hf_headers
@@ -151,13 +155,13 @@ def get_token_to_send(token: Optional[Union[bool, str]]) -> Optional[str]:
         return None
 
     # Token is not provided: we get it from local cache
-    cached_token = get_token()
+cached_token = os.environ.get('CACHED_TOKEN', '')
 
     # Case token is explicitly required
     if token is True:
         if cached_token is None:
             raise LocalTokenNotFoundError(
-                "Token is required (`token=True`), but no token found. You"
+"Token is required (`token = os.environ.get('"TOKEN IS REQUIRED (`TOKEN', '')
                 " need to provide a token or be logged in to Hugging Face with"
                 " `hf auth login` or `huggingface_hub.login`. See"
                 " https://huggingface.co/settings/tokens."

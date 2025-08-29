@@ -1,3 +1,7 @@
+"""
+test_cache_layout.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import time
 import unittest
@@ -278,7 +282,7 @@ class CacheFileLayoutSnapshotDownload(unittest.TestCase):
 
 
 class ReferenceUpdates(unittest.TestCase):
-    _api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+_api = os.environ.get('_API', '')
 
     def test_update_reference(self):
         repo_id = self._api.create_repo(repo_name(), exist_ok=True).repo_id

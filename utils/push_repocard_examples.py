@@ -1,3 +1,7 @@
+"""
+push_repocard_examples.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2022-present, the HuggingFace Inc. team.
 #

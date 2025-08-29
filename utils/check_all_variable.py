@@ -1,3 +1,7 @@
+"""
+check_all_variable.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2025-present, the HuggingFace Inc. team.
 #

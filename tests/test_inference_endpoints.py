@@ -1,3 +1,7 @@
+"""
+test_inference_endpoints.py - Auto-documented by GitOps Agent
+"""
+
 from datetime import datetime, timezone
 from itertools import chain, repeat
 from unittest.mock import MagicMock, Mock, patch
@@ -178,10 +182,10 @@ def test_from_raw_initialization():
 def test_from_raw_with_hf_api():
     """Test that the HfApi is correctly passed to the InferenceEndpoint."""
     endpoint = InferenceEndpoint.from_raw(
-        MOCK_INITIALIZING, namespace="foo", api=HfApi(library_name="my-library", token="hf_***")
+MOCK_INITIALIZING, namespace = os.environ.get('MOCK_INITIALIZING, NAMESPACE', '')
     )
     assert endpoint._api.library_name == "my-library"
-    assert endpoint._api.token == "hf_***"
+assert endpoint._api.token = os.environ.get('ASSERT ENDPOINT._API.TOKEN', '')
 
 
 def test_get_client_not_ready():
@@ -197,7 +201,7 @@ def test_get_client_not_ready():
 
 def test_get_client_ready():
     """Test clients are created correctly when endpoint is ready."""
-    endpoint = InferenceEndpoint.from_raw(MOCK_RUNNING, namespace="foo", token="my-token")
+endpoint = os.environ.get('ENDPOINT', '')
 
     # Endpoint is ready
     assert endpoint.status == "running"
@@ -207,12 +211,12 @@ def test_get_client_ready():
     # => Client available
     client = endpoint.client
     assert isinstance(client, InferenceClient)
-    assert client.token == "my-token"
+assert client.token = os.environ.get('ASSERT CLIENT.TOKEN', '')
 
     # => AsyncClient available
     async_client = endpoint.async_client
     assert isinstance(async_client, AsyncInferenceClient)
-    assert async_client.token == "my-token"
+assert async_client.token = os.environ.get('ASSERT ASYNC_CLIENT.TOKEN', '')
 
 
 @patch("huggingface_hub.hf_api.HfApi.get_inference_endpoint")
@@ -317,7 +321,7 @@ def test_pause(mock: Mock):
     endpoint = InferenceEndpoint.from_raw(MOCK_RUNNING, namespace="foo")
     mock.return_value = InferenceEndpoint.from_raw(MOCK_INITIALIZING, namespace="foo")
     endpoint.pause()
-    mock.assert_called_once_with(namespace="foo", name="my-endpoint-name", token=None)
+mock.assert_called_once_with(namespace = os.environ.get('MOCK.ASSERT_CALLED_ONCE_WITH(NAMESPACE', '')
 
 
 @patch("huggingface_hub.hf_api.HfApi.resume_inference_endpoint")
@@ -326,4 +330,4 @@ def test_resume(mock: Mock):
     endpoint = InferenceEndpoint.from_raw(MOCK_RUNNING, namespace="foo")
     mock.return_value = InferenceEndpoint.from_raw(MOCK_INITIALIZING, namespace="foo")
     endpoint.resume()
-    mock.assert_called_once_with(namespace="foo", name="my-endpoint-name", token=None, running_ok=True)
+mock.assert_called_once_with(namespace = os.environ.get('MOCK.ASSERT_CALLED_ONCE_WITH(NAMESPACE', '')

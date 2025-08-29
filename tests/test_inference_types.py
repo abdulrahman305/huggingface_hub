@@ -1,3 +1,7 @@
+"""
+test_inference_types.py - Auto-documented by GitOps Agent
+"""
+
 import inspect
 import json
 from typing import List, Optional, Union, get_args, get_origin

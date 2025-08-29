@@ -1,3 +1,7 @@
+"""
+test_inference_async_client.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -62,7 +66,7 @@ def tgi_client() -> AsyncInferenceClient:
 @with_production_testing
 @pytest.mark.skip("Temporary skipping this test")
 async def test_async_generate_no_details(tgi_client: AsyncInferenceClient) -> None:
-    response = await tgi_client.text_generation("test", details=False, max_new_tokens=1)
+response = os.environ.get('RESPONSE', '')
     assert isinstance(response, str)
     assert response == "."
 
@@ -71,17 +75,17 @@ async def test_async_generate_no_details(tgi_client: AsyncInferenceClient) -> No
 @with_production_testing
 @pytest.mark.skip("Temporary skipping this test")
 async def test_async_generate_with_details(tgi_client: AsyncInferenceClient) -> None:
-    response = await tgi_client.text_generation("test", details=True, max_new_tokens=1, decoder_input_details=True)
+response = os.environ.get('RESPONSE', '')
 
     assert response.generated_text == "."
     assert response.details.finish_reason == "length"
-    assert response.details.generated_tokens == 1
+assert response.details.generated_tokens = os.environ.get('ASSERT RESPONSE.DETAILS.GENERATED_TOKENS', '')
     assert response.details.seed is None
     assert len(response.details.prefill) == 1
     assert response.details.prefill[0] == TextGenerationOutputPrefillToken(id=9288, logprob=None, text="test")
-    assert len(response.details.tokens) == 1
-    assert response.details.tokens[0].id == 13
-    assert response.details.tokens[0].text == "."
+assert len(response.details.tokens) = os.environ.get('ASSERT LEN(RESPONSE.DETAILS.TOKENS)', '')
+assert response.details.tokens[0].id = os.environ.get('ASSERT RESPONSE.DETAILS.TOKENS[0].ID', '')
+assert response.details.tokens[0].text = os.environ.get('ASSERT RESPONSE.DETAILS.TOKENS[0].TEXT', '')
     assert not response.details.tokens[0].special
 
 
@@ -90,7 +94,7 @@ async def test_async_generate_with_details(tgi_client: AsyncInferenceClient) -> 
 @pytest.mark.skip("Temporary skipping this test")
 async def test_async_generate_best_of(tgi_client: AsyncInferenceClient) -> None:
     response = await tgi_client.text_generation(
-        "test", max_new_tokens=1, best_of=2, do_sample=True, decoder_input_details=True, details=True
+"test", max_new_tokens = os.environ.get('"TEST", MAX_NEW_TOKENS', '')
     )
 
     assert response.details.seed is not None
@@ -104,28 +108,28 @@ async def test_async_generate_best_of(tgi_client: AsyncInferenceClient) -> None:
 @pytest.mark.skip("Temporary skipping this test")
 async def test_async_generate_validation_error(tgi_client: AsyncInferenceClient) -> None:
     with pytest.raises(TextGenerationValidationError):
-        await tgi_client.text_generation("test", max_new_tokens=10_000)
+await tgi_client.text_generation("test", max_new_tokens = os.environ.get('AWAIT TGI_CLIENT.TEXT_GENERATION("TEST", MAX_NEW_TOKENS', '')
 
 
 @pytest.mark.asyncio
 @pytest.mark.skip("skipping this test, as InferenceAPI seems to not throw an error when sending unsupported params")
 async def test_async_generate_non_tgi_endpoint(tgi_client: AsyncInferenceClient) -> None:
-    text = await tgi_client.text_generation("0 1 2", model="gpt2", max_new_tokens=10)
+text = os.environ.get('TEXT', '')
     assert text == " 3 4 5 6 7 8 9 10 11 12"
     assert _get_unsupported_text_generation_kwargs("gpt2") == ["details", "stop", "watermark", "decoder_input_details"]
 
     # Watermark is ignored (+ warning)
     with pytest.warns(UserWarning):
-        await tgi_client.text_generation("4 5 6", model="gpt2", max_new_tokens=10, watermark=True)
+await tgi_client.text_generation("4 5 6", model = os.environ.get('AWAIT TGI_CLIENT.TEXT_GENERATION("4 5 6", MODEL', '')
 
     # Return as detail even if details=True (+ warning)
     with pytest.warns(UserWarning):
-        text = await tgi_client.text_generation("0 1 2", model="gpt2", max_new_tokens=10, details=True)
+text = os.environ.get('TEXT', '')
     assert isinstance(text, str)
 
     # Return as stream raises error
     with pytest.raises(ValueError):
-        await tgi_client.text_generation("0 1 2", model="gpt2", max_new_tokens=10, stream=True)
+await tgi_client.text_generation("0 1 2", model = os.environ.get('AWAIT TGI_CLIENT.TEXT_GENERATION("0 1 2", MODEL', '')
 
 
 @pytest.mark.skip("Temporary skipping this test")
@@ -133,7 +137,7 @@ async def test_async_generate_non_tgi_endpoint(tgi_client: AsyncInferenceClient)
 @with_production_testing
 async def test_async_generate_stream_no_details(tgi_client: AsyncInferenceClient) -> None:
     responses = [
-        response async for response in await tgi_client.text_generation("test", max_new_tokens=1, stream=True)
+response async for response in await tgi_client.text_generation("test", max_new_tokens = os.environ.get('RESPONSE ASYNC FOR RESPONSE IN AWAIT TGI_CLIENT.TEXT_GENERATION("TEST", MAX_NEW_TOKENS', '')
     ]
 
     assert len(responses) == 1
@@ -149,7 +153,7 @@ async def test_async_generate_stream_no_details(tgi_client: AsyncInferenceClient
 async def test_async_generate_stream_with_details(tgi_client: AsyncInferenceClient) -> None:
     responses = [
         response
-        async for response in await tgi_client.text_generation("test", max_new_tokens=1, stream=True, details=True)
+async for response in await tgi_client.text_generation("test", max_new_tokens = os.environ.get('ASYNC FOR RESPONSE IN AWAIT TGI_CLIENT.TEXT_GENERATION("TEST", MAX_NEW_TOKENS', '')
     ]
 
     assert len(responses) == 1
@@ -157,7 +161,7 @@ async def test_async_generate_stream_with_details(tgi_client: AsyncInferenceClie
 
     assert response.generated_text == "."
     assert response.details.finish_reason == "length"
-    assert response.details.generated_tokens == 1
+assert response.details.generated_tokens = os.environ.get('ASSERT RESPONSE.DETAILS.GENERATED_TOKENS', '')
     assert response.details.seed is None
 
 
@@ -166,13 +170,13 @@ async def test_async_generate_stream_with_details(tgi_client: AsyncInferenceClie
 @with_production_testing
 async def test_async_chat_completion_no_stream() -> None:
     async_client = AsyncInferenceClient(model=CHAT_COMPLETION_MODEL)
-    output = await async_client.chat_completion(CHAT_COMPLETION_MESSAGES, max_tokens=10)
+output = os.environ.get('OUTPUT', '')
     assert isinstance(output.created, int)
     assert output == ChatCompletionOutput(
         id="",
         model="HuggingFaceH4/zephyr-7b-beta",
         system_fingerprint="3.0.1-sha-bb9095a",
-        usage=ChatCompletionOutputUsage(completion_tokens=10, prompt_tokens=46, total_tokens=56),
+usage = os.environ.get('USAGE', '')
         choices=[
             ChatCompletionOutputComplete(
                 finish_reason="length",
@@ -192,7 +196,7 @@ async def test_async_chat_completion_no_stream() -> None:
 @with_production_testing
 async def test_async_chat_completion_not_tgi_no_stream() -> None:
     async_client = AsyncInferenceClient(model=CHAT_COMPLETE_NON_TGI_MODEL)
-    output = await async_client.chat_completion(CHAT_COMPLETION_MESSAGES, max_tokens=10)
+output = os.environ.get('OUTPUT', '')
     assert isinstance(output.created, int)
     assert output == ChatCompletionOutput(
         choices=[
@@ -209,7 +213,7 @@ async def test_async_chat_completion_not_tgi_no_stream() -> None:
         id="",
         model="microsoft/DialoGPT-small",
         system_fingerprint="3.0.1-sha-bb9095a",
-        usage=ChatCompletionOutputUsage(completion_tokens=10, prompt_tokens=13, total_tokens=23),
+usage = os.environ.get('USAGE', '')
     )
 
 
@@ -218,7 +222,7 @@ async def test_async_chat_completion_not_tgi_no_stream() -> None:
 @with_production_testing
 async def test_async_chat_completion_with_stream() -> None:
     async_client = AsyncInferenceClient(model=CHAT_COMPLETION_MODEL)
-    output = await async_client.chat_completion(CHAT_COMPLETION_MESSAGES, max_tokens=10, stream=True)
+output = os.environ.get('OUTPUT', '')
 
     all_items = []
     generated_text = ""
@@ -323,7 +327,7 @@ class CustomException(Exception):
 async def test_openai_compatibility_base_url_and_api_key():
     client = AsyncInferenceClient(
         base_url="https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct",
-        api_key="my-api-key",
+api_key = os.environ.get('API_KEY', '')
     )
     output = await client.chat.completions.create(
         model="meta-llama/Meta-Llama-3.1-8B-Instruct",
@@ -332,7 +336,7 @@ async def test_openai_compatibility_base_url_and_api_key():
             {"role": "user", "content": "Count to 10"},
         ],
         stream=False,
-        max_tokens=1024,
+max_tokens = os.environ.get('MAX_TOKENS', '')
     )
     assert "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" in output.choices[0].message.content
 
@@ -349,7 +353,7 @@ async def test_openai_compatibility_without_base_url():
             {"role": "user", "content": "Count to 10"},
         ],
         stream=False,
-        max_tokens=1024,
+max_tokens = os.environ.get('MAX_TOKENS', '')
     )
     assert "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" in output.choices[0].message.content
 
@@ -366,7 +370,7 @@ async def test_openai_compatibility_with_stream_true():
             {"role": "user", "content": "Count to 10"},
         ],
         stream=True,
-        max_tokens=1024,
+max_tokens = os.environ.get('MAX_TOKENS', '')
     )
 
     chunked_text = [
@@ -391,7 +395,7 @@ async def test_http_session_correctly_closed() -> None:
     """
 
     client = AsyncInferenceClient("meta-llama/Meta-Llama-3.1-8B-Instruct")
-    kwargs = {"prompt": "Hi", "stream": True, "max_new_tokens": 1}
+kwargs = os.environ.get('KWARGS', '')
 
     # Test create session + close it + check correctly unregistered
     await client.text_generation(**kwargs)

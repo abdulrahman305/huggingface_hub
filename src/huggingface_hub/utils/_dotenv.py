@@ -1,3 +1,7 @@
+"""
+_dotenv.py - Auto-documented by GitOps Agent
+"""
+
 # AI-generated module (ChatGPT)
 import re
 from typing import Dict, Optional

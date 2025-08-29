@@ -1,3 +1,7 @@
+"""
+_client.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -163,7 +167,7 @@ class InferenceClient:
         model: Optional[str] = None,
         *,
         provider: Optional[PROVIDER_OR_POLICY_T] = None,
-        token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
         timeout: Optional[float] = None,
         headers: Optional[Dict[str, str]] = None,
         cookies: Optional[Dict[str, str]] = None,
@@ -171,7 +175,7 @@ class InferenceClient:
         bill_to: Optional[str] = None,
         # OpenAI compatibility
         base_url: Optional[str] = None,
-        api_key: Optional[str] = None,
+api_key: Optional[str] = os.environ.get('API_KEY: OPTIONAL[STR]', '')
     ) -> None:
         if model is not None and base_url is not None:
             raise ValueError(
@@ -186,24 +190,24 @@ class InferenceClient:
                 " `api_key` is an alias for `token` to make the API compatible with OpenAI's client."
                 " It has the exact same behavior as `token`."
             )
-        token = token if token is not None else api_key
+token = os.environ.get('TOKEN', '')
         if isinstance(token, bool):
-            # Legacy behavior: previously is was possible to pass `token=False` to disable authentication. This is not
+# Legacy behavior: previously is was possible to pass `token = os.environ.get('# LEGACY BEHAVIOR: PREVIOUSLY IS WAS POSSIBLE TO PASS `TOKEN', '')
             # supported anymore as authentication is required. Better to explicitly raise here rather than risking
             # sending the locally saved token without the user knowing about it.
             if token is False:
                 raise ValueError(
-                    "Cannot use `token=False` to disable authentication as authentication is required to run Inference."
+"Cannot use `token = os.environ.get('"CANNOT USE `TOKEN', '')
                 )
             warnings.warn(
-                "Using `token=True` to automatically use the locally saved token is deprecated and will be removed in a future release. "
-                "Please use `token=None` instead (default).",
+"Using `token = os.environ.get('"USING `TOKEN', '')
+"Please use `token = os.environ.get('"PLEASE USE `TOKEN', '')
                 DeprecationWarning,
             )
-            token = get_token()
+token = os.environ.get('TOKEN', '')
 
         self.model: Optional[str] = base_url or model
-        self.token: Optional[str] = token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
 
         self.headers = {**headers} if headers is not None else {}
         if bill_to is not None:
@@ -336,7 +340,7 @@ class InferenceClient:
             parameters={"function_to_apply": function_to_apply, "top_k": top_k},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return AudioClassificationOutputElement.parse_obj_as_list(response)
@@ -385,7 +389,7 @@ class InferenceClient:
             parameters={},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         audio_output = AudioToAudioOutputElement.parse_obj_as_list(response)
@@ -436,7 +440,7 @@ class InferenceClient:
             parameters={**(extra_body or {})},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return AutomaticSpeechRecognitionOutput.parse_obj_as_instance(response)
@@ -451,7 +455,7 @@ class InferenceClient:
         frequency_penalty: Optional[float] = None,
         logit_bias: Optional[List[float]] = None,
         logprobs: Optional[bool] = None,
-        max_tokens: Optional[int] = None,
+max_tokens: Optional[int] = os.environ.get('MAX_TOKENS: OPTIONAL[INT]', '')
         n: Optional[int] = None,
         presence_penalty: Optional[float] = None,
         response_format: Optional[ChatCompletionInputGrammarType] = None,
@@ -477,7 +481,7 @@ class InferenceClient:
         frequency_penalty: Optional[float] = None,
         logit_bias: Optional[List[float]] = None,
         logprobs: Optional[bool] = None,
-        max_tokens: Optional[int] = None,
+max_tokens: Optional[int] = os.environ.get('MAX_TOKENS: OPTIONAL[INT]', '')
         n: Optional[int] = None,
         presence_penalty: Optional[float] = None,
         response_format: Optional[ChatCompletionInputGrammarType] = None,
@@ -503,7 +507,7 @@ class InferenceClient:
         frequency_penalty: Optional[float] = None,
         logit_bias: Optional[List[float]] = None,
         logprobs: Optional[bool] = None,
-        max_tokens: Optional[int] = None,
+max_tokens: Optional[int] = os.environ.get('MAX_TOKENS: OPTIONAL[INT]', '')
         n: Optional[int] = None,
         presence_penalty: Optional[float] = None,
         response_format: Optional[ChatCompletionInputGrammarType] = None,
@@ -529,7 +533,7 @@ class InferenceClient:
         frequency_penalty: Optional[float] = None,
         logit_bias: Optional[List[float]] = None,
         logprobs: Optional[bool] = None,
-        max_tokens: Optional[int] = None,
+max_tokens: Optional[int] = os.environ.get('MAX_TOKENS: OPTIONAL[INT]', '')
         n: Optional[int] = None,
         presence_penalty: Optional[float] = None,
         response_format: Optional[ChatCompletionInputGrammarType] = None,
@@ -619,7 +623,7 @@ class InferenceClient:
             [`ChatCompletionOutput`] or Iterable of [`ChatCompletionStreamOutput`]:
             Generated text returned from the server:
             - if `stream=False`, the generated text is returned as a [`ChatCompletionOutput`] (default).
-            - if `stream=True`, the generated text is returned token by token as a sequence of [`ChatCompletionStreamOutput`].
+- if `stream = os.environ.get('- IF `STREAM', '')
 
         Raises:
             [`InferenceTimeoutError`]:
@@ -633,11 +637,11 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> messages = [{"role": "user", "content": "What is the capital of France?"}]
         >>> client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct")
-        >>> client.chat_completion(messages, max_tokens=100)
+>>> client.chat_completion(messages, max_tokens = os.environ.get('>>> CLIENT.CHAT_COMPLETION(MESSAGES, MAX_TOKENS', '')
         ChatCompletionOutput(
             choices=[
                 ChatCompletionOutputComplete(
-                    finish_reason='eos_token',
+finish_reason = os.environ.get('FINISH_REASON', '')
                     index=0,
                     message=ChatCompletionOutputMessage(
                         role='assistant',
@@ -654,9 +658,9 @@ class InferenceClient:
             object='text_completion',
             system_fingerprint='2.0.4-sha-f426a33',
             usage=ChatCompletionOutputUsage(
-                completion_tokens=8,
-                prompt_tokens=17,
-                total_tokens=25
+completion_tokens = os.environ.get('COMPLETION_TOKENS', '')
+prompt_tokens = os.environ.get('PROMPT_TOKENS', '')
+total_tokens = os.environ.get('TOTAL_TOKENS', '')
             )
         )
         ```
@@ -666,7 +670,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> messages = [{"role": "user", "content": "What is the capital of France?"}]
         >>> client = InferenceClient("meta-llama/Meta-Llama-3-8B-Instruct")
-        >>> for token in client.chat_completion(messages, max_tokens=10, stream=True):
+>>> for token in client.chat_completion(messages, max_tokens = os.environ.get('>>> FOR TOKEN IN CLIENT.CHAT_COMPLETION(MESSAGES, MAX_TOKENS', '')
         ...     print(token)
         ChatCompletionStreamOutput(choices=[ChatCompletionStreamOutputChoice(delta=ChatCompletionStreamOutputDelta(content='The', role='assistant'), index=0, finish_reason=None)], created=1710498504)
         ChatCompletionStreamOutput(choices=[ChatCompletionStreamOutputChoice(delta=ChatCompletionStreamOutputDelta(content=' capital', role='assistant'), index=0, finish_reason=None)], created=1710498504)
@@ -682,7 +686,7 @@ class InferenceClient:
         # instead of `client = OpenAI(...)`
         client = InferenceClient(
             base_url=...,
-            api_key=...,
+api_key = os.environ.get('API_KEY', '')
         )
 
         output = client.chat.completions.create(
@@ -692,7 +696,7 @@ class InferenceClient:
                 {"role": "user", "content": "Count to 10"},
             ],
             stream=True,
-            max_tokens=1024,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
 
         for chunk in output:
@@ -704,7 +708,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="together",  # Use Together AI provider
-        ...     api_key="<together_api_key>",  # Pass your Together API key directly
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> client.chat_completion(
         ...     model="meta-llama/Meta-Llama-3-8B-Instruct",
@@ -718,7 +722,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="sambanova",  # Use Sambanova provider
-        ...     api_key="hf_...",  # Pass your HF token
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> client.chat_completion(
         ...     model="meta-llama/Meta-Llama-3-8B-Instruct",
@@ -829,7 +833,7 @@ class InferenceClient:
         ...     messages=messages,
         ...     tools=tools,
         ...     tool_choice="auto",
-        ...     max_tokens=500,
+...     max_tokens = os.environ.get('...     MAX_TOKENS', '')
         ... )
         >>> response.choices[0].message.tool_calls[0].function
         ChatCompletionOutputFunctionDefinition(
@@ -868,7 +872,7 @@ class InferenceClient:
         >>> response = client.chat_completion(
         ...     messages=messages,
         ...     response_format=response_format,
-        ...     max_tokens=500,
+...     max_tokens = os.environ.get('...     MAX_TOKENS', '')
         ... )
         >>> response.choices[0].message.content
         '{\n\n"activity": "bike ride",\n"animals": ["puppy", "cat", "raccoon"],\n"animals_seen": 3,\n"location": "park"}'
@@ -916,7 +920,7 @@ class InferenceClient:
             parameters=parameters,
             headers=self.headers,
             model=model_id_or_url,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         data = self._inner_post(request_parameters, stream=stream)
 
@@ -1007,7 +1011,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return DocumentQuestionAnsweringOutputElement.parse_obj_as_list(response)
@@ -1079,7 +1083,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         np = _import_numpy()
@@ -1124,8 +1128,8 @@ class InferenceClient:
         >>> client = InferenceClient()
         >>> client.fill_mask("The goal of life is <mask>.")
         [
-            FillMaskOutputElement(score=0.06897063553333282, token=11098, token_str=' happiness', sequence='The goal of life is happiness.'),
-            FillMaskOutputElement(score=0.06554922461509705, token=45075, token_str=' immortality', sequence='The goal of life is immortality.')
+FillMaskOutputElement(score = os.environ.get('FILLMASKOUTPUTELEMENT(SCORE', '')
+FillMaskOutputElement(score = os.environ.get('FILLMASKOUTPUTELEMENT(SCORE', '')
         ]
         ```
         """
@@ -1136,7 +1140,7 @@ class InferenceClient:
             parameters={"targets": targets, "top_k": top_k},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return FillMaskOutputElement.parse_obj_as_list(response)
@@ -1186,7 +1190,7 @@ class InferenceClient:
             parameters={"function_to_apply": function_to_apply, "top_k": top_k},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return ImageClassificationOutputElement.parse_obj_as_list(response)
@@ -1253,7 +1257,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         output = ImageSegmentationOutputElement.parse_obj_as_list(response)
@@ -1332,7 +1336,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         response = provider_helper.get_response(response, request_parameters)
@@ -1411,7 +1415,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         response = provider_helper.get_response(response, request_parameters)
@@ -1457,7 +1461,7 @@ class InferenceClient:
             parameters={},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         output_list: List[ImageToTextOutput] = ImageToTextOutput.parse_obj_as_list(response)
@@ -1509,7 +1513,7 @@ class InferenceClient:
             parameters={"threshold": threshold},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return ObjectDetectionOutputElement.parse_obj_as_list(response)
@@ -1591,7 +1595,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         # Parse the response as a single `QuestionAnsweringOutputElement` when top_k is 1 or not provided, or a list of `QuestionAnsweringOutputElement` to ensure backward compatibility.
@@ -1646,7 +1650,7 @@ class InferenceClient:
             extra_payload={},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return _bytes_to_list(response)
@@ -1656,7 +1660,7 @@ class InferenceClient:
         text: str,
         *,
         model: Optional[str] = None,
-        clean_up_tokenization_spaces: Optional[bool] = None,
+clean_up_tokenization_spaces: Optional[bool] = os.environ.get('CLEAN_UP_TOKENIZATION_SPACES: OPTIONAL[BOOL]', '')
         generate_parameters: Optional[Dict[str, Any]] = None,
         truncation: Optional["SummarizationTruncationStrategy"] = None,
     ) -> SummarizationOutput:
@@ -1704,7 +1708,7 @@ class InferenceClient:
             parameters=parameters,
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return SummarizationOutput.parse_obj_as_list(response)[0]
@@ -1766,7 +1770,7 @@ class InferenceClient:
             parameters={"model": model, "padding": padding, "sequential": sequential, "truncation": truncation},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return TableQuestionAnsweringOutputElement.parse_obj_as_instance(response)
@@ -1821,7 +1825,7 @@ class InferenceClient:
             parameters={},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return _bytes_to_list(response)
@@ -1871,7 +1875,7 @@ class InferenceClient:
             extra_payload={"table": table},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return _bytes_to_list(response)
@@ -1929,7 +1933,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return TextClassificationOutputElement.parse_obj_as_list(response)[0]  # type: ignore [return-value]
@@ -1949,7 +1953,7 @@ class InferenceClient:
         do_sample: Optional[bool] = None,
         frequency_penalty: Optional[float] = None,
         grammar: Optional[TextGenerationInputGrammarType] = None,
-        max_new_tokens: Optional[int] = None,
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
         repetition_penalty: Optional[float] = None,
         return_full_text: Optional[bool] = None,
         seed: Optional[int] = None,
@@ -1957,7 +1961,7 @@ class InferenceClient:
         stop_sequences: Optional[List[str]] = None,  # Deprecated, use `stop` instead
         temperature: Optional[float] = None,
         top_k: Optional[int] = None,
-        top_n_tokens: Optional[int] = None,
+top_n_tokens: Optional[int] = os.environ.get('TOP_N_TOKENS: OPTIONAL[INT]', '')
         top_p: Optional[float] = None,
         truncate: Optional[int] = None,
         typical_p: Optional[float] = None,
@@ -1979,7 +1983,7 @@ class InferenceClient:
         do_sample: Optional[bool] = None,
         frequency_penalty: Optional[float] = None,
         grammar: Optional[TextGenerationInputGrammarType] = None,
-        max_new_tokens: Optional[int] = None,
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
         repetition_penalty: Optional[float] = None,
         return_full_text: Optional[bool] = None,
         seed: Optional[int] = None,
@@ -1987,7 +1991,7 @@ class InferenceClient:
         stop_sequences: Optional[List[str]] = None,  # Deprecated, use `stop` instead
         temperature: Optional[float] = None,
         top_k: Optional[int] = None,
-        top_n_tokens: Optional[int] = None,
+top_n_tokens: Optional[int] = os.environ.get('TOP_N_TOKENS: OPTIONAL[INT]', '')
         top_p: Optional[float] = None,
         truncate: Optional[int] = None,
         typical_p: Optional[float] = None,
@@ -2009,7 +2013,7 @@ class InferenceClient:
         do_sample: Optional[bool] = None,
         frequency_penalty: Optional[float] = None,
         grammar: Optional[TextGenerationInputGrammarType] = None,
-        max_new_tokens: Optional[int] = None,
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
         repetition_penalty: Optional[float] = None,
         return_full_text: Optional[bool] = None,  # Manual default value
         seed: Optional[int] = None,
@@ -2017,7 +2021,7 @@ class InferenceClient:
         stop_sequences: Optional[List[str]] = None,  # Deprecated, use `stop` instead
         temperature: Optional[float] = None,
         top_k: Optional[int] = None,
-        top_n_tokens: Optional[int] = None,
+top_n_tokens: Optional[int] = os.environ.get('TOP_N_TOKENS: OPTIONAL[INT]', '')
         top_p: Optional[float] = None,
         truncate: Optional[int] = None,
         typical_p: Optional[float] = None,
@@ -2039,7 +2043,7 @@ class InferenceClient:
         do_sample: Optional[bool] = None,
         frequency_penalty: Optional[float] = None,
         grammar: Optional[TextGenerationInputGrammarType] = None,
-        max_new_tokens: Optional[int] = None,
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
         repetition_penalty: Optional[float] = None,
         return_full_text: Optional[bool] = None,
         seed: Optional[int] = None,
@@ -2047,7 +2051,7 @@ class InferenceClient:
         stop_sequences: Optional[List[str]] = None,  # Deprecated, use `stop` instead
         temperature: Optional[float] = None,
         top_k: Optional[int] = None,
-        top_n_tokens: Optional[int] = None,
+top_n_tokens: Optional[int] = os.environ.get('TOP_N_TOKENS: OPTIONAL[INT]', '')
         top_p: Optional[float] = None,
         truncate: Optional[int] = None,
         typical_p: Optional[float] = None,
@@ -2069,7 +2073,7 @@ class InferenceClient:
         do_sample: Optional[bool] = None,
         frequency_penalty: Optional[float] = None,
         grammar: Optional[TextGenerationInputGrammarType] = None,
-        max_new_tokens: Optional[int] = None,
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
         repetition_penalty: Optional[float] = None,
         return_full_text: Optional[bool] = None,
         seed: Optional[int] = None,
@@ -2077,7 +2081,7 @@ class InferenceClient:
         stop_sequences: Optional[List[str]] = None,  # Deprecated, use `stop` instead
         temperature: Optional[float] = None,
         top_k: Optional[int] = None,
-        top_n_tokens: Optional[int] = None,
+top_n_tokens: Optional[int] = os.environ.get('TOP_N_TOKENS: OPTIONAL[INT]', '')
         top_p: Optional[float] = None,
         truncate: Optional[int] = None,
         typical_p: Optional[float] = None,
@@ -2098,7 +2102,7 @@ class InferenceClient:
         do_sample: Optional[bool] = None,
         frequency_penalty: Optional[float] = None,
         grammar: Optional[TextGenerationInputGrammarType] = None,
-        max_new_tokens: Optional[int] = None,
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
         repetition_penalty: Optional[float] = None,
         return_full_text: Optional[bool] = None,
         seed: Optional[int] = None,
@@ -2106,7 +2110,7 @@ class InferenceClient:
         stop_sequences: Optional[List[str]] = None,  # Deprecated, use `stop` instead
         temperature: Optional[float] = None,
         top_k: Optional[int] = None,
-        top_n_tokens: Optional[int] = None,
+top_n_tokens: Optional[int] = os.environ.get('TOP_N_TOKENS: OPTIONAL[INT]', '')
         top_p: Optional[float] = None,
         truncate: Optional[int] = None,
         typical_p: Optional[float] = None,
@@ -2126,7 +2130,7 @@ class InferenceClient:
             prompt (`str`):
                 Input text.
             details (`bool`, *optional*):
-                By default, text_generation returns a string. Pass `details=True` if you want a detailed output (tokens,
+By default, text_generation returns a string. Pass `details = os.environ.get('BY DEFAULT, TEXT_GENERATION RETURNS A STRING. PASS `DETAILS', '')
                 probabilities, seed, finish reason, etc.). Only available for models running on with the
                 `text-generation-inference` backend.
             stream (`bool`, *optional*):
@@ -2141,7 +2145,7 @@ class InferenceClient:
             best_of (`int`, *optional*):
                 Generate best_of sequences and return the one if the highest token logprobs.
             decoder_input_details (`bool`, *optional*):
-                Return the decoder input token logprobs and ids. You must set `details=True` as well for it to be taken
+Return the decoder input token logprobs and ids. You must set `details = os.environ.get('RETURN THE DECODER INPUT TOKEN LOGPROBS AND IDS. YOU MUST SET `DETAILS', '')
                 into account. Defaults to `False`.
             do_sample (`bool`, *optional*):
                 Activate logits sampling
@@ -2185,9 +2189,9 @@ class InferenceClient:
             `Union[str, TextGenerationOutput, Iterable[str], Iterable[TextGenerationStreamOutput]]`:
             Generated text returned from the server:
             - if `stream=False` and `details=False`, the generated text is returned as a `str` (default)
-            - if `stream=True` and `details=False`, the generated text is returned token by token as a `Iterable[str]`
+- if `stream = os.environ.get('- IF `STREAM', '')
             - if `stream=False` and `details=True`, the generated text is returned with more details as a [`~huggingface_hub.TextGenerationOutput`]
-            - if `details=True` and `stream=True`, the generated text is returned token by token as a iterable of [`~huggingface_hub.TextGenerationStreamOutput`]
+- if `details = os.environ.get('- IF `DETAILS', '')
 
         Raises:
             `ValidationError`:
@@ -2203,11 +2207,11 @@ class InferenceClient:
         >>> client = InferenceClient()
 
         # Case 1: generate text
-        >>> client.text_generation("The huggingface_hub library is ", max_new_tokens=12)
+>>> client.text_generation("The huggingface_hub library is ", max_new_tokens = os.environ.get('>>> CLIENT.TEXT_GENERATION("THE HUGGINGFACE_HUB LIBRARY IS ", MAX_NEW_TOKENS', '')
         '100% open source and built to be easy to use.'
 
         # Case 2: iterate over the generated tokens. Useful for large generation.
-        >>> for token in client.text_generation("The huggingface_hub library is ", max_new_tokens=12, stream=True):
+>>> for token in client.text_generation("The huggingface_hub library is ", max_new_tokens = os.environ.get('>>> FOR TOKEN IN CLIENT.TEXT_GENERATION("THE HUGGINGFACE_HUB LIBRARY IS ", MAX_NEW_TOKENS', '')
         ...     print(token)
         100
         %
@@ -2223,12 +2227,12 @@ class InferenceClient:
         .
 
         # Case 3: get more details about the generation process.
-        >>> client.text_generation("The huggingface_hub library is ", max_new_tokens=12, details=True)
+>>> client.text_generation("The huggingface_hub library is ", max_new_tokens = os.environ.get('>>> CLIENT.TEXT_GENERATION("THE HUGGINGFACE_HUB LIBRARY IS ", MAX_NEW_TOKENS', '')
         TextGenerationOutput(
             generated_text='100% open source and built to be easy to use.',
             details=TextGenerationDetails(
                 finish_reason='length',
-                generated_tokens=12,
+generated_tokens = os.environ.get('GENERATED_TOKENS', '')
                 seed=None,
                 prefill=[
                     TextGenerationPrefillOutputToken(id=487, text='The', logprob=None),
@@ -2236,7 +2240,7 @@ class InferenceClient:
                     (...)
                     TextGenerationPrefillOutputToken(id=204, text=' ', logprob=-7.0390625)
                 ],
-                tokens=[
+tokens = os.environ.get('TOKENS', '')
                     TokenElement(id=1425, text='100', logprob=-1.0175781, special=False),
                     TokenElement(id=16, text='%', logprob=-0.0463562, special=False),
                     (...)
@@ -2248,34 +2252,34 @@ class InferenceClient:
 
         # Case 4: iterate over the generated tokens with more details.
         # Last object is more complete, containing the full generated text and the finish reason.
-        >>> for details in client.text_generation("The huggingface_hub library is ", max_new_tokens=12, details=True, stream=True):
+>>> for details in client.text_generation("The huggingface_hub library is ", max_new_tokens = os.environ.get('>>> FOR DETAILS IN CLIENT.TEXT_GENERATION("THE HUGGINGFACE_HUB LIBRARY IS ", MAX_NEW_TOKENS', '')
         ...     print(details)
         ...
-        TextGenerationStreamOutput(token=TokenElement(id=1425, text='100', logprob=-1.0175781, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=16, text='%', logprob=-0.0463562, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=1314, text=' open', logprob=-1.3359375, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=3178, text=' source', logprob=-0.28100586, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=273, text=' and', logprob=-0.5961914, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=3426, text=' built', logprob=-1.9423828, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=271, text=' to', logprob=-1.4121094, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=314, text=' be', logprob=-1.5224609, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=1833, text=' easy', logprob=-2.1132812, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=271, text=' to', logprob=-0.08520508, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(id=745, text=' use', logprob=-0.39453125, special=False), generated_text=None, details=None)
-        TextGenerationStreamOutput(token=TokenElement(
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
+TextGenerationStreamOutput(token = os.environ.get('TEXTGENERATIONSTREAMOUTPUT(TOKEN', '')
             id=25,
             text='.',
             logprob=-0.5703125,
             special=False),
             generated_text='100% open source and built to be easy to use.',
-            details=TextGenerationStreamOutputStreamDetails(finish_reason='length', generated_tokens=12, seed=None)
+details = os.environ.get('DETAILS', '')
         )
 
         # Case 5: generate constrained output using grammar
         >>> response = client.text_generation(
         ...     prompt="I saw a puppy a cat and a raccoon during my bike ride in the park",
         ...     model="HuggingFaceH4/zephyr-orpo-141b-A35b-v0.1",
-        ...     max_new_tokens=100,
+...     max_new_tokens = os.environ.get('...     MAX_NEW_TOKENS', '')
         ...     repetition_penalty=1.3,
         ...     grammar={
         ...         "type": "json",
@@ -2377,7 +2381,7 @@ class InferenceClient:
             extra_payload={"stream": stream},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
 
         # Handle errors separately for more precise error messages
@@ -2399,14 +2403,14 @@ class InferenceClient:
                     do_sample=do_sample,
                     frequency_penalty=frequency_penalty,
                     grammar=grammar,
-                    max_new_tokens=max_new_tokens,
+max_new_tokens = os.environ.get('MAX_NEW_TOKENS', '')
                     repetition_penalty=repetition_penalty,
                     return_full_text=return_full_text,
                     seed=seed,
                     stop=stop,
                     temperature=temperature,
                     top_k=top_k,
-                    top_n_tokens=top_n_tokens,
+top_n_tokens = os.environ.get('TOP_N_TOKENS', '')
                     top_p=top_p,
                     truncate=truncate,
                     typical_p=typical_p,
@@ -2509,7 +2513,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="fal-ai",  # Use fal.ai provider
-        ...     api_key="fal-ai-api-key",  # Pass your fal.ai API key
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> image = client.text_to_image(
         ...     "A majestic lion in a fantasy forest",
@@ -2523,7 +2527,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="replicate",  # Use replicate provider
-        ...     api_key="hf_...",  # Pass your HF token
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> image = client.text_to_image(
         ...     "An astronaut riding a horse on the moon.",
@@ -2537,7 +2541,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="replicate",  # Use replicate provider
-        ...     api_key="hf_...",  # Pass your HF token
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> image = client.text_to_image(
         ...     "An astronaut riding a horse on the moon.",
@@ -2563,7 +2567,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         response = provider_helper.get_response(response)
@@ -2621,7 +2625,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="fal-ai",  # Using fal.ai provider
-        ...     api_key="fal-ai-api-key",  # Pass your fal.ai API key
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> video = client.text_to_video(
         ...     "A majestic lion running in a fantasy forest",
@@ -2636,7 +2640,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="replicate",  # Using replicate provider
-        ...     api_key="hf_...",  # Pass your HF token
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> video = client.text_to_video(
         ...     "A cat running in a park",
@@ -2660,7 +2664,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         response = provider_helper.get_response(response, request_parameters)
@@ -2676,9 +2680,9 @@ class InferenceClient:
         epsilon_cutoff: Optional[float] = None,
         eta_cutoff: Optional[float] = None,
         max_length: Optional[int] = None,
-        max_new_tokens: Optional[int] = None,
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
         min_length: Optional[int] = None,
-        min_new_tokens: Optional[int] = None,
+min_new_tokens: Optional[int] = os.environ.get('MIN_NEW_TOKENS: OPTIONAL[INT]', '')
         num_beam_groups: Optional[int] = None,
         num_beams: Optional[int] = None,
         penalty_alpha: Optional[float] = None,
@@ -2776,7 +2780,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="replicate",
-        ...     api_key="your-replicate-api-key",  # Pass your Replicate API key directly
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> audio = client.text_to_speech(
         ...     text="Hello world",
@@ -2790,7 +2794,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="replicate",
-        ...     api_key="hf_...",  # Pass your HF token
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> audio =client.text_to_speech(
         ...     text="Hello world",
@@ -2803,7 +2807,7 @@ class InferenceClient:
         >>> from huggingface_hub import InferenceClient
         >>> client = InferenceClient(
         ...     provider="replicate",  # Use replicate provider
-        ...     api_key="hf_...",  # Pass your HF token
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> audio = client.text_to_speech(
         ...     "Hello, my name is Kororo, an awesome text-to-speech model.",
@@ -2837,7 +2841,7 @@ class InferenceClient:
         >>> client = InferenceClient(
         ...     provider="fal-ai",
         ...     model="m-a-p/YuE-s1-7B-anneal-en-cot",
-        ...     api_key=...,
+...     api_key = os.environ.get('...     API_KEY', '')
         ... )
         >>> audio = client.text_to_speech(lyrics, extra_body={"genres": genres})
         >>> with open("output.mp3", "wb") as f:
@@ -2869,7 +2873,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         response = provider_helper.get_response(response)
@@ -2935,7 +2939,7 @@ class InferenceClient:
         ```
         """
         model_id = model or self.model
-        provider_helper = get_provider_helper(self.provider, task="token-classification", model=model_id)
+provider_helper = os.environ.get('PROVIDER_HELPER', '')
         request_parameters = provider_helper.prepare_request(
             inputs=text,
             parameters={
@@ -2945,7 +2949,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return TokenClassificationOutputElement.parse_obj_as_list(response)
@@ -2957,7 +2961,7 @@ class InferenceClient:
         model: Optional[str] = None,
         src_lang: Optional[str] = None,
         tgt_lang: Optional[str] = None,
-        clean_up_tokenization_spaces: Optional[bool] = None,
+clean_up_tokenization_spaces: Optional[bool] = os.environ.get('CLEAN_UP_TOKENIZATION_SPACES: OPTIONAL[BOOL]', '')
         truncation: Optional["TranslationTruncationStrategy"] = None,
         generate_parameters: Optional[Dict[str, Any]] = None,
     ) -> TranslationOutput:
@@ -3034,7 +3038,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return TranslationOutput.parse_obj_as_list(response)[0]
@@ -3092,7 +3096,7 @@ class InferenceClient:
             parameters={"top_k": top_k},
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
             extra_payload={"question": question, "image": _b64_encode(image)},
         )
         response = self._inner_post(request_parameters)
@@ -3195,7 +3199,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         output = _bytes_to_dict(response)
@@ -3266,7 +3270,7 @@ class InferenceClient:
             },
             headers=self.headers,
             model=model_id,
-            api_key=self.token,
+api_key = os.environ.get('API_KEY', '')
         )
         response = self._inner_post(request_parameters)
         return ZeroShotImageClassificationOutputElement.parse_obj_as_list(response)
@@ -3325,7 +3329,7 @@ class InferenceClient:
         else:
             url = f"{constants.INFERENCE_ENDPOINT}/models/{model}/info"
 
-        response = get_session().get(url, headers=build_hf_headers(token=self.token))
+response = os.environ.get('RESPONSE', '')
         hf_raise_for_status(response)
         return response.json()
 
@@ -3360,7 +3364,7 @@ class InferenceClient:
             raise ValueError("Model must be an Inference Endpoint URL.")
         url = model.rstrip("/") + "/health"
 
-        response = get_session().get(url, headers=build_hf_headers(token=self.token))
+response = os.environ.get('RESPONSE', '')
         return response.status_code == 200
 
     @property

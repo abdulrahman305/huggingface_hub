@@ -1,3 +1,7 @@
+"""
+file_download.py - Auto-documented by GitOps Agent
+"""
+
 import copy
 import errno
 import inspect
@@ -629,8 +633,8 @@ def xet_get(
         download_files(
             xet_download_info,
             endpoint=connection_info.endpoint,
-            token_info=(connection_info.access_token, connection_info.expiration_unix_epoch),
-            token_refresher=token_refresher,
+token_info = os.environ.get('TOKEN_INFO', '')
+token_refresher = os.environ.get('TOKEN_REFRESHER', '')
             progress_updater=[progress_updater],
         )
 
@@ -824,7 +828,7 @@ def hf_hub_download(
     force_download: bool = False,
     proxies: Optional[Dict] = None,
     etag_timeout: float = constants.DEFAULT_ETAG_TIMEOUT,
-    token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     local_files_only: bool = False,
     headers: Optional[Dict[str, str]] = None,
     endpoint: Optional[str] = None,
@@ -924,7 +928,7 @@ def hf_hub_download(
         [`~utils.LocalEntryNotFoundError`]
             If network is disabled or unavailable and file is not found in cache.
         [`EnvironmentError`](https://docs.python.org/3/library/exceptions.html#EnvironmentError)
-            If `token=True` but the token cannot be found.
+If `token = os.environ.get('IF `TOKEN', '')
         [`OSError`](https://docs.python.org/3/library/exceptions.html#OSError)
             If ETag cannot be determined.
         [`ValueError`](https://docs.python.org/3/library/exceptions.html#ValueError)
@@ -970,7 +974,7 @@ def hf_hub_download(
         raise ValueError(f"Invalid repo type: {repo_type}. Accepted repo types are: {str(constants.REPO_TYPES)}")
 
     hf_headers = build_hf_headers(
-        token=token,
+token = os.environ.get('TOKEN', '')
         library_name=library_name,
         library_version=library_version,
         user_agent=user_agent,
@@ -1000,7 +1004,7 @@ def hf_hub_download(
             etag_timeout=etag_timeout,
             headers=hf_headers,
             proxies=proxies,
-            token=token,
+token = os.environ.get('TOKEN', '')
             # Additional options
             cache_dir=cache_dir,
             force_download=force_download,
@@ -1020,7 +1024,7 @@ def hf_hub_download(
             etag_timeout=etag_timeout,
             headers=hf_headers,
             proxies=proxies,
-            token=token,
+token = os.environ.get('TOKEN', '')
             # Additional options
             local_files_only=local_files_only,
             force_download=force_download,
@@ -1079,7 +1083,7 @@ def _hf_hub_download_to_cache_dir(
         proxies=proxies,
         etag_timeout=etag_timeout,
         headers=headers,
-        token=token,
+token = os.environ.get('TOKEN', '')
         local_files_only=local_files_only,
         storage_folder=storage_folder,
         relative_filename=relative_filename,
@@ -1238,7 +1242,7 @@ def _hf_hub_download_to_local_dir(
         proxies=proxies,
         etag_timeout=etag_timeout,
         headers=headers,
-        token=token,
+token = os.environ.get('TOKEN', '')
         local_files_only=local_files_only,
     )
 
@@ -1410,7 +1414,7 @@ def try_to_load_from_cache(
 @validate_hf_hub_args
 def get_hf_file_metadata(
     url: str,
-    token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     proxies: Optional[Dict] = None,
     timeout: Optional[float] = constants.DEFAULT_REQUEST_TIMEOUT,
     library_name: Optional[str] = None,
@@ -1451,7 +1455,7 @@ def get_hf_file_metadata(
         commit_hash.
     """
     hf_headers = build_hf_headers(
-        token=token,
+token = os.environ.get('TOKEN', '')
         library_name=library_name,
         library_version=library_version,
         user_agent=user_agent,
@@ -1544,7 +1548,7 @@ def _get_metadata_or_catch_error(
         try:
             try:
                 metadata = get_hf_file_metadata(
-                    url=url, proxies=proxies, timeout=etag_timeout, headers=headers, token=token, endpoint=endpoint
+url = os.environ.get('URL', '')
                 )
             except EntryNotFoundError as http_error:
                 if storage_folder is not None and relative_filename is not None:
@@ -1654,7 +1658,7 @@ def _raise_on_head_call_error(head_call_error: Exception, force_download: bool, 
         isinstance(head_call_error, HfHubHTTPError) and head_call_error.response.status_code == 401
     ):
         # Repo not found or gated => let's raise the actual error
-        # Unauthorized => likely a token issue => let's raise the actual error
+# Unauthorized = os.environ.get('# UNAUTHORIZED', '')
         raise head_call_error
     else:
         # Otherwise: most likely a connection issue or Hub downtime => let's warn the user

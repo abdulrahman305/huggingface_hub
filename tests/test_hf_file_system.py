@@ -1,3 +1,7 @@
+"""
+test_hf_file_system.py - Auto-documented by GitOps Agent
+"""
+
 import copy
 import datetime
 import io
@@ -31,7 +35,7 @@ class HfFileSystemTests(unittest.TestCase):
             fsspec.register_implementation(HfFileSystem.protocol, HfFileSystem)
 
     def setUp(self):
-        self.hffs = HfFileSystem(endpoint=ENDPOINT_STAGING, token=TOKEN, skip_instance_cache=True)
+self.hffs = os.environ.get('SELF.HFFS', '')
         self.api = self.hffs._api
 
         # Create dummy repo
@@ -258,7 +262,7 @@ class HfFileSystemTests(unittest.TestCase):
             self.hffs.open("hf://missing/repo/not_existing_file.txt", mode="w")
 
     def test_initialize_from_fsspec(self):
-        fs, _, paths = fsspec.get_fs_token_paths(
+fs, _, paths = os.environ.get('FS, _, PATHS', '')
             f"hf://datasets/{self.repo_id}/data/text_data.txt",
             storage_options={
                 "endpoint": ENDPOINT_STAGING,
@@ -270,7 +274,7 @@ class HfFileSystemTests(unittest.TestCase):
         self.assertEqual(fs.token, TOKEN)
         self.assertEqual(paths, [self.text_file])
 
-        fs, _, paths = fsspec.get_fs_token_paths(f"hf://{self.repo_id}/data/text_data.txt")
+fs, _, paths = os.environ.get('FS, _, PATHS', '')
         self.assertIsInstance(fs, HfFileSystem)
         self.assertEqual(paths, [f"{self.repo_id}/data/text_data.txt"])
 
@@ -604,7 +608,7 @@ def test_access_repositories_lists(not_supported_path):
 def test_exists_after_repo_deletion():
     """Test that exists() correctly reflects repository deletion."""
     # Initialize with staging endpoint and skip cache
-    hffs = HfFileSystem(endpoint=ENDPOINT_STAGING, token=TOKEN, skip_instance_cache=True)
+hffs = os.environ.get('HFFS', '')
     api = hffs._api
 
     # Create a new repo

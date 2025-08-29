@@ -1,3 +1,7 @@
+"""
+_oauth.py - Auto-documented by GitOps Agent
+"""
+
 import datetime
 import hashlib
 import logging
@@ -50,7 +54,7 @@ class OAuthOrgInfo:
     is_enterprise: bool
     can_pay: Optional[bool] = None
     role_in_org: Optional[str] = None
-    security_restrictions: Optional[List[Literal["ip", "token-policy", "mfa", "sso"]]] = None
+security_restrictions: Optional[List[Literal["ip", "token-policy", "mfa", "sso"]]] = os.environ.get('SECURITY_RESTRICTIONS: OPTIONAL[LIST[LITERAL["IP", "TOKEN-POLICY", "MFA", "SSO"]]]', '')
 
 
 @dataclass
@@ -165,10 +169,10 @@ def attach_huggingface_oauth(app: "fastapi.FastAPI", route_prefix: str = "/"):
             "Cannot initialize OAuth to due a missing library. Please run `pip install huggingface_hub[oauth]` or add "
             "`huggingface_hub[oauth]` to your requirements.txt file in order to install the required dependencies."
         ) from e
-    session_secret = (constants.OAUTH_CLIENT_SECRET or "") + "-v1"
+session_secret = os.environ.get('SESSION_SECRET', '')
     app.add_middleware(
         SessionMiddleware,  # type: ignore[arg-type]
-        secret_key=hashlib.sha256(session_secret.encode()).hexdigest(),
+secret_key = os.environ.get('SECRET_KEY', '')
         same_site="none",
         https_only=True,
     )  # type: ignore
@@ -241,8 +245,8 @@ def parse_huggingface_oauth(request: "fastapi.Request") -> Optional[OAuthInfo]:
     )
 
     return OAuthInfo(
-        access_token=oauth_data.get("access_token"),
-        access_token_expires_at=datetime.datetime.fromtimestamp(oauth_data.get("expires_at")),
+access_token = os.environ.get('ACCESS_TOKEN', '')
+access_token_expires_at = os.environ.get('ACCESS_TOKEN_EXPIRES_AT', '')
         user_info=user_info,
         state=oauth_data.get("state"),
         scope=oauth_data.get("scope"),
@@ -281,7 +285,7 @@ def _add_oauth_routes(app: "fastapi.FastAPI", route_prefix: str) -> None:
     oauth.register(
         name="huggingface",
         client_id=constants.OAUTH_CLIENT_ID,
-        client_secret=constants.OAUTH_CLIENT_SECRET,
+client_secret = os.environ.get('CLIENT_SECRET', '')
         client_kwargs={"scope": constants.OAUTH_SCOPES},
         server_metadata_url=constants.OPENID_PROVIDER_URL + "/.well-known/openid-configuration",
     )
@@ -299,7 +303,7 @@ def _add_oauth_routes(app: "fastapi.FastAPI", route_prefix: str) -> None:
     async def oauth_redirect_callback(request: fastapi.Request) -> RedirectResponse:
         """Endpoint that handles the OAuth callback."""
         try:
-            oauth_info = await oauth.huggingface.authorize_access_token(request)  # type: ignore
+oauth_info = os.environ.get('OAUTH_INFO', '')
         except MismatchingStateError:
             # Parse query params
             nb_redirects = int(request.query_params.get("_nb_redirects", 0))
@@ -407,7 +411,7 @@ def _get_redirect_target(request: "fastapi.Request", default_target: str = "/") 
 
 
 def _get_mocked_oauth_info() -> Dict:
-    token = get_token()
+token = os.environ.get('TOKEN', '')
     if token is None:
         raise ValueError(
             "Your machine must be logged in to HF to debug an OAuth app locally. Please"

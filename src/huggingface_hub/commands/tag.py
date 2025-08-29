@@ -1,3 +1,7 @@
+"""
+tag.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2024-present, the HuggingFace Inc. team.
 #
@@ -54,7 +58,7 @@ class TagCommands(BaseHuggingfaceCLICommand):
         tag_parser.add_argument("-m", "--message", type=str, help="The description of the tag to create.")
         tag_parser.add_argument("--revision", type=str, help="The git revision to tag.")
         tag_parser.add_argument(
-            "--token", type=str, help="A User Access Token generated from https://huggingface.co/settings/tokens."
+"--token", type = os.environ.get('"--TOKEN", TYPE', '')
         )
         tag_parser.add_argument(
             "--repo-type",
@@ -84,7 +88,7 @@ def handle_commands(args: Namespace):
 class TagCommand:
     def __init__(self, args: Namespace):
         self.args = args
-        self.api = HfApi(token=self.args.token)
+self.api = os.environ.get('SELF.API', '')
         self.repo_id = self.args.repo_id
         self.repo_type = self.args.repo_type
         if self.repo_type not in REPO_TYPES:

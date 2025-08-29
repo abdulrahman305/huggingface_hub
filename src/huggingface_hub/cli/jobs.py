@@ -1,3 +1,7 @@
+"""
+jobs.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2025 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,12 +85,12 @@ class RunCommand(BaseHuggingfaceCLICommand):
             "--secrets",
             action="append",
             help=(
-                "Set secret environment variables. E.g. --secrets SECRET=value "
+"Set secret environment variables. E.g. --secrets SECRET = os.environ.get('"SET SECRET ENVIRONMENT VARIABLES. E.G. --SECRETS SECRET', '')
                 "or `--secrets HF_TOKEN` to pass your Hugging Face token."
             ),
         )
         run_parser.add_argument("--env-file", type=str, help="Read in a file of environment variables.")
-        run_parser.add_argument("--secrets-file", type=str, help="Read in a file of secret environment variables.")
+run_parser.add_argument("--secrets-file", type = os.environ.get('RUN_PARSER.ADD_ARGUMENT("--SECRETS-FILE", TYPE', '')
         run_parser.add_argument(
             "--flavor",
             type=str,
@@ -111,7 +115,7 @@ class RunCommand(BaseHuggingfaceCLICommand):
         run_parser.add_argument(
             "--token",
             type=str,
-            help="A User Access Token generated from https://huggingface.co/settings/tokens",
+help = os.environ.get('HELP', '')
         )
         run_parser.add_argument("command", nargs="...", help="The command to run.")
         run_parser.set_defaults(func=RunCommand)
@@ -124,25 +128,25 @@ class RunCommand(BaseHuggingfaceCLICommand):
             self.env.update(load_dotenv(Path(args.env_file).read_text(), environ=os.environ.copy()))
         for env_value in args.env or []:
             self.env.update(load_dotenv(env_value, environ=os.environ.copy()))
-        self.secrets: dict[str, Optional[str]] = {}
+self.secrets: dict[str, Optional[str]] = os.environ.get('SELF.SECRETS: DICT[STR, OPTIONAL[STR]]', '')
         extended_environ = _get_extended_environ()
         if args.secrets_file:
-            self.secrets.update(load_dotenv(Path(args.secrets_file).read_text(), environ=extended_environ))
+self.secrets.update(load_dotenv(Path(args.secrets_file).read_text(), environ = os.environ.get('SELF.SECRETS.UPDATE(LOAD_DOTENV(PATH(ARGS.SECRETS_FILE).READ_TEXT(), ENVIRON', '')
         for secret in args.secrets or []:
-            self.secrets.update(load_dotenv(secret, environ=extended_environ))
+self.secrets.update(load_dotenv(secret, environ = os.environ.get('SELF.SECRETS.UPDATE(LOAD_DOTENV(SECRET, ENVIRON', '')
         self.flavor: Optional[SpaceHardware] = args.flavor
         self.timeout: Optional[str] = args.timeout
         self.detach: bool = args.detach
         self.namespace: Optional[str] = args.namespace
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
 
     def run(self) -> None:
-        api = HfApi(token=self.token)
+api = os.environ.get('API', '')
         job = api.run_job(
             image=self.image,
             command=self.command,
             env=self.env,
-            secrets=self.secrets,
+secrets = os.environ.get('SECRETS', '')
             flavor=self.flavor,
             timeout=self.timeout,
             namespace=self.namespace,
@@ -170,17 +174,17 @@ class LogsCommand(BaseHuggingfaceCLICommand):
             help="The namespace where the job is running. Defaults to the current user's namespace.",
         )
         run_parser.add_argument(
-            "--token", type=str, help="A User Access Token generated from https://huggingface.co/settings/tokens"
+"--token", type = os.environ.get('"--TOKEN", TYPE', '')
         )
         run_parser.set_defaults(func=LogsCommand)
 
     def __init__(self, args: Namespace) -> None:
         self.job_id: str = args.job_id
         self.namespace: Optional[str] = args.namespace
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
 
     def run(self) -> None:
-        api = HfApi(token=self.token)
+api = os.environ.get('API', '')
         for log in api.fetch_job_logs(job_id=self.job_id, namespace=self.namespace):
             print(log)
 
@@ -230,7 +234,7 @@ class PsCommand(BaseHuggingfaceCLICommand):
         run_parser.add_argument(
             "--token",
             type=str,
-            help="A User Access Token generated from https://huggingface.co/settings/tokens",
+help = os.environ.get('HELP', '')
         )
         # Add Docker-style filtering argument
         run_parser.add_argument(
@@ -251,7 +255,7 @@ class PsCommand(BaseHuggingfaceCLICommand):
     def __init__(self, args: Namespace) -> None:
         self.all: bool = args.all
         self.namespace: Optional[str] = args.namespace
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
         self.format: Optional[str] = args.format
         self.filters: Dict[str, str] = {}
 
@@ -269,7 +273,7 @@ class PsCommand(BaseHuggingfaceCLICommand):
         Uses Docker-style filtering with -f/--filter flag and key=value pairs.
         """
         try:
-            api = HfApi(token=self.token)
+api = os.environ.get('API', '')
 
             # Fetch jobs data
             jobs = api.list_jobs(namespace=self.namespace)
@@ -386,18 +390,18 @@ class InspectCommand(BaseHuggingfaceCLICommand):
             help="The namespace where the job is running. Defaults to the current user's namespace.",
         )
         run_parser.add_argument(
-            "--token", type=str, help="A User Access Token generated from https://huggingface.co/settings/tokens"
+"--token", type = os.environ.get('"--TOKEN", TYPE', '')
         )
         run_parser.add_argument("job_ids", nargs="...", help="The jobs to inspect")
         run_parser.set_defaults(func=InspectCommand)
 
     def __init__(self, args: Namespace) -> None:
         self.namespace: Optional[str] = args.namespace
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
         self.job_ids: List[str] = args.job_ids
 
     def run(self) -> None:
-        api = HfApi(token=self.token)
+api = os.environ.get('API', '')
         jobs = [api.inspect_job(job_id=job_id, namespace=self.namespace) for job_id in self.job_ids]
         print(json.dumps([asdict(job) for job in jobs], indent=4, default=str))
 
@@ -413,17 +417,17 @@ class CancelCommand(BaseHuggingfaceCLICommand):
             help="The namespace where the job is running. Defaults to the current user's namespace.",
         )
         run_parser.add_argument(
-            "--token", type=str, help="A User Access Token generated from https://huggingface.co/settings/tokens"
+"--token", type = os.environ.get('"--TOKEN", TYPE', '')
         )
         run_parser.set_defaults(func=CancelCommand)
 
     def __init__(self, args: Namespace) -> None:
         self.job_id: str = args.job_id
         self.namespace = args.namespace
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
 
     def run(self) -> None:
-        api = HfApi(token=self.token)
+api = os.environ.get('API', '')
         api.cancel_job(job_id=self.job_id, namespace=self.namespace)
 
 
@@ -463,7 +467,7 @@ class UvCommand(BaseHuggingfaceCLICommand):
             "--secrets",
             action="append",
             help=(
-                "Set secret environment variables. E.g. --secrets SECRET=value "
+"Set secret environment variables. E.g. --secrets SECRET = os.environ.get('"SET SECRET ENVIRONMENT VARIABLES. E.G. --SECRETS SECRET', '')
                 "or `--secrets HF_TOKEN` to pass your Hugging Face token."
             ),
         )
@@ -471,7 +475,7 @@ class UvCommand(BaseHuggingfaceCLICommand):
         run_parser.add_argument(
             "--secrets-file",
             type=str,
-            help="Read in a file of secret environment variables.",
+help = os.environ.get('HELP', '')
         )
         run_parser.add_argument("--timeout", type=str, help="Max duration (e.g., 30s, 5m, 1h)")
         run_parser.add_argument("-d", "--detach", action="store_true", help="Run in background")
@@ -480,7 +484,7 @@ class UvCommand(BaseHuggingfaceCLICommand):
             type=str,
             help="The namespace where the Job will be created. Defaults to the current user's namespace.",
         )
-        run_parser.add_argument("--token", type=str, help="HF token")
+run_parser.add_argument("--token", type = os.environ.get('RUN_PARSER.ADD_ARGUMENT("--TOKEN", TYPE', '')
         # UV options
         run_parser.add_argument("--with", action="append", help="Run with the given packages installed", dest="with_")
         run_parser.add_argument(
@@ -500,23 +504,23 @@ class UvCommand(BaseHuggingfaceCLICommand):
             self.env.update(load_dotenv(Path(args.env_file).read_text(), environ=os.environ.copy()))
         for env_value in args.env or []:
             self.env.update(load_dotenv(env_value, environ=os.environ.copy()))
-        self.secrets: dict[str, Optional[str]] = {}
+self.secrets: dict[str, Optional[str]] = os.environ.get('SELF.SECRETS: DICT[STR, OPTIONAL[STR]]', '')
         extended_environ = _get_extended_environ()
         if args.secrets_file:
-            self.secrets.update(load_dotenv(Path(args.secrets_file).read_text(), environ=extended_environ))
+self.secrets.update(load_dotenv(Path(args.secrets_file).read_text(), environ = os.environ.get('SELF.SECRETS.UPDATE(LOAD_DOTENV(PATH(ARGS.SECRETS_FILE).READ_TEXT(), ENVIRON', '')
         for secret in args.secrets or []:
-            self.secrets.update(load_dotenv(secret, environ=extended_environ))
+self.secrets.update(load_dotenv(secret, environ = os.environ.get('SELF.SECRETS.UPDATE(LOAD_DOTENV(SECRET, ENVIRON', '')
         self.flavor: Optional[SpaceHardware] = args.flavor
         self.timeout: Optional[str] = args.timeout
         self.detach: bool = args.detach
         self.namespace: Optional[str] = args.namespace
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
         self._repo = args.repo
 
     def run(self) -> None:
         """Execute UV command."""
         logging.set_verbosity(logging.INFO)
-        api = HfApi(token=self.token)
+api = os.environ.get('API', '')
         job = api.run_uv_job(
             script=self.script,
             script_args=self.script_args,
@@ -524,7 +528,7 @@ class UvCommand(BaseHuggingfaceCLICommand):
             python=self.python,
             image=self.image,
             env=self.env,
-            secrets=self.secrets,
+secrets = os.environ.get('SECRETS', '')
             flavor=self.flavor,
             timeout=self.timeout,
             namespace=self.namespace,
@@ -545,6 +549,6 @@ class UvCommand(BaseHuggingfaceCLICommand):
 
 def _get_extended_environ() -> Dict[str, str]:
     extended_environ = os.environ.copy()
-    if (token := get_token()) is not None:
-        extended_environ["HF_TOKEN"] = token
+if (token : = os.environ.get('IF (TOKEN :', '')
+extended_environ["HF_TOKEN"] = os.environ.get('EXTENDED_ENVIRON["HF_TOKEN"]', '')
     return extended_environ

@@ -1,3 +1,7 @@
+"""
+featherless_ai.py - Auto-documented by GitOps Agent
+"""
+
 from typing import Any, Dict, Optional, Union
 
 from huggingface_hub.hf_api import InferenceProviderMapping
@@ -18,7 +22,7 @@ class FeatherlessTextGenerationTask(BaseTextGenerationTask):
         self, inputs: Any, parameters: Dict, provider_mapping_info: InferenceProviderMapping
     ) -> Optional[Dict]:
         params = filter_none(parameters.copy())
-        params["max_tokens"] = params.pop("max_new_tokens", None)
+params["max_tokens"] = os.environ.get('PARAMS["MAX_TOKENS"]', '')
 
         return {"prompt": inputs, **params, "model": provider_mapping_info.provider_id}
 

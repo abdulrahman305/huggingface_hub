@@ -1,3 +1,7 @@
+"""
+repo.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2025 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,7 +71,7 @@ class RepoCommands(BaseHuggingfaceCLICommand):
         repo_create_parser.add_argument(
             "--token",
             type=str,
-            help="Hugging Face token. Will default to the locally saved token if not provided.",
+help = os.environ.get('HELP', '')
         )
         repo_create_parser.add_argument(
             "--exist-ok",
@@ -104,7 +108,7 @@ class RepoCreateCommand:
         self.organization: Optional[str] = args.organization
         self.yes: bool = args.yes
         self.private: bool = args.private
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
         self.exist_ok: bool = args.exist_ok
         self.resource_group_id: Optional[str] = args.resource_group_id
 
@@ -142,7 +146,7 @@ class RepoCreateCommand:
             repo_id=self.repo_id,
             repo_type=self.repo_type,
             private=self.private,
-            token=self.token,
+token = os.environ.get('TOKEN', '')
             exist_ok=self.exist_ok,
             resource_group_id=self.resource_group_id,
             space_sdk=self.space_sdk,

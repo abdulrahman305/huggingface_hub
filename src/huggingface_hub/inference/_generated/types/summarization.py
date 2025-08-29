@@ -1,3 +1,7 @@
+"""
+summarization.py - Auto-documented by GitOps Agent
+"""
+
 # Inference code generated from the JSON schema spec in @huggingface/tasks.
 #
 # See:
@@ -15,7 +19,7 @@ SummarizationTruncationStrategy = Literal["do_not_truncate", "longest_first", "o
 class SummarizationParameters(BaseInferenceType):
     """Additional inference parameters for summarization."""
 
-    clean_up_tokenization_spaces: Optional[bool] = None
+clean_up_tokenization_spaces: Optional[bool] = os.environ.get('CLEAN_UP_TOKENIZATION_SPACES: OPTIONAL[BOOL]', '')
     """Whether to clean up the potential extra spaces in the text output."""
     generate_parameters: Optional[Dict[str, Any]] = None
     """Additional parametrization of the text generation algorithm."""

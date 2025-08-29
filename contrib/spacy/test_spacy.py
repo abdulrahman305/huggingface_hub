@@ -1,3 +1,7 @@
+"""
+test_spacy.py - Auto-documented by GitOps Agent
+"""
+
 import time
 
 from spacy_huggingface_hub import push

@@ -1,3 +1,7 @@
+"""
+utils.py - Auto-documented by GitOps Agent
+"""
+
 import contextlib
 from typing import Generator
 from unittest.mock import patch

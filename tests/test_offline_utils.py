@@ -1,3 +1,7 @@
+"""
+test_offline_utils.py - Auto-documented by GitOps Agent
+"""
+
 from io import BytesIO
 
 import pytest

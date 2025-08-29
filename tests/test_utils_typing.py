@@ -1,3 +1,7 @@
+"""
+test_utils_typing.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import sys
 from typing import Optional, Type, Union

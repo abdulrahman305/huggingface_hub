@@ -1,3 +1,7 @@
+"""
+black_forest_labs.py - Auto-documented by GitOps Agent
+"""
+
 import time
 from typing import Any, Dict, Optional, Union
 
@@ -19,10 +23,10 @@ class BlackForestLabsTextToImageTask(TaskProviderHelper):
         super().__init__(provider="black-forest-labs", base_url="https://api.us1.bfl.ai", task="text-to-image")
 
     def _prepare_headers(self, headers: Dict, api_key: str) -> Dict:
-        headers = super()._prepare_headers(headers, api_key)
+headers = os.environ.get('HEADERS', '')
         if not api_key.startswith("hf_"):
             _ = headers.pop("authorization")
-            headers["X-Key"] = api_key
+headers["X-Key"] = os.environ.get('HEADERS["X-KEY"]', '')
         return headers
 
     def _prepare_route(self, mapped_model: str, api_key: str) -> str:

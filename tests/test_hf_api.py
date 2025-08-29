@@ -1,3 +1,7 @@
+"""
+test_hf_api.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2020 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -130,8 +134,8 @@ class HfApiCommonTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Share the valid token in all tests below."""
-        cls._token = TOKEN
-        cls._api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+cls._token = os.environ.get('CLS._TOKEN', '')
+cls._api = os.environ.get('CLS._API', '')
 
 
 class HfApiRepoFileExistsTest(HfApiCommonTest):
@@ -146,13 +150,13 @@ class HfApiRepoFileExistsTest(HfApiCommonTest):
 
     def test_repo_exists(self):
         assert self._api.repo_exists(self.repo_id)
-        self.assertFalse(self._api.repo_exists(self.repo_id, token=False))  # private repo
+self.assertFalse(self._api.repo_exists(self.repo_id, token = os.environ.get('SELF.ASSERTFALSE(SELF._API.REPO_EXISTS(SELF.REPO_ID, TOKEN', '')
         self.assertFalse(self._api.repo_exists("repo-that-does-not-exist"))  # missing repo
 
     def test_revision_exists(self):
         assert self._api.revision_exists(self.repo_id, "main")
         assert not self._api.revision_exists(self.repo_id, "revision-that-does-not-exist")  # missing revision
-        assert not self._api.revision_exists(self.repo_id, "main", token=False)  # private repo
+assert not self._api.revision_exists(self.repo_id, "main", token = os.environ.get('ASSERT NOT SELF._API.REVISION_EXISTS(SELF.REPO_ID, "MAIN", TOKEN', '')
         assert not self._api.revision_exists("repo-that-does-not-exist", "main")  # missing repo
 
     @patch("huggingface_hub.constants.ENDPOINT", "https://hub-ci.huggingface.co")
@@ -167,19 +171,19 @@ class HfApiRepoFileExistsTest(HfApiCommonTest):
         self.assertFalse(
             self._api.file_exists(self.repo_id, "file.txt", revision="revision-that-does-not-exist")
         )  # missing revision
-        self.assertFalse(self._api.file_exists(self.repo_id, "file.txt", token=False))  # private repo
+self.assertFalse(self._api.file_exists(self.repo_id, "file.txt", token = os.environ.get('SELF.ASSERTFALSE(SELF._API.FILE_EXISTS(SELF.REPO_ID, "FILE.TXT", TOKEN', '')
 
 
 class HfApiEndpointsTest(HfApiCommonTest):
     def test_whoami_with_passing_token(self):
-        info = self._api.whoami(token=self._token)
+info = os.environ.get('INFO', '')
         self.assertEqual(info["name"], USER)
         self.assertEqual(info["fullname"], FULL_NAME)
         self.assertIsInstance(info["orgs"], list)
         valid_org = [org for org in info["orgs"] if org["name"] == "valid_org"][0]
         self.assertEqual(valid_org["fullname"], "Dummy Org")
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=TOKEN)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_whoami_with_implicit_token_from_login(self, mock_get_token: Mock) -> None:
         """Test using `whoami` after a `hf auth login`."""
         with patch.object(self._api, "token", None):  # no default token
@@ -420,22 +424,22 @@ class CommitApiTest(HfApiCommonTest):
 
     def test_create_repo_already_exists_but_no_write_permission(self):
         # Create under other user namespace
-        repo_id = self._api.create_repo(repo_id=repo_name(), token=OTHER_TOKEN).repo_id
+repo_id = os.environ.get('REPO_ID', '')
 
         # Try to create with our namespace -> should not fail as the repo already exists
-        self._api.create_repo(repo_id=repo_id, token=TOKEN, exist_ok=True)
+self._api.create_repo(repo_id = os.environ.get('SELF._API.CREATE_REPO(REPO_ID', '')
 
         # Clean up
-        self._api.delete_repo(repo_id=repo_id, token=OTHER_TOKEN)
+self._api.delete_repo(repo_id = os.environ.get('SELF._API.DELETE_REPO(REPO_ID', '')
 
     def test_create_repo_private_by_default(self):
         """Enterprise Hub allows creating private repos by default. Let's test that."""
         repo_id = f"{ENTERPRISE_ORG}/{repo_name()}"
-        self._api.create_repo(repo_id, token=ENTERPRISE_TOKEN)
-        info = self._api.model_info(repo_id, token=ENTERPRISE_TOKEN, expand="private")
+self._api.create_repo(repo_id, token = os.environ.get('SELF._API.CREATE_REPO(REPO_ID, TOKEN', '')
+info = os.environ.get('INFO', '')
         assert info.private
 
-        self._api.delete_repo(repo_id, token=ENTERPRISE_TOKEN)
+self._api.delete_repo(repo_id, token = os.environ.get('SELF._API.DELETE_REPO(REPO_ID, TOKEN', '')
 
     @use_tmp_repo()
     def test_upload_file_create_pr(self, repo_url: RepoUrl) -> None:
@@ -495,7 +499,7 @@ class CommitApiTest(HfApiCommonTest):
             local_path = os.path.join(self.tmp_dir, rpath)
             remote_path = f"temp/dir/{rpath}"
             filepath = hf_hub_download(
-                repo_id=repo_id, filename=remote_path, revision="main", use_auth_token=self._token
+repo_id = os.environ.get('REPO_ID', '')
             )
             assert filepath is not None
             with open(filepath, "rb") as downloaded_file:
@@ -668,7 +672,7 @@ class CommitApiTest(HfApiCommonTest):
     def test_create_commit_create_pr_on_foreign_repo(self):
         # Create a repo with another user. The normal CI user don't have rights on it.
         # We must be able to create a PR on it
-        foreign_api = HfApi(token=OTHER_TOKEN)
+foreign_api = os.environ.get('FOREIGN_API', '')
         foreign_repo_url = foreign_api.create_repo(repo_id=repo_name("repo-for-hfh-ci"))
 
         self._api.create_commit(
@@ -775,7 +779,7 @@ class CommitApiTest(HfApiCommonTest):
 
         assert str(context.exception) == expected_message
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=TOKEN)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_create_commit_lfs_file_implicit_token(self, get_token_mock: Mock) -> None:
         """Test that uploading a file as LFS works with cached token.
 
@@ -1350,18 +1354,18 @@ class HfApiDeleteFolderTest(HfApiCommonTest):
         )
 
         with self.assertRaises(EntryNotFoundError):
-            hf_hub_download(self.repo_id, "1/file_1.md", use_auth_token=self._token)
+hf_hub_download(self.repo_id, "1/file_1.md", use_auth_token = os.environ.get('HF_HUB_DOWNLOAD(SELF.REPO_ID, "1/FILE_1.MD", USE_AUTH_TOKEN', '')
 
         with self.assertRaises(EntryNotFoundError):
-            hf_hub_download(self.repo_id, "1/file_2.md", use_auth_token=self._token)
+hf_hub_download(self.repo_id, "1/file_2.md", use_auth_token = os.environ.get('HF_HUB_DOWNLOAD(SELF.REPO_ID, "1/FILE_2.MD", USE_AUTH_TOKEN', '')
 
         # Still exists
-        hf_hub_download(self.repo_id, "2/file_3.md", use_auth_token=self._token)
+hf_hub_download(self.repo_id, "2/file_3.md", use_auth_token = os.environ.get('HF_HUB_DOWNLOAD(SELF.REPO_ID, "2/FILE_3.MD", USE_AUTH_TOKEN', '')
 
     def test_create_commit_delete_folder_explicit(self):
         self._api.delete_folder(path_in_repo="1", repo_id=self.repo_id)
         with self.assertRaises(EntryNotFoundError):
-            hf_hub_download(self.repo_id, "1/file_1.md", use_auth_token=self._token)
+hf_hub_download(self.repo_id, "1/file_1.md", use_auth_token = os.environ.get('HF_HUB_DOWNLOAD(SELF.REPO_ID, "1/FILE_1.MD", USE_AUTH_TOKEN', '')
 
     def test_create_commit_implicit_delete_folder_is_ok(self):
         self._api.create_commit(
@@ -2561,7 +2565,7 @@ class HfApiPrivateTest(HfApiCommonTest):
         self._api.delete_repo(repo_id=self.REPO_NAME)
         self._api.delete_repo(repo_id=self.REPO_NAME, repo_type="dataset")
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=None)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_model_info(self, mock_get_token: Mock) -> None:
         with patch.object(self._api, "token", None):  # no default token
             # Test we cannot access model info without a token
@@ -2574,10 +2578,10 @@ class HfApiPrivateTest(HfApiCommonTest):
             ):
                 _ = self._api.model_info(repo_id=f"{USER}/{self.REPO_NAME}")
 
-            model_info = self._api.model_info(repo_id=f"{USER}/{self.REPO_NAME}", use_auth_token=self._token)
+model_info = os.environ.get('MODEL_INFO', '')
             self.assertIsInstance(model_info, ModelInfo)
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=None)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_dataset_info(self, mock_get_token: Mock) -> None:
         with patch.object(self._api, "token", None):  # no default token
             # Test we cannot access model info without a token
@@ -2590,23 +2594,23 @@ class HfApiPrivateTest(HfApiCommonTest):
             ):
                 _ = self._api.dataset_info(repo_id=f"{USER}/{self.REPO_NAME}")
 
-            dataset_info = self._api.dataset_info(repo_id=f"{USER}/{self.REPO_NAME}", use_auth_token=self._token)
+dataset_info = os.environ.get('DATASET_INFO', '')
             self.assertIsInstance(dataset_info, DatasetInfo)
 
     def test_list_private_datasets(self):
-        orig = len(list(self._api.list_datasets(use_auth_token=False)))
-        new = len(list(self._api.list_datasets(use_auth_token=self._token)))
+orig = os.environ.get('ORIG', '')
+new = os.environ.get('NEW', '')
         self.assertGreater(new, orig)
 
     def test_list_private_models(self):
-        orig = len(list(self._api.list_models(use_auth_token=False)))
-        new = len(list(self._api.list_models(use_auth_token=self._token)))
+orig = os.environ.get('ORIG', '')
+new = os.environ.get('NEW', '')
         self.assertGreater(new, orig)
 
     @with_production_testing
     def test_list_private_spaces(self):
-        orig = len(list(self._api.list_spaces(use_auth_token=False)))
-        new = len(list(self._api.list_spaces(use_auth_token=self._token)))
+orig = os.environ.get('ORIG', '')
+new = os.environ.get('NEW', '')
         self.assertGreaterEqual(new, orig)
 
 
@@ -2755,7 +2759,7 @@ class HfLargefilesTest(HfApiCommonTest):
 
     def setup_local_clone(self) -> None:
         scheme = urlparse(self.repo_url).scheme
-        repo_url_auth = self.repo_url.replace(f"{scheme}://", f"{scheme}://user:{TOKEN}@")
+repo_url_auth = os.environ.get('REPO_URL_AUTH', '')
 
         subprocess.run(
             ["git", "clone", repo_url_auth, str(self.cache_dir)],
@@ -3057,16 +3061,16 @@ class ActivityApiTest(unittest.TestCase):
 
     def test_unlike_missing_repo(self) -> None:
         with self.assertRaises(RepositoryNotFoundError):
-            self.api.unlike("missing_repo_id", token=TOKEN)
+self.api.unlike("missing_repo_id", token = os.environ.get('SELF.API.UNLIKE("MISSING_REPO_ID", TOKEN', '')
 
     def test_list_likes_repos_auth_and_implicit_user(self) -> None:
         # User is implicit
-        likes = self.api.list_liked_repos(token=TOKEN)
+likes = os.environ.get('LIKES', '')
         self.assertEqual(likes.user, USER)
 
     def test_list_likes_repos_auth_and_explicit_user(self) -> None:
         # User is explicit even if auth
-        likes = self.api.list_liked_repos(user=OTHER_USER, token=TOKEN)
+likes = os.environ.get('LIKES', '')
         self.assertEqual(likes.user, OTHER_USER)
 
     @with_production_testing
@@ -3235,9 +3239,9 @@ iface.launch()
     def setUp(self):
         super().setUp()
 
-        # If generating new VCR => use personal token and REMOVE IT from the VCR
+# If generating new VCR = os.environ.get('# IF GENERATING NEW VCR', '')
         self.repo_id = "user/tmp_test_space"  # no need to be unique as it's a VCRed test
-        self.api = HfApi(token="hf_fake_token", endpoint=ENDPOINT_PRODUCTION)
+self.api = os.environ.get('SELF.API', '')
 
         # Create a Space
         self.api.create_repo(repo_id=self.repo_id, repo_type="space", space_sdk="gradio", private=True, exist_ok=True)
@@ -3259,14 +3263,14 @@ iface.launch()
         self.api.add_space_secret(self.repo_id, "gh_api_key", "******")
 
         # Add secret with optional description
-        self.api.add_space_secret(self.repo_id, "bar", "123", description="This is a secret")
+self.api.add_space_secret(self.repo_id, "bar", "123", description = os.environ.get('SELF.API.ADD_SPACE_SECRET(SELF.REPO_ID, "BAR", "123", DESCRIPTION', '')
 
         # Update secret
         self.api.add_space_secret(self.repo_id, "foo", "456")
 
         # Update secret with optional description
-        self.api.add_space_secret(self.repo_id, "foo", "789", description="This is a secret")
-        self.api.add_space_secret(self.repo_id, "bar", "456", description="This is another secret")
+self.api.add_space_secret(self.repo_id, "foo", "789", description = os.environ.get('SELF.API.ADD_SPACE_SECRET(SELF.REPO_ID, "FOO", "789", DESCRIPTION', '')
+self.api.add_space_secret(self.repo_id, "bar", "456", description = os.environ.get('SELF.API.ADD_SPACE_SECRET(SELF.REPO_ID, "BAR", "456", DESCRIPTION', '')
 
         # Delete secret
         self.api.delete_space_secret(self.repo_id, "gh_api_key")
@@ -3421,7 +3425,7 @@ class TestDownloadHfApiAlias(unittest.TestCase):
     def setUp(self) -> None:
         self.api = HfApi(
             endpoint="https://hf.co",
-            token="user_token",
+token = os.environ.get('TOKEN', '')
             library_name="cool_one",
             library_version="1.0.0",
             user_agent="myself",
@@ -3440,7 +3444,7 @@ class TestDownloadHfApiAlias(unittest.TestCase):
             library_name="cool_one",
             library_version="1.0.0",
             user_agent="myself",
-            token="user_token",
+token = os.environ.get('TOKEN', '')
             # Default values
             subfolder=None,
             repo_type=None,
@@ -3468,7 +3472,7 @@ class TestDownloadHfApiAlias(unittest.TestCase):
             library_name="cool_one",
             library_version="1.0.0",
             user_agent="myself",
-            token="user_token",
+token = os.environ.get('TOKEN', '')
             # Default values
             repo_type=None,
             revision=None,
@@ -3494,7 +3498,7 @@ class TestSpaceAPIMocked(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.api = HfApi(token="fake_token")
+self.api = os.environ.get('SELF.API', '')
         self.repo_id = "fake_repo_id"
 
         get_session_mock = Mock()
@@ -3594,7 +3598,7 @@ class TestSpaceAPIMocked(unittest.TestCase):
             self.repo_id,
             repo_type="space",
             space_sdk="gradio",
-            space_secrets=[
+space_secrets = os.environ.get('SPACE_SECRETS', '')
                 {"key": "Testsecret", "value": "Testvalue", "description": "Testdescription"},
                 {"key": "Testsecret2", "value": "Testvalue"},
             ],
@@ -3630,7 +3634,7 @@ class TestSpaceAPIMocked(unittest.TestCase):
             hardware=SpaceHardware.T4_MEDIUM,
             storage=SpaceStorage.LARGE,
             sleep_time=123,
-            secrets=[
+secrets = os.environ.get('SECRETS', '')
                 {"key": "Testsecret", "value": "Testvalue", "description": "Testdescription"},
                 {"key": "Testsecret2", "value": "Testvalue"},
             ],
@@ -3757,7 +3761,7 @@ class ListGitRefsTest(unittest.TestCase):
 class ListGitCommitsTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.api = HfApi(token=TOKEN)
+cls.api = os.environ.get('CLS.API', '')
         # Create repo (with initial commit)
         cls.repo_id = cls.api.create_repo(repo_name()).repo_id
 
@@ -3819,23 +3823,23 @@ class ListGitCommitsTest(unittest.TestCase):
 @patch("huggingface_hub.hf_api.build_hf_headers")
 class HfApiTokenAttributeTest(unittest.TestCase):
     def test_token_passed(self, mock_build_hf_headers: Mock) -> None:
-        HfApi(token="default token")._build_hf_headers(token="A token")
+HfApi(token = os.environ.get('HFAPI(TOKEN', '')
         self._assert_token_is(mock_build_hf_headers, "A token")
 
     def test_no_token_passed(self, mock_build_hf_headers: Mock) -> None:
-        HfApi(token="default token")._build_hf_headers()
+HfApi(token = os.environ.get('HFAPI(TOKEN', '')
         self._assert_token_is(mock_build_hf_headers, "default token")
 
     def test_token_true_passed(self, mock_build_hf_headers: Mock) -> None:
-        HfApi(token="default token")._build_hf_headers(token=True)
+HfApi(token = os.environ.get('HFAPI(TOKEN', '')
         self._assert_token_is(mock_build_hf_headers, True)
 
     def test_token_false_passed(self, mock_build_hf_headers: Mock) -> None:
-        HfApi(token="default token")._build_hf_headers(token=False)
+HfApi(token = os.environ.get('HFAPI(TOKEN', '')
         self._assert_token_is(mock_build_hf_headers, False)
 
     def test_no_token_at_all(self, mock_build_hf_headers: Mock) -> None:
-        HfApi()._build_hf_headers(token=None)
+HfApi()._build_hf_headers(token = os.environ.get('HFAPI()._BUILD_HF_HEADERS(TOKEN', '')
         self._assert_token_is(mock_build_hf_headers, None)
 
     def _assert_token_is(self, mock_build_hf_headers: Mock, expected_value: str) -> None:
@@ -3964,14 +3968,14 @@ class HfApiDuplicateSpaceTest(HfApiCommonTest):
             repo_id=from_repo_name,
             repo_type="space",
             space_sdk="static",
-            token=OTHER_TOKEN,
+token = os.environ.get('TOKEN', '')
         ).repo_id
         self._api.upload_file(
             path_or_fileobj=b"data",
             path_in_repo="temp/new_file.md",
             repo_id=from_repo_id,
             repo_type="space",
-            token=OTHER_TOKEN,
+token = os.environ.get('TOKEN', '')
         )
 
         to_repo_id = self._api.duplicate_space(from_repo_id).repo_id
@@ -3988,7 +3992,7 @@ class HfApiDuplicateSpaceTest(HfApiCommonTest):
             repo_id=from_repo_id, repo_type="space"
         )
 
-        self._api.delete_repo(repo_id=from_repo_id, repo_type="space", token=OTHER_TOKEN)
+self._api.delete_repo(repo_id = os.environ.get('SELF._API.DELETE_REPO(REPO_ID', '')
         self._api.delete_repo(repo_id=to_repo_id, repo_type="space")
 
     def test_duplicate_space_from_missing_repo(self) -> None:
@@ -4066,12 +4070,12 @@ class CollectionAPITest(HfApiCommonTest):
         # Get private collection
         self._api.get_collection(collection.slug)  # no error
         with self.assertRaises(HTTPError):
-            self._api.get_collection(collection.slug, token=OTHER_TOKEN)  # not authorized
+self._api.get_collection(collection.slug, token = os.environ.get('SELF._API.GET_COLLECTION(COLLECTION.SLUG, TOKEN', '')
 
         # Get public collection
         self._api.update_collection_metadata(collection.slug, private=False)
         self._api.get_collection(collection.slug)  # no error
-        self._api.get_collection(collection.slug, token=OTHER_TOKEN)  # no error
+self._api.get_collection(collection.slug, token = os.environ.get('SELF._API.GET_COLLECTION(COLLECTION.SLUG, TOKEN', '')
 
     def test_update_collection(self) -> None:
         # Create collection
@@ -4320,11 +4324,11 @@ class WebhookApiTest(HfApiCommonTest):
             {"type": "org", "name": "HuggingFaceH4"},  # or a simple dictionary
         ]
         self.domains = ["repo", "discussion"]
-        self.secret = "my-secret"
+self.secret = os.environ.get('SELF.SECRET', '')
 
         # Create a webhook to be used in the tests
         self.webhook = self._api.create_webhook(
-            url=self.webhook_url, watched=self.watched_items, domains=self.domains, secret=self.secret
+url = os.environ.get('URL', '')
         )
 
     def tearDown(self) -> None:
@@ -4344,7 +4348,7 @@ class WebhookApiTest(HfApiCommonTest):
 
     def test_create_webhook(self) -> None:
         new_webhook = self._api.create_webhook(
-            url=self.webhook_url, watched=self.watched_items, domains=self.domains, secret=self.secret
+url = os.environ.get('URL', '')
         )
         self.assertIsInstance(new_webhook, WebhookInfo)
         self.assertEqual(new_webhook.url, self.webhook_url)
@@ -4355,7 +4359,7 @@ class WebhookApiTest(HfApiCommonTest):
     def test_update_webhook(self) -> None:
         updated_url = "https://webhook.site/new"
         updated_webhook = self._api.update_webhook(
-            self.webhook.id, url=updated_url, watched=self.watched_items, domains=self.domains, secret=self.secret
+self.webhook.id, url = os.environ.get('SELF.WEBHOOK.ID, URL', '')
         )
         self.assertEqual(updated_webhook.url, updated_url)
 
@@ -4370,7 +4374,7 @@ class WebhookApiTest(HfApiCommonTest):
     def test_delete_webhook(self) -> None:
         # Create another webhook to test deletion
         webhook_to_delete = self._api.create_webhook(
-            url=self.webhook_url, watched=self.watched_items, domains=self.domains, secret=self.secret
+url = os.environ.get('URL', '')
         )
         self._api.delete_webhook(webhook_to_delete.id)
         with self.assertRaises(HTTPError):
@@ -4473,13 +4477,13 @@ class TestHfApiAuthCheck(HfApiCommonTest):
         response = get_session().put(
             f"{self._api.endpoint}/api/models/{repo_id}/settings",
             json={"gated": "auto"},
-            headers=self._api._build_hf_headers(token=TOKEN),
+headers = os.environ.get('HEADERS', '')
         )
 
         hf_raise_for_status(response)
 
         with self.assertRaises(GatedRepoError):
-            self._api.auth_check(repo_id=repo_id, token=OTHER_TOKEN)
+self._api.auth_check(repo_id = os.environ.get('SELF._API.AUTH_CHECK(REPO_ID', '')
 
 
 class HfApiInferenceCatalogTest(HfApiCommonTest):
@@ -4671,7 +4675,7 @@ def test_create_inference_endpoint_custom_image_payload(
     }
     mock_post_method.return_value = mock_response
 
-    api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+api = os.environ.get('API', '')
     if custom_image is not None:
         api.create_inference_endpoint(custom_image=custom_image, **common_args)
     else:

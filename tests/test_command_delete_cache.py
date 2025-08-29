@@ -1,3 +1,7 @@
+"""
+test_command_delete_cache.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import unittest
 from pathlib import Path

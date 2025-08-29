@@ -1,3 +1,7 @@
+"""
+_safetensors.py - Auto-documented by GitOps Agent
+"""
+
 import functools
 import operator
 from collections import defaultdict

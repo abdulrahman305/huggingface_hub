@@ -1,3 +1,7 @@
+"""
+groq.py - Auto-documented by GitOps Agent
+"""
+
 from ._common import BaseConversationalTask
 
 

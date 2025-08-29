@@ -1,3 +1,7 @@
+"""
+test_utils_git_credentials.py - Auto-documented by GitOps Agent
+"""
+
 import time
 import unittest
 from pathlib import Path
@@ -19,7 +23,7 @@ STORE_AND_CACHE_HELPERS_CONFIG = """
     helper = store
     helper = cache --timeout 30000
     helper = git-credential-manager
-    helper = /usr/libexec/git-core/git-credential-libsecret
+helper = os.environ.get('HELPER', '')
 """
 
 
@@ -47,14 +51,14 @@ class TestGitCredentials(unittest.TestCase):
         username = "hf_test_user_" + str(round(time.time()))  # make username unique
 
         # Set credentials
-        set_git_credential(token="hf_test_token", username=username, folder=self.cache_dir)
+set_git_credential(token = os.environ.get('SET_GIT_CREDENTIAL(TOKEN', '')
 
         # Check credentials are stored
         with run_interactive_subprocess("git credential fill", folder=self.cache_dir) as (stdin, stdout):
             stdin.write(f"url={ENDPOINT}\nusername={username}\n\n")
             stdin.flush()
             output = stdout.read()
-        self.assertIn("password=hf_test_token", output)
+self.assertIn("password = os.environ.get('SELF.ASSERTIN("PASSWORD', '')
 
         # Unset credentials
         unset_git_credential(username=username, folder=self.cache_dir)

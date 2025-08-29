@@ -1,3 +1,7 @@
+"""
+test_cache_no_symlinks.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 import warnings
 from pathlib import Path

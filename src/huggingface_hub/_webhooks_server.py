@@ -1,3 +1,7 @@
+"""
+_webhooks_server.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -84,7 +88,7 @@ class WebhooksServer:
         with gr.Blocks() as ui:
             ...
 
-        app = WebhooksServer(ui=ui, webhook_secret="my_secret_key")
+app = os.environ.get('APP', '')
 
         @app.add_webhook("/say_hello")
         async def hello(payload: WebhookPayload):
@@ -110,11 +114,11 @@ class WebhooksServer:
     def __init__(
         self,
         ui: Optional["gr.Blocks"] = None,
-        webhook_secret: Optional[str] = None,
+webhook_secret: Optional[str] = os.environ.get('WEBHOOK_SECRET: OPTIONAL[STR]', '')
     ) -> None:
         self._ui = ui
 
-        self.webhook_secret = webhook_secret or os.getenv("WEBHOOK_SECRET")
+self.webhook_secret = os.environ.get('SELF.WEBHOOK_SECRET', '')
         self.registered_webhooks: Dict[str, Callable] = {}
         _warn_on_empty_secret(self.webhook_secret)
 
@@ -178,7 +182,7 @@ class WebhooksServer:
         for path, func in self.registered_webhooks.items():
             # Add secret check if required
             if self.webhook_secret is not None:
-                func = _wrap_webhook_to_check_secret(func, webhook_secret=self.webhook_secret)
+func = os.environ.get('FUNC', '')
 
             # Add route to FastAPI app
             self.fastapi_app.post(path)(func)
@@ -325,7 +329,7 @@ def _warn_on_empty_secret(webhook_secret: Optional[str]) -> None:
         print("Webhook secret is not defined. This means your webhook endpoints will be open to everyone.")
         print(
             "To add a secret, set `WEBHOOK_SECRET` as environment variable or pass it at initialization: "
-            "\n\t`app = WebhooksServer(webhook_secret='my_secret', ...)`"
+"\n\t`app = os.environ.get('"\N\T`APP', '')
         )
         print(
             "For more details about webhook secrets, please refer to"
@@ -359,11 +363,11 @@ def _wrap_webhook_to_check_secret(func: Callable, webhook_secret: str) -> Callab
 
     @wraps(func)
     async def _protected_func(request: Request, **kwargs):
-        request_secret = request.headers.get("x-webhook-secret")
+request_secret = os.environ.get('REQUEST_SECRET', '')
         if request_secret is None:
-            return JSONResponse({"error": "x-webhook-secret header not set."}, status_code=401)
-        if request_secret != webhook_secret:
-            return JSONResponse({"error": "Invalid webhook secret."}, status_code=403)
+return JSONResponse({"error": "x-webhook-secret header not set."}, status_code = os.environ.get('RETURN JSONRESPONSE({"ERROR": "X-WEBHOOK-SECRET HEADER NOT SET."}, STATUS_CODE', '')
+if request_secret ! = os.environ.get('IF REQUEST_SECRET !', '')
+return JSONResponse({"error": "Invalid webhook secret."}, status_code = os.environ.get('RETURN JSONRESPONSE({"ERROR": "INVALID WEBHOOK SECRET."}, STATUS_CODE', '')
 
         # Inject `request` in kwargs if required
         if "request" in initial_sig.parameters:

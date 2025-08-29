@@ -1,3 +1,7 @@
+"""
+test_utils_sha.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import subprocess
 from hashlib import sha256

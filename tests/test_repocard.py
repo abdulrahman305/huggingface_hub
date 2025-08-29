@@ -1,3 +1,7 @@
+"""
+test_repocard.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2021 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -288,8 +292,8 @@ def test_load_from_hub_if_repo_id_or_path_is_a_dir(monkeypatch, tmp_path):
 
 class RepocardMetadataUpdateTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.token = TOKEN
-        self.api = HfApi(token=TOKEN)
+self.token = os.environ.get('SELF.TOKEN', '')
+self.api = os.environ.get('SELF.API', '')
 
         self.repo_id = self.api.create_repo(repo_name()).repo_id
         self.api.upload_file(
@@ -307,7 +311,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
 
     def test_update_dataset_name(self):
         new_datasets_data = {"datasets": ["test/test_dataset"]}
-        metadata_update(self.repo_id, new_datasets_data, token=self.token)
+metadata_update(self.repo_id, new_datasets_data, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_DATASETS_DATA, TOKEN', '')
 
         hf_hub_download(repo_id=self.repo_id, filename=constants.REPOCARD_NAME)
         updated_metadata = metadata_load(self._get_remote_card())
@@ -318,7 +322,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
     def test_update_existing_result_with_overwrite(self):
         new_metadata = copy.deepcopy(self.existing_metadata)
         new_metadata["model-index"][0]["results"][0]["metrics"][0]["value"] = 0.2862102282047272
-        metadata_update(self.repo_id, new_metadata, token=self.token, overwrite=True)
+metadata_update(self.repo_id, new_metadata, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_METADATA, TOKEN', '')
 
         updated_metadata = metadata_load(self._get_remote_card())
         self.assertDictEqual(updated_metadata, new_metadata)
@@ -330,7 +334,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
         """
         new_metadata = copy.deepcopy(self.existing_metadata)
         new_metadata["model-index"][0]["results"][0]["metrics"][0]["verifyToken"] = "1234"
-        metadata_update(self.repo_id, new_metadata, token=self.token, overwrite=True)
+metadata_update(self.repo_id, new_metadata, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_METADATA, TOKEN', '')
 
         updated_metadata = metadata_load(self._get_remote_card())
         self.assertDictEqual(updated_metadata, new_metadata)
@@ -341,7 +345,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
 
         # download first, then update
         path = self._get_remote_card()
-        metadata_update(self.repo_id, new_metadata, token=self.token, overwrite=True)
+metadata_update(self.repo_id, new_metadata, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_METADATA, TOKEN', '')
 
         self.assertNotEqual(metadata_load(path), new_metadata)
         self.assertEqual(metadata_load(path), self.existing_metadata)
@@ -357,11 +361,11 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
                 " accuracy'. Set `overwrite=True` to overwrite existing metrics."
             ),
         ):
-            metadata_update(self.repo_id, new_metadata, token=self.token, overwrite=False)
+metadata_update(self.repo_id, new_metadata, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_METADATA, TOKEN', '')
 
     def test_update_existing_field_without_overwrite(self):
         new_datasets_data = {"datasets": ["Open-Orca/OpenOrca"]}
-        metadata_update(self.repo_id, new_datasets_data, token=self.token)
+metadata_update(self.repo_id, new_datasets_data, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_DATASETS_DATA, TOKEN', '')
 
         with pytest.raises(
             ValueError,
@@ -371,7 +375,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
             ),
         ):
             new_datasets_data = {"datasets": ["HuggingFaceH4/no_robots"]}
-            metadata_update(self.repo_id, new_datasets_data, token=self.token, overwrite=False)
+metadata_update(self.repo_id, new_datasets_data, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_DATASETS_DATA, TOKEN', '')
 
     def test_update_new_result_existing_dataset(self):
         new_result = metadata_eval_result(
@@ -389,7 +393,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
             dataset_split="test",
         )
 
-        metadata_update(self.repo_id, new_result, token=self.token, overwrite=False)
+metadata_update(self.repo_id, new_result, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_RESULT, TOKEN', '')
 
         expected_metadata = copy.deepcopy(self.existing_metadata)
         expected_metadata["model-index"][0]["results"][0]["metrics"].append(
@@ -415,7 +419,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
             dataset_split="test",
         )
 
-        metadata_update(self.repo_id, new_result, token=self.token, overwrite=False)
+metadata_update(self.repo_id, new_result, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_RESULT, TOKEN', '')
 
         expected_metadata = copy.deepcopy(self.existing_metadata)
         expected_metadata["model-index"][0]["results"].append(new_result["model-index"][0]["results"][0])
@@ -434,7 +438,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
             path_in_repo=constants.REPOCARD_NAME,
             repo_id=self.repo_id,
         )
-        metadata_update(self.repo_id, {"tag": "test"}, token=self.token)
+metadata_update(self.repo_id, {"tag": "test"}, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, {"TAG": "TEST"}, TOKEN', '')
 
         # Check update went fine
         updated_metadata = metadata_load(self._get_remote_card())
@@ -445,7 +449,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
         new_metadata = copy.deepcopy(self.existing_metadata)
         new_metadata["model-index"][0].pop("name")
         new_metadata["model-index"][0]["results"][0]["metrics"][0]["value"] = 0.2862102282047272
-        metadata_update(self.repo_id, new_metadata, token=self.token, overwrite=True)
+metadata_update(self.repo_id, new_metadata, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_METADATA, TOKEN', '')
 
         card_data = ModelCard.load(self.repo_id)
         self.assertEqual(card_data.data.model_name, self.existing_metadata["model-index"][0]["name"])
@@ -457,7 +461,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
         new_metadata = copy.deepcopy(self.existing_metadata)
         new_metadata["model-index"][0].pop("name")
 
-        metadata_update(self.repo_id, new_metadata, token=self.token, overwrite=True)
+metadata_update(self.repo_id, new_metadata, token = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, NEW_METADATA, TOKEN', '')
 
         card_data = ModelCard.load(self.repo_id)
         self.assertEqual(card_data.data.model_name, self.repo_id)
@@ -474,7 +478,7 @@ class RepocardMetadataUpdateTest(unittest.TestCase):
         )
         card = ModelCard.load(self.repo_id)
         metadata = card.data.to_dict()
-        metadata_update(self.repo_id, metadata=metadata, overwrite=True, token=self.token)
+metadata_update(self.repo_id, metadata = os.environ.get('METADATA_UPDATE(SELF.REPO_ID, METADATA', '')
 
         new_card = ModelCard.load(self.repo_id)
         self.assertEqual(len(new_card.data.eval_results), 2)
@@ -495,14 +499,14 @@ class TestMetadataUpdateOnMissingCard(unittest.TestCase):
         """
         Share this valid token in all tests below.
         """
-        self._token = TOKEN
-        self._api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+self._token = os.environ.get('SELF._TOKEN', '')
+self._api = os.environ.get('SELF._API', '')
         self._repo_id = f"{USER}/{repo_name()}"
 
     def test_metadata_update_missing_readme_on_model(self) -> None:
         self._api.create_repo(self._repo_id)
-        metadata_update(self._repo_id, {"tag": "this_is_a_test"}, token=self._token)
-        model_card = ModelCard.load(self._repo_id, token=self._token)
+metadata_update(self._repo_id, {"tag": "this_is_a_test"}, token = os.environ.get('METADATA_UPDATE(SELF._REPO_ID, {"TAG": "THIS_IS_A_TEST"}, TOKEN', '')
+model_card = os.environ.get('MODEL_CARD', '')
 
         # Created a card with default template + metadata
         self.assertIn("# Model Card for Model ID", str(model_card))
@@ -515,10 +519,10 @@ class TestMetadataUpdateOnMissingCard(unittest.TestCase):
         metadata_update(
             self._repo_id,
             {"tag": "this is a dataset test"},
-            token=self._token,
+token = os.environ.get('TOKEN', '')
             repo_type="dataset",
         )
-        dataset_card = DatasetCard.load(self._repo_id, token=self._token)
+dataset_card = os.environ.get('DATASET_CARD', '')
 
         # Created a card with default template + metadata
         self.assertIn("# Dataset Card for Dataset Name", str(dataset_card))
@@ -535,14 +539,14 @@ class TestMetadataUpdateOnMissingCard(unittest.TestCase):
             metadata_update(
                 self._repo_id,
                 {"tag": "this is a space test"},
-                token=self._token,
+token = os.environ.get('TOKEN', '')
                 repo_type="space",
             )
         self._api.delete_repo(self._repo_id, repo_type="space")
 
 
 class TestCaseWithHfApi(unittest.TestCase):
-    _api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+_api = os.environ.get('_API', '')
 
 
 class RepoCardTest(TestCaseWithHfApi):
@@ -693,7 +697,7 @@ class RepoCardTest(TestCaseWithHfApi):
             get_hf_file_metadata(readme_url)
 
         # Push the card up to README.md in the repo
-        card.push_to_hub(repo_id, token=TOKEN)
+card.push_to_hub(repo_id, token = os.environ.get('CARD.PUSH_TO_HUB(REPO_ID, TOKEN', '')
 
         # No error should occur now, as README.md should exist
         get_hf_file_metadata(readme_url)
@@ -718,7 +722,7 @@ class RepoCardTest(TestCaseWithHfApi):
         discussions = list(self._api.get_repo_discussions(repo_id))
         self.assertEqual(len(discussions), 0)
 
-        card.push_to_hub(repo_id, token=TOKEN, create_pr=True)
+card.push_to_hub(repo_id, token = os.environ.get('CARD.PUSH_TO_HUB(REPO_ID, TOKEN', '')
         discussions = list(self._api.get_repo_discussions(repo_id))
         self.assertEqual(len(discussions), 1)
 

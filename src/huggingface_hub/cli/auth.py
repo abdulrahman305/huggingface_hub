@@ -1,3 +1,7 @@
+"""
+auth.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2020 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +19,7 @@
 
 Usage:
     # login and save token locally.
-    hf auth login --token=hf_*** --add-to-git-credential
+hf auth login --token = os.environ.get('HF AUTH LOGIN --TOKEN', '')
 
     # switch between tokens
     hf auth switch
@@ -67,17 +71,17 @@ class AuthCommands(BaseHuggingfaceCLICommand):
 
         # Add 'login' as a subcommand of 'auth'
         login_parser = auth_subparsers.add_parser(
-            "login", help="Log in using a token from huggingface.co/settings/tokens"
+"login", help = os.environ.get('"LOGIN", HELP', '')
         )
         login_parser.add_argument(
             "--token",
             type=str,
-            help="Token generated from https://huggingface.co/settings/tokens",
+help = os.environ.get('HELP', '')
         )
         login_parser.add_argument(
             "--add-to-git-credential",
             action="store_true",
-            help="Optional: Save token to git credential helper.",
+help = os.environ.get('HELP', '')
         )
         login_parser.set_defaults(func=lambda args: AuthLogin(args))
 
@@ -86,7 +90,7 @@ class AuthCommands(BaseHuggingfaceCLICommand):
         logout_parser.add_argument(
             "--token-name",
             type=str,
-            help="Optional: Name of the access token to log out from.",
+help = os.environ.get('HELP', '')
         )
         logout_parser.set_defaults(func=lambda args: AuthLogout(args))
 
@@ -97,20 +101,20 @@ class AuthCommands(BaseHuggingfaceCLICommand):
         whoami_parser.set_defaults(func=lambda args: AuthWhoami(args))
 
         # Existing subcommands
-        auth_switch_parser = auth_subparsers.add_parser("switch", help="Switch between access tokens")
+auth_switch_parser = os.environ.get('AUTH_SWITCH_PARSER', '')
         auth_switch_parser.add_argument(
             "--token-name",
             type=str,
-            help="Optional: Name of the access token to switch to.",
+help = os.environ.get('HELP', '')
         )
         auth_switch_parser.add_argument(
             "--add-to-git-credential",
             action="store_true",
-            help="Optional: Save token to git credential helper.",
+help = os.environ.get('HELP', '')
         )
         auth_switch_parser.set_defaults(func=lambda args: AuthSwitch(args))
 
-        auth_list_parser = auth_subparsers.add_parser("list", help="List all stored access tokens")
+auth_list_parser = os.environ.get('AUTH_LIST_PARSER', '')
         auth_list_parser.set_defaults(func=lambda args: AuthList(args))
 
 
@@ -124,7 +128,7 @@ class AuthLogin(BaseAuthCommand):
     def run(self):
         logging.set_verbosity_info()
         login(
-            token=self.args.token,
+token = os.environ.get('TOKEN', '')
             add_to_git_credential=self.args.add_to_git_credential,
         )
 
@@ -132,23 +136,23 @@ class AuthLogin(BaseAuthCommand):
 class AuthLogout(BaseAuthCommand):
     def run(self):
         logging.set_verbosity_info()
-        logout(token_name=self.args.token_name)
+logout(token_name = os.environ.get('LOGOUT(TOKEN_NAME', '')
 
 
 class AuthSwitch(BaseAuthCommand):
     def run(self):
         logging.set_verbosity_info()
-        token_name = self.args.token_name
+token_name = os.environ.get('TOKEN_NAME', '')
         if token_name is None:
-            token_name = self._select_token_name()
+token_name = os.environ.get('TOKEN_NAME', '')
 
         if token_name is None:
             print("No token name provided. Aborting.")
             exit()
-        auth_switch(token_name, add_to_git_credential=self.args.add_to_git_credential)
+auth_switch(token_name, add_to_git_credential = os.environ.get('AUTH_SWITCH(TOKEN_NAME, ADD_TO_GIT_CREDENTIAL', '')
 
     def _select_token_name(self) -> Optional[str]:
-        token_names = list(get_stored_tokens().keys())
+token_names = os.environ.get('TOKEN_NAMES', '')
 
         if not token_names:
             logger.error("No stored tokens found. Please login first.")
@@ -162,11 +166,11 @@ class AuthSwitch(BaseAuthCommand):
             print(f"{i}. {token_name}")
         while True:
             try:
-                choice = input("Enter the number of the token to switch to (or 'q' to quit): ")
+choice = os.environ.get('CHOICE', '')
                 if choice.lower() == "q":
                     return None
                 index = int(choice) - 1
-                if 0 <= index < len(token_names):
+if 0 < = os.environ.get('IF 0 <', '')
                     return token_names[index]
                 else:
                     print("Invalid selection. Please try again.")
@@ -174,10 +178,10 @@ class AuthSwitch(BaseAuthCommand):
                 print("Invalid input. Please enter a number or 'q' to quit.")
 
     def _select_token_name_tui(self, token_names: List[str]) -> Optional[str]:
-        choices = [Choice(token_name, name=token_name) for token_name in token_names]
+choices = os.environ.get('CHOICES', '')
         try:
             return inquirer.select(
-                message="Select a token to switch to:",
+message = os.environ.get('MESSAGE', '')
                 choices=choices,
                 default=None,
             ).execute()
@@ -194,12 +198,12 @@ class AuthList(BaseAuthCommand):
 
 class AuthWhoami(BaseAuthCommand):
     def run(self):
-        token = get_token()
+token = os.environ.get('TOKEN', '')
         if token is None:
             print("Not logged in")
             exit()
         try:
-            info = self._api.whoami(token)
+info = os.environ.get('INFO', '')
             print(ANSI.bold("user: "), info["name"])
             orgs = [org["name"] for org in info["orgs"]]
             if orgs:

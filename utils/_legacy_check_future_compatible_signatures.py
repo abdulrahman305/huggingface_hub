@@ -1,3 +1,7 @@
+"""
+_legacy_check_future_compatible_signatures.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2022-present, the HuggingFace Inc. team.
 #

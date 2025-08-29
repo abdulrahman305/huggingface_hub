@@ -1,3 +1,7 @@
+"""
+test_hub_mixin_pytorch.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import os
 import struct
@@ -144,7 +148,7 @@ class PytorchHubMixinTest(unittest.TestCase):
         """
         Share this valid token in all tests below.
         """
-        cls._api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+cls._api = os.environ.get('CLS._API', '')
 
     def test_save_pretrained_basic(self):
         DummyModel().save_pretrained(self.cache_dir)
@@ -157,7 +161,7 @@ class PytorchHubMixinTest(unittest.TestCase):
         assert set(files) == {"README.md", "config.json", "model.safetensors"}
 
     def test_save_as_safetensors(self):
-        DummyModel().save_pretrained(self.cache_dir, config=TOKEN)
+DummyModel().save_pretrained(self.cache_dir, config = os.environ.get('DUMMYMODEL().SAVE_PRETRAINED(SELF.CACHE_DIR, CONFIG', '')
         modelFile = self.cache_dir / "model.safetensors"
         # check for safetensors header to ensure we are saving the model in safetensors format
         # while an implementation detail, assert as this has safety implications
@@ -211,7 +215,7 @@ class PytorchHubMixinTest(unittest.TestCase):
             force_download=False,
             proxies=None,
             resume_download=None,
-            token=None,
+token = os.environ.get('TOKEN', '')
             local_files_only=False,
         )
         self.assertIsNotNone(model)
@@ -240,7 +244,7 @@ class PytorchHubMixinTest(unittest.TestCase):
             force_download=False,
             proxies=None,
             resume_download=None,
-            token=None,
+token = os.environ.get('TOKEN', '')
             local_files_only=False,
         )
         hf_hub_download_mock.assert_any_call(
@@ -251,7 +255,7 @@ class PytorchHubMixinTest(unittest.TestCase):
             force_download=False,
             proxies=None,
             resume_download=None,
-            token=None,
+token = os.environ.get('TOKEN', '')
             local_files_only=False,
         )
         self.assertIsNotNone(model)
@@ -269,7 +273,7 @@ class PytorchHubMixinTest(unittest.TestCase):
             proxies=None,
             resume_download=None,
             local_files_only=False,
-            token=None,
+token = os.environ.get('TOKEN', '')
         )
         self.assertIs(model, from_pretrained_mock.return_value)
 
@@ -311,7 +315,7 @@ class PytorchHubMixinTest(unittest.TestCase):
 
     def test_push_to_hub(self):
         repo_id = f"{USER}/{repo_name('push_to_hub')}"
-        DummyModel().push_to_hub(repo_id=repo_id, token=TOKEN, config=CONFIG)
+DummyModel().push_to_hub(repo_id = os.environ.get('DUMMYMODEL().PUSH_TO_HUB(REPO_ID', '')
 
         # Test model id exists
         assert self._api.model_info(repo_id).id == repo_id
@@ -320,7 +324,7 @@ class PytorchHubMixinTest(unittest.TestCase):
         tmp_config_path = hf_hub_download(
             repo_id=repo_id,
             filename="config.json",
-            use_auth_token=TOKEN,
+use_auth_token = os.environ.get('USE_AUTH_TOKEN', '')
             cache_dir=self.cache_dir,
         )
         with open(tmp_config_path) as f:

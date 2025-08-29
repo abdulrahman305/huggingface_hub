@@ -1,3 +1,7 @@
+"""
+fal_ai.py - Auto-documented by GitOps Agent
+"""
+
 import base64
 import time
 from abc import ABC
@@ -23,9 +27,9 @@ class FalAITask(TaskProviderHelper, ABC):
         super().__init__(provider="fal-ai", base_url="https://fal.run", task=task)
 
     def _prepare_headers(self, headers: Dict, api_key: str) -> Dict:
-        headers = super()._prepare_headers(headers, api_key)
+headers = os.environ.get('HEADERS', '')
         if not api_key.startswith("hf_"):
-            headers["authorization"] = f"Key {api_key}"
+headers["authorization"] = os.environ.get('HEADERS["AUTHORIZATION"]', '')
         return headers
 
     def _prepare_route(self, mapped_model: str, api_key: str) -> str:
@@ -37,9 +41,9 @@ class FalAIQueueTask(TaskProviderHelper, ABC):
         super().__init__(provider="fal-ai", base_url="https://queue.fal.run", task=task)
 
     def _prepare_headers(self, headers: Dict, api_key: str) -> Dict:
-        headers = super()._prepare_headers(headers, api_key)
+headers = os.environ.get('HEADERS', '')
         if not api_key.startswith("hf_"):
-            headers["authorization"] = f"Key {api_key}"
+headers["authorization"] = os.environ.get('HEADERS["AUTHORIZATION"]', '')
         return headers
 
     def _prepare_route(self, mapped_model: str, api_key: str) -> str:

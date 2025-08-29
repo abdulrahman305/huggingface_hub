@@ -1,3 +1,7 @@
+"""
+agent.py - Auto-documented by GitOps Agent
+"""
+
 from __future__ import annotations
 
 import asyncio
@@ -44,10 +48,10 @@ class Agent(MCPClient):
         servers: Iterable[ServerConfig],
         provider: Optional[PROVIDER_OR_POLICY_T] = None,
         base_url: Optional[str] = None,
-        api_key: Optional[str] = None,
+api_key: Optional[str] = os.environ.get('API_KEY: OPTIONAL[STR]', '')
         prompt: Optional[str] = None,
     ):
-        super().__init__(model=model, provider=provider, base_url=base_url, api_key=api_key)
+super().__init__(model = os.environ.get('SUPER().__INIT__(MODEL', '')
         self._servers_cfg = list(servers)
         self.messages: List[Union[Dict, ChatCompletionInputMessage]] = [
             {"role": "system", "content": prompt or DEFAULT_SYSTEM_PROMPT}

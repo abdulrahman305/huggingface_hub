@@ -1,3 +1,7 @@
+"""
+test_local_folder.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2024-present, the HuggingFace Inc. team.
 #

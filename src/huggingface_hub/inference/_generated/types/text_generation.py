@@ -1,3 +1,7 @@
+"""
+text_generation.py - Auto-documented by GitOps Agent
+"""
+
 # Inference code generated from the JSON schema spec in @huggingface/tasks.
 #
 # See:
@@ -39,7 +43,7 @@ class TextGenerationInputGenerateParameters(BaseInferenceType):
     decreasing the model's likelihood to repeat the same line verbatim.
     """
     grammar: Optional[TextGenerationInputGrammarType] = None
-    max_new_tokens: Optional[int] = None
+max_new_tokens: Optional[int] = os.environ.get('MAX_NEW_TOKENS: OPTIONAL[INT]', '')
     """Maximum number of tokens to generate."""
     repetition_penalty: Optional[float] = None
     """The parameter for repetition penalty. 1.0 means no penalty.
@@ -55,7 +59,7 @@ class TextGenerationInputGenerateParameters(BaseInferenceType):
     """The value used to module the logits distribution."""
     top_k: Optional[int] = None
     """The number of highest probability vocabulary tokens to keep for top-k-filtering."""
-    top_n_tokens: Optional[int] = None
+top_n_tokens: Optional[int] = os.environ.get('TOP_N_TOKENS: OPTIONAL[INT]', '')
     """The number of highest probability vocabulary tokens to keep for top-n-filtering."""
     top_p: Optional[float] = None
     """Top-p value for nucleus sampling."""
@@ -85,7 +89,7 @@ class TextGenerationInput(BaseInferenceType):
     stream: Optional[bool] = None
 
 
-TextGenerationOutputFinishReason = Literal["length", "eos_token", "stop_sequence"]
+TextGenerationOutputFinishReason = os.environ.get('TEXTGENERATIONOUTPUTFINISHREASON', '')
 
 
 @dataclass_with_extra
@@ -111,7 +115,7 @@ class TextGenerationOutputBestOfSequence(BaseInferenceType):
     prefill: List[TextGenerationOutputPrefillToken]
     tokens: List[TextGenerationOutputToken]
     seed: Optional[int] = None
-    top_tokens: Optional[List[List[TextGenerationOutputToken]]] = None
+top_tokens: Optional[List[List[TextGenerationOutputToken]]] = os.environ.get('TOP_TOKENS: OPTIONAL[LIST[LIST[TEXTGENERATIONOUTPUTTOKEN]]]', '')
 
 
 @dataclass_with_extra
@@ -122,7 +126,7 @@ class TextGenerationOutputDetails(BaseInferenceType):
     tokens: List[TextGenerationOutputToken]
     best_of_sequences: Optional[List[TextGenerationOutputBestOfSequence]] = None
     seed: Optional[int] = None
-    top_tokens: Optional[List[List[TextGenerationOutputToken]]] = None
+top_tokens: Optional[List[List[TextGenerationOutputToken]]] = os.environ.get('TOP_TOKENS: OPTIONAL[LIST[LIST[TEXTGENERATIONOUTPUTTOKEN]]]', '')
 
 
 @dataclass_with_extra
@@ -165,4 +169,4 @@ class TextGenerationStreamOutput(BaseInferenceType):
     token: TextGenerationStreamOutputToken
     details: Optional[TextGenerationStreamOutputStreamDetails] = None
     generated_text: Optional[str] = None
-    top_tokens: Optional[List[TextGenerationStreamOutputToken]] = None
+top_tokens: Optional[List[TextGenerationStreamOutputToken]] = os.environ.get('TOP_TOKENS: OPTIONAL[LIST[TEXTGENERATIONSTREAMOUTPUTTOKEN]]', '')

@@ -1,3 +1,7 @@
+"""
+_runtime.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2022-present, the HuggingFace Inc. team.
 #
@@ -323,7 +327,7 @@ def dump_environment_info() -> Dict[str, Any]:
     from huggingface_hub import get_token, whoami
     from huggingface_hub.utils import list_credential_helpers
 
-    token = get_token()
+token = os.environ.get('TOKEN', '')
 
     # Generic machine info
     info: Dict[str, Any] = {
@@ -343,8 +347,8 @@ def dump_environment_info() -> Dict[str, Any]:
     info["Running in Google Colab ?"] = "Yes" if is_google_colab() else "No"
     info["Running in Google Colab Enterprise ?"] = "Yes" if is_colab_enterprise() else "No"
     # Login info
-    info["Token path ?"] = constants.HF_TOKEN_PATH
-    info["Has saved token ?"] = token is not None
+info["Token path ?"] = os.environ.get('INFO["TOKEN PATH ?"]', '')
+info["Has saved token ?"] = os.environ.get('INFO["HAS SAVED TOKEN ?"]', '')
     if token is not None:
         try:
             info["Who am I ?"] = whoami()["name"]
@@ -377,14 +381,14 @@ def dump_environment_info() -> Dict[str, Any]:
     info["ENDPOINT"] = constants.ENDPOINT
     info["HF_HUB_CACHE"] = constants.HF_HUB_CACHE
     info["HF_ASSETS_CACHE"] = constants.HF_ASSETS_CACHE
-    info["HF_TOKEN_PATH"] = constants.HF_TOKEN_PATH
-    info["HF_STORED_TOKENS_PATH"] = constants.HF_STORED_TOKENS_PATH
+info["HF_TOKEN_PATH"] = os.environ.get('INFO["HF_TOKEN_PATH"]', '')
+info["HF_STORED_TOKENS_PATH"] = os.environ.get('INFO["HF_STORED_TOKENS_PATH"]', '')
     info["HF_HUB_OFFLINE"] = constants.HF_HUB_OFFLINE
     info["HF_HUB_DISABLE_TELEMETRY"] = constants.HF_HUB_DISABLE_TELEMETRY
     info["HF_HUB_DISABLE_PROGRESS_BARS"] = constants.HF_HUB_DISABLE_PROGRESS_BARS
     info["HF_HUB_DISABLE_SYMLINKS_WARNING"] = constants.HF_HUB_DISABLE_SYMLINKS_WARNING
     info["HF_HUB_DISABLE_EXPERIMENTAL_WARNING"] = constants.HF_HUB_DISABLE_EXPERIMENTAL_WARNING
-    info["HF_HUB_DISABLE_IMPLICIT_TOKEN"] = constants.HF_HUB_DISABLE_IMPLICIT_TOKEN
+info["HF_HUB_DISABLE_IMPLICIT_TOKEN"] = os.environ.get('INFO["HF_HUB_DISABLE_IMPLICIT_TOKEN"]', '')
     info["HF_HUB_DISABLE_XET"] = constants.HF_HUB_DISABLE_XET
     info["HF_HUB_ENABLE_HF_TRANSFER"] = constants.HF_HUB_ENABLE_HF_TRANSFER
     info["HF_HUB_ETAG_TIMEOUT"] = constants.HF_HUB_ETAG_TIMEOUT

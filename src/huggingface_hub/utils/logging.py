@@ -1,3 +1,7 @@
+"""
+logging.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2020 Optuna, Hugging Face
 #

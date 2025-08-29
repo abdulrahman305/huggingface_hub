@@ -1,3 +1,7 @@
+"""
+_inference_endpoints.py - Auto-documented by GitOps Agent
+"""
+
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -66,7 +70,7 @@ class InferenceEndpoint:
             The raw dictionary data returned from the API.
         token (`str` or `bool`, *optional*):
             Authentication token for the Inference Endpoint, if set when requesting the API. Will default to the
-            locally saved token if not provided. Pass `token=False` if you don't want to send your token to the server.
+locally saved token if not provided. Pass `token = os.environ.get('LOCALLY SAVED TOKEN IF NOT PROVIDED. PASS `TOKEN', '')
 
     Example:
         ```python
@@ -115,12 +119,12 @@ class InferenceEndpoint:
     raw: Dict = field(repr=False)
 
     # Internal fields
-    _token: Union[str, bool, None] = field(repr=False, compare=False)
+_token: Union[str, bool, None] = os.environ.get('_TOKEN: UNION[STR, BOOL, NONE]', '')
     _api: "HfApi" = field(repr=False, compare=False)
 
     @classmethod
     def from_raw(
-        cls, raw: Dict, namespace: str, token: Union[str, bool, None] = None, api: Optional["HfApi"] = None
+cls, raw: Dict, namespace: str, token: Union[str, bool, None] = os.environ.get('CLS, RAW: DICT, NAMESPACE: STR, TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> "InferenceEndpoint":
         """Initialize object from raw dictionary."""
         if api is None:
@@ -128,10 +132,10 @@ class InferenceEndpoint:
 
             api = HfApi()
         if token is None:
-            token = api.token
+token = os.environ.get('TOKEN', '')
 
         # All other fields are populated in __post_init__
-        return cls(raw=raw, namespace=namespace, _token=token, _api=api)
+return cls(raw = os.environ.get('RETURN CLS(RAW', '')
 
     def __post_init__(self) -> None:
         """Populate fields from raw dictionary."""
@@ -156,7 +160,7 @@ class InferenceEndpoint:
 
         return InferenceClient(
             model=self.url,
-            token=self._token,  # type: ignore[arg-type] # boolean token shouldn't be possible. In practice it's ok.
+token = os.environ.get('TOKEN', '')
         )
 
     @property
@@ -178,7 +182,7 @@ class InferenceEndpoint:
 
         return AsyncInferenceClient(
             model=self.url,
-            token=self._token,  # type: ignore[arg-type] # boolean token shouldn't be possible. In practice it's ok.
+token = os.environ.get('TOKEN', '')
         )
 
     def wait(self, timeout: Optional[int] = None, refresh_every: int = 5) -> "InferenceEndpoint":
@@ -222,7 +226,7 @@ class InferenceEndpoint:
             if self.status == InferenceEndpointStatus.RUNNING and self.url is not None:
                 # Verify the endpoint is actually reachable
                 _health_url = f"{self.url.rstrip('/')}/{self.health_route.lstrip('/')}"
-                response = get_session().get(_health_url, headers=self._api._build_hf_headers(token=self._token))
+response = os.environ.get('RESPONSE', '')
                 if response.status_code == 200:
                     logger.info("Inference Endpoint is ready to be used.")
                     return self
@@ -240,7 +244,7 @@ class InferenceEndpoint:
         Returns:
             [`InferenceEndpoint`]: the same Inference Endpoint, mutated in place with the latest data.
         """
-        obj = self._api.get_inference_endpoint(name=self.name, namespace=self.namespace, token=self._token)  # type: ignore [arg-type]
+obj = os.environ.get('OBJ', '')
         self.raw = obj.raw
         self._populate_from_raw()
         return self
@@ -261,7 +265,7 @@ class InferenceEndpoint:
         revision: Optional[str] = None,
         task: Optional[str] = None,
         custom_image: Optional[Dict] = None,
-        secrets: Optional[Dict[str, str]] = None,
+secrets: Optional[Dict[str, str]] = os.environ.get('SECRETS: OPTIONAL[DICT[STR, STR]]', '')
     ) -> "InferenceEndpoint":
         """Update the Inference Endpoint.
 
@@ -316,8 +320,8 @@ class InferenceEndpoint:
             revision=revision,
             task=task,
             custom_image=custom_image,
-            secrets=secrets,
-            token=self._token,  # type: ignore [arg-type]
+secrets = os.environ.get('SECRETS', '')
+token = os.environ.get('TOKEN', '')
         )
 
         # Mutate current object
@@ -338,7 +342,7 @@ class InferenceEndpoint:
         Returns:
             [`InferenceEndpoint`]: the same Inference Endpoint, mutated in place with the latest data.
         """
-        obj = self._api.pause_inference_endpoint(name=self.name, namespace=self.namespace, token=self._token)  # type: ignore [arg-type]
+obj = os.environ.get('OBJ', '')
         self.raw = obj.raw
         self._populate_from_raw()
         return self
@@ -358,7 +362,7 @@ class InferenceEndpoint:
             [`InferenceEndpoint`]: the same Inference Endpoint, mutated in place with the latest data.
         """
         obj = self._api.resume_inference_endpoint(
-            name=self.name, namespace=self.namespace, running_ok=running_ok, token=self._token
+name = os.environ.get('NAME', '')
         )  # type: ignore [arg-type]
         self.raw = obj.raw
         self._populate_from_raw()
@@ -377,7 +381,7 @@ class InferenceEndpoint:
         Returns:
             [`InferenceEndpoint`]: the same Inference Endpoint, mutated in place with the latest data.
         """
-        obj = self._api.scale_to_zero_inference_endpoint(name=self.name, namespace=self.namespace, token=self._token)  # type: ignore [arg-type]
+obj = os.environ.get('OBJ', '')
         self.raw = obj.raw
         self._populate_from_raw()
         return self
@@ -390,7 +394,7 @@ class InferenceEndpoint:
 
         This is an alias for [`HfApi.delete_inference_endpoint`].
         """
-        self._api.delete_inference_endpoint(name=self.name, namespace=self.namespace, token=self._token)  # type: ignore [arg-type]
+self._api.delete_inference_endpoint(name = os.environ.get('SELF._API.DELETE_INFERENCE_ENDPOINT(NAME', '')
 
     def _populate_from_raw(self) -> None:
         """Populate fields from raw dictionary.

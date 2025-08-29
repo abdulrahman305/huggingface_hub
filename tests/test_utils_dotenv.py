@@ -1,3 +1,7 @@
+"""
+test_utils_dotenv.py - Auto-documented by GitOps Agent
+"""
+
 # AI-generated module (ChatGPT)
 from huggingface_hub.utils._dotenv import load_dotenv
 

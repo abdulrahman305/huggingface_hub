@@ -1,3 +1,7 @@
+"""
+test_utils_telemetry.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 from queue import Queue
 from unittest.mock import Mock, patch

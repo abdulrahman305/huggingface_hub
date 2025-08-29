@@ -1,3 +1,7 @@
+"""
+test_utils_cli.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import unittest
 from unittest import mock

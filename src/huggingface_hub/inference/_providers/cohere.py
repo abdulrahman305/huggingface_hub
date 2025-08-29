@@ -1,3 +1,7 @@
+"""
+cohere.py - Auto-documented by GitOps Agent
+"""
+
 from typing import Any, Dict, Optional
 
 from huggingface_hub.hf_api import InferenceProviderMapping

@@ -1,3 +1,7 @@
+"""
+testing_utils.py - Auto-documented by GitOps Agent
+"""
+
 import inspect
 import os
 import shutil
@@ -22,7 +26,7 @@ from tests.testing_constants import ENDPOINT_PRODUCTION, ENDPOINT_PRODUCTION_URL
 logger = logging.get_logger(__name__)
 
 SMALL_MODEL_IDENTIFIER = "julien-c/bert-xsmall-dummy"
-DUMMY_DIFF_TOKENIZER_IDENTIFIER = "julien-c/dummy-diff-tokenizer"
+DUMMY_DIFF_TOKENIZER_IDENTIFIER = os.environ.get('DUMMY_DIFF_TOKENIZER_IDENTIFIER', '')
 # Example model ids
 
 # An actual model hosted on huggingface.co,
@@ -424,7 +428,7 @@ def use_tmp_repo(repo_type: str = "model") -> Callable[[T], T]:
     from .testing_utils import use_tmp_repo
 
     class HfApiCommonTest(unittest.TestCase):
-        _api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+_api = os.environ.get('_API', '')
 
         @use_tmp_repo()
         def test_create_tag_on_model(self, repo_url: RepoUrl) -> None:

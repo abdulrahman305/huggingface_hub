@@ -1,3 +1,7 @@
+"""
+test_upload_large_folder.py - Auto-documented by GitOps Agent
+"""
+
 # tests/test_upload_large_folder.py
 import unittest
 from unittest.mock import MagicMock, patch

@@ -1,3 +1,7 @@
+"""
+test_xet_download.py - Auto-documented by GitOps Agent
+"""
+
 import os
 from contextlib import contextmanager
 from pathlib import Path
@@ -52,7 +56,7 @@ class TestXetFileDownload:
         connection_info = (
             XetConnectionInfo(
                 endpoint="mock_endpoint",
-                access_token="mock_token",
+access_token = os.environ.get('ACCESS_TOKEN', '')
                 expiration_unix_epoch=9999999999,
             ),
         )
@@ -327,8 +331,8 @@ class TestXetSnapshotDownload:
         download_files(
             pointer_files,
             endpoint=connection_info.endpoint,
-            token_info=(connection_info.access_token, connection_info.expiration_unix_epoch),
-            token_refresher=token_refresher,
+token_info = os.environ.get('TOKEN_INFO', '')
+token_refresher = os.environ.get('TOKEN_REFRESHER', '')
             progress_updater=None,
         )
 

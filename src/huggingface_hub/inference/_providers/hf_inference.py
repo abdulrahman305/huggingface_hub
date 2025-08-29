@@ -1,3 +1,7 @@
+"""
+hf_inference.py - Auto-documented by GitOps Agent
+"""
+
 import json
 from functools import lru_cache
 from pathlib import Path

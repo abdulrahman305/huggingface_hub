@@ -1,3 +1,7 @@
+"""
+constants.py - Auto-documented by GitOps Agent
+"""
+
 from __future__ import annotations
 
 import sys

@@ -1,3 +1,7 @@
+"""
+test_commit_api.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 
 from huggingface_hub._commit_api import (

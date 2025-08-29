@@ -1,3 +1,7 @@
+"""
+test_login_utils.py - Auto-documented by GitOps Agent
+"""
+
 import subprocess
 import unittest
 from typing import Optional

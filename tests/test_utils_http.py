@@ -1,3 +1,7 @@
+"""
+test_utils_http.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import threading
 import time

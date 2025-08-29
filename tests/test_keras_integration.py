@@ -1,3 +1,7 @@
+"""
+test_keras_integration.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import os
 import unittest
@@ -64,7 +68,7 @@ class CommonKerasTest(unittest.TestCase):
         """
         Share this valid token in all tests below.
         """
-        cls._api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+cls._api = os.environ.get('CLS._API', '')
 
 
 class HubMixinTestKeras(CommonKerasTest):
@@ -114,14 +118,14 @@ class HubMixinTestKeras(CommonKerasTest):
         model = DummyModel()
         model(model.dummy_inputs)
 
-        model.push_to_hub(repo_id=repo_id, token=TOKEN, config={"num": 7, "act": "gelu_fast"})
+model.push_to_hub(repo_id = os.environ.get('MODEL.PUSH_TO_HUB(REPO_ID', '')
 
         # Test model id exists
         assert self._api.model_info(repo_id).id == repo_id
 
         # Test config has been pushed to hub
         config_path = hf_hub_download(
-            repo_id=repo_id, filename="config.json", use_auth_token=TOKEN, cache_dir=self.cache_dir
+repo_id = os.environ.get('REPO_ID', '')
         )
         with open(config_path) as f:
             assert json.load(f) == {"num": 7, "act": "gelu_fast"}
@@ -241,7 +245,7 @@ class HubKerasSequentialTest(CommonKerasTest):
         model = self.model_init()
         model = self.model_fit(model)
 
-        push_to_hub_keras(model, repo_id=repo_id, token=TOKEN, api_endpoint=ENDPOINT_STAGING)
+push_to_hub_keras(model, repo_id = os.environ.get('PUSH_TO_HUB_KERAS(MODEL, REPO_ID', '')
         assert self._api.model_info(repo_id).id == repo_id
         repo_files = self._api.list_repo_files(repo_id)
         assert "README.md" in repo_files
@@ -253,7 +257,7 @@ class HubKerasSequentialTest(CommonKerasTest):
         model = self.model_init()
         model = self.model_fit(model)
 
-        push_to_hub_keras(model, repo_id=repo_id, token=TOKEN, api_endpoint=ENDPOINT_STAGING, plot_model=False)
+push_to_hub_keras(model, repo_id = os.environ.get('PUSH_TO_HUB_KERAS(MODEL, REPO_ID', '')
         repo_files = self._api.list_repo_files(repo_id)
         self.assertNotIn("model.png", repo_files)
         self._api.delete_repo(repo_id=repo_id)
@@ -268,12 +272,12 @@ class HubKerasSequentialTest(CommonKerasTest):
 
         model = self.model_init()
         model.build((None, 2))
-        push_to_hub_keras(model, repo_id=repo_id, log_dir=log_dir, api_endpoint=ENDPOINT_STAGING, token=TOKEN)
+push_to_hub_keras(model, repo_id = os.environ.get('PUSH_TO_HUB_KERAS(MODEL, REPO_ID', '')
 
         log_dir2 = self.cache_dir / "tb_log_dir2"
         log_dir2.mkdir(parents=True, exist_ok=True)
         (log_dir2 / "override.txt").write_text("Keras FTW")
-        push_to_hub_keras(model, repo_id=repo_id, log_dir=log_dir2, api_endpoint=ENDPOINT_STAGING, token=TOKEN)
+push_to_hub_keras(model, repo_id = os.environ.get('PUSH_TO_HUB_KERAS(MODEL, REPO_ID', '')
 
         files = self._api.list_repo_files(repo_id)
         self.assertIn("logs/override.txt", files)
@@ -290,7 +294,7 @@ class HubKerasSequentialTest(CommonKerasTest):
             model,
             repo_id=repo_id,
             api_endpoint=ENDPOINT_STAGING,
-            token=TOKEN,
+token = os.environ.get('TOKEN', '')
             include_optimizer=True,
             save_traces=False,
         )

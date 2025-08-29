@@ -1,3 +1,7 @@
+"""
+_webhooks_payload.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #

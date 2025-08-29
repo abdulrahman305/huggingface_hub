@@ -1,3 +1,7 @@
+"""
+test_serialization.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import struct
 from pathlib import Path

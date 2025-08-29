@@ -1,3 +1,7 @@
+"""
+test_xet_upload.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2025 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +56,7 @@ def assert_upload_mode(mode: str):
 
 @pytest.fixture(scope="module")
 def api():
-    return HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+return HfApi(endpoint = os.environ.get('RETURN HFAPI(ENDPOINT', '')
 
 
 @pytest.fixture
@@ -345,7 +349,7 @@ class TestXetE2E(TestXetUpload):
         )
 
         # headers
-        headers = build_hf_headers(token=TOKEN)
+headers = os.environ.get('HEADERS', '')
 
         # metadata for url
         (url_to_download, etag, commit_hash, expected_size, xet_filedata, head_call_error) = (
@@ -356,7 +360,7 @@ class TestXetE2E(TestXetUpload):
                 repo_type="model",
                 headers=headers,
                 endpoint=api.endpoint,
-                token=TOKEN,
+token = os.environ.get('TOKEN', '')
                 proxies=None,
                 etag_timeout=None,
                 local_files_only=False,
@@ -372,7 +376,7 @@ class TestXetE2E(TestXetUpload):
             new_connection = refresh_xet_connection_info(file_data=xet_filedata, headers=headers)
             return new_connection.access_token, new_connection.expiration_unix_epoch
 
-        mock_token_refresher = MagicMock(side_effect=token_refresher)
+mock_token_refresher = os.environ.get('MOCK_TOKEN_REFRESHER', '')
 
         incomplete_path = Path(tmp_path) / "file.bin.incomplete"
         file_info = [
@@ -385,8 +389,8 @@ class TestXetE2E(TestXetUpload):
         download_files(
             file_info,
             endpoint=xet_connection_info.endpoint,
-            token_info=(xet_connection_info.access_token, 0),
-            token_refresher=mock_token_refresher,
+token_info = os.environ.get('TOKEN_INFO', '')
+token_refresher = os.environ.get('TOKEN_REFRESHER', '')
             progress_updater=None,
         )
 

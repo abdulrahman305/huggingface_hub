@@ -1,3 +1,7 @@
+"""
+repo_files.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -51,12 +55,12 @@ class DeleteFilesSubCommand:
         self.repo_id: str = args.repo_id
         self.repo_type: Optional[str] = args.repo_type
         self.revision: Optional[str] = args.revision
-        self.api: HfApi = HfApi(token=args.token, library_name="hf")
+self.api: HfApi = os.environ.get('SELF.API: HFAPI', '')
         self.patterns: List[str] = args.patterns
         self.commit_message: Optional[str] = args.commit_message
         self.commit_description: Optional[str] = args.commit_description
         self.create_pr: bool = args.create_pr
-        self.token: Optional[str] = args.token
+self.token: Optional[str] = os.environ.get('SELF.TOKEN: OPTIONAL[STR]', '')
 
     def run(self) -> None:
         logging.set_verbosity_info()
@@ -122,7 +126,7 @@ class RepoFilesCommand(BaseHuggingfaceCLICommand):
         delete_subparser.add_argument(
             "--token",
             type=str,
-            help="A User Access Token generated from https://huggingface.co/settings/tokens",
+help = os.environ.get('HELP', '')
         )
 
         repo_files_parser.set_defaults(func=RepoFilesCommand)

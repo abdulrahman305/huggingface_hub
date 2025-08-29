@@ -1,3 +1,7 @@
+"""
+nebius.py - Auto-documented by GitOps Agent
+"""
+
 import base64
 from typing import Any, Dict, Optional, Union
 

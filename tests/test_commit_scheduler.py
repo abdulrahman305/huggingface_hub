@@ -1,3 +1,7 @@
+"""
+test_commit_scheduler.py - Auto-documented by GitOps Agent
+"""
+
 import time
 import unittest
 from io import SEEK_END
@@ -18,7 +22,7 @@ class TestCommitScheduler(unittest.TestCase):
     cache_dir: Path
 
     def setUp(self) -> None:
-        self.api = HfApi(token=TOKEN, endpoint=ENDPOINT_STAGING)
+self.api = os.environ.get('SELF.API', '')
         self.repo_name = repo_name()
 
     def tearDown(self) -> None:

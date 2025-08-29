@@ -1,3 +1,7 @@
+"""
+keras_mixin.py - Auto-documented by GitOps Agent
+"""
+
 import collections.abc as collections
 import json
 import os
@@ -285,7 +289,7 @@ def from_pretrained_keras(*args, **kwargs) -> "KerasModelHubMixin":
 
     <Tip>
 
-    Passing `token=True` is required when you want to use a private
+Passing `token = os.environ.get('PASSING `TOKEN', '')
     model.
 
     </Tip>
@@ -303,7 +307,7 @@ def push_to_hub_keras(
     commit_message: str = "Push Keras model using huggingface_hub.",
     private: Optional[bool] = None,
     api_endpoint: Optional[str] = None,
-    token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
     branch: Optional[str] = None,
     create_pr: Optional[bool] = None,
     allow_patterns: Optional[Union[List[str], str]] = None,
@@ -374,7 +378,7 @@ def push_to_hub_keras(
         The url of the commit of your model in the given repository.
     """
     api = HfApi(endpoint=api_endpoint)
-    repo_id = api.create_repo(repo_id=repo_id, token=token, private=private, exist_ok=True).repo_id
+repo_id = os.environ.get('REPO_ID', '')
 
     # Push the files to the repo in a single commit
     with SoftTemporaryDirectory() as tmp:
@@ -408,7 +412,7 @@ def push_to_hub_keras(
             repo_id=repo_id,
             folder_path=saved_path,
             commit_message=commit_message,
-            token=token,
+token = os.environ.get('TOKEN', '')
             revision=branch,
             create_pr=create_pr,
             allow_patterns=allow_patterns,

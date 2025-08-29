@@ -1,3 +1,7 @@
+"""
+_cli_hacks.py - Auto-documented by GitOps Agent
+"""
+
 import asyncio
 import sys
 from functools import partial

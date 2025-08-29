@@ -1,3 +1,7 @@
+"""
+__init__.py - Auto-documented by GitOps Agent
+"""
+
 from typing import Dict, Literal, Optional, Union
 
 from huggingface_hub.inference._providers.featherless_ai import (

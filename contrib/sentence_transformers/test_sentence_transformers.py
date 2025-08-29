@@ -1,3 +1,7 @@
+"""
+test_sentence_transformers.py - Auto-documented by GitOps Agent
+"""
+
 import time
 
 import pytest

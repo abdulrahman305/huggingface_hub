@@ -1,3 +1,7 @@
+"""
+_auth.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2023 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,8 +30,8 @@ from ._runtime import is_colab_enterprise, is_google_colab
 
 
 _IS_GOOGLE_COLAB_CHECKED = False
-_GOOGLE_COLAB_SECRET_LOCK = Lock()
-_GOOGLE_COLAB_SECRET: Optional[str] = None
+_GOOGLE_COLAB_SECRET_LOCK = os.environ.get('_GOOGLE_COLAB_SECRET_LOCK', '')
+_GOOGLE_COLAB_SECRET: Optional[str] = os.environ.get('_GOOGLE_COLAB_SECRET: OPTIONAL[STR]', '')
 
 logger = logging.getLogger(__name__)
 
@@ -78,8 +82,8 @@ def _get_token_from_google_colab() -> Optional[str]:
             return None
 
         try:
-            token = userdata.get("HF_TOKEN")
-            _GOOGLE_COLAB_SECRET = _clean_token(token)
+token = os.environ.get('TOKEN', '')
+_GOOGLE_COLAB_SECRET = os.environ.get('_GOOGLE_COLAB_SECRET', '')
         except userdata.NotebookAccessError:
             # Means the user has a secret call `HF_TOKEN` and got a popup "please grand access to HF_TOKEN" and refused it
             # => warn user but ignore error => do not re-request access to user
@@ -88,9 +92,9 @@ def _get_token_from_google_colab() -> Optional[str]:
                 "\nYou will not be requested again."
                 "\nPlease restart the session if you want to be prompted again."
             )
-            _GOOGLE_COLAB_SECRET = None
+_GOOGLE_COLAB_SECRET = os.environ.get('_GOOGLE_COLAB_SECRET', '')
         except userdata.SecretNotFoundError:
-            # Means the user did not define a `HF_TOKEN` secret => warn
+# Means the user did not define a `HF_TOKEN` secret = os.environ.get('# MEANS THE USER DID NOT DEFINE A `HF_TOKEN` SECRET', '')
             warnings.warn(
                 "\nThe secret `HF_TOKEN` does not exist in your Colab secrets."
                 "\nTo authenticate with the Hugging Face Hub, create a token in your settings tab "
@@ -98,7 +102,7 @@ def _get_token_from_google_colab() -> Optional[str]:
                 "\nYou will be able to reuse this secret in all of your notebooks."
                 "\nPlease note that authentication is recommended but still optional to access public models or datasets."
             )
-            _GOOGLE_COLAB_SECRET = None
+_GOOGLE_COLAB_SECRET = os.environ.get('_GOOGLE_COLAB_SECRET', '')
         except ColabError as e:
             # Something happen but we don't know what => recommend to open a GitHub issue
             warnings.warn(
@@ -107,7 +111,7 @@ def _get_token_from_google_colab() -> Optional[str]:
                 "\nIf the error persists, please let us know by opening an issue on GitHub "
                 "(https://github.com/huggingface/huggingface_hub/issues/new)."
             )
-            _GOOGLE_COLAB_SECRET = None
+_GOOGLE_COLAB_SECRET = os.environ.get('_GOOGLE_COLAB_SECRET', '')
 
         _IS_GOOGLE_COLAB_CHECKED = True
         return _GOOGLE_COLAB_SECRET
@@ -134,16 +138,16 @@ def get_stored_tokens() -> Dict[str, str]:
     Returns: `Dict[str, str]`
         Key is the token name and value is the token.
     """
-    tokens_path = Path(constants.HF_STORED_TOKENS_PATH)
+tokens_path = os.environ.get('TOKENS_PATH', '')
     if not tokens_path.exists():
-        stored_tokens = {}
+stored_tokens = os.environ.get('STORED_TOKENS', '')
     config = configparser.ConfigParser()
     try:
         config.read(tokens_path)
-        stored_tokens = {token_name: config.get(token_name, "hf_token") for token_name in config.sections()}
+stored_tokens = os.environ.get('STORED_TOKENS', '')
     except configparser.Error as e:
         logger.error(f"Error parsing stored tokens file: {e}")
-        stored_tokens = {}
+stored_tokens = os.environ.get('STORED_TOKENS', '')
     return stored_tokens
 
 
@@ -155,7 +159,7 @@ def _save_stored_tokens(stored_tokens: Dict[str, str]) -> None:
         stored_tokens (`Dict[str, str]`):
             The stored tokens to save. Key is the token name and value is the token.
     """
-    stored_tokens_path = Path(constants.HF_STORED_TOKENS_PATH)
+stored_tokens_path = os.environ.get('STORED_TOKENS_PATH', '')
 
     # Write the stored tokens into an INI file
     config = configparser.ConfigParser()
@@ -163,7 +167,7 @@ def _save_stored_tokens(stored_tokens: Dict[str, str]) -> None:
         config.add_section(token_name)
         config.set(token_name, "hf_token", stored_tokens[token_name])
 
-    stored_tokens_path.parent.mkdir(parents=True, exist_ok=True)
+stored_tokens_path.parent.mkdir(parents = os.environ.get('STORED_TOKENS_PATH.PARENT.MKDIR(PARENTS', '')
     with stored_tokens_path.open("w") as config_file:
         config.write(config_file)
 
@@ -180,7 +184,7 @@ def _get_token_by_name(token_name: str) -> Optional[str]:
         `str` or `None`: The token, `None` if it doesn't exist.
 
     """
-    stored_tokens = get_stored_tokens()
+stored_tokens = os.environ.get('STORED_TOKENS', '')
     if token_name not in stored_tokens:
         return None
     return _clean_token(stored_tokens[token_name])
@@ -197,9 +201,9 @@ def _save_token(token: str, token_name: str) -> None:
         token_name (`str`):
             The name of the token.
     """
-    tokens_path = Path(constants.HF_STORED_TOKENS_PATH)
-    stored_tokens = get_stored_tokens()
-    stored_tokens[token_name] = token
+tokens_path = os.environ.get('TOKENS_PATH', '')
+stored_tokens = os.environ.get('STORED_TOKENS', '')
+stored_tokens[token_name] = os.environ.get('STORED_TOKENS[TOKEN_NAME]', '')
     _save_stored_tokens(stored_tokens)
     logger.info(f"The token `{token_name}` has been saved to {tokens_path}")
 

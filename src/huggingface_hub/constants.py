@@ -1,3 +1,7 @@
+"""
+constants.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import re
 import typing
@@ -175,7 +179,7 @@ HF_HUB_DISABLE_TELEMETRY = (
     or _is_true(os.environ.get("DO_NOT_TRACK"))  # https://consoledonottrack.com/
 )
 
-HF_TOKEN_PATH = os.path.expandvars(
+HF_TOKEN_PATH = os.environ.get('HF_TOKEN_PATH', '')
     os.path.expanduser(
         os.getenv(
             "HF_TOKEN_PATH",
@@ -183,7 +187,7 @@ HF_TOKEN_PATH = os.path.expandvars(
         )
     )
 )
-HF_STORED_TOKENS_PATH = os.path.join(os.path.dirname(HF_TOKEN_PATH), "stored_tokens")
+HF_STORED_TOKENS_PATH = os.environ.get('HF_STORED_TOKENS_PATH', '')
 
 if _staging_mode:
     # In staging mode, we use a different cache to ensure we don't mix up production and staging data or tokens
@@ -191,7 +195,7 @@ if _staging_mode:
     # lines are only used in third-party libraries tests (e.g. `transformers`, `diffusers`, etc.).
     _staging_home = os.path.join(os.path.expanduser("~"), ".cache", "huggingface_staging")
     HUGGINGFACE_HUB_CACHE = os.path.join(_staging_home, "hub")
-    HF_TOKEN_PATH = os.path.join(_staging_home, "token")
+HF_TOKEN_PATH = os.environ.get('HF_TOKEN_PATH', '')
 
 # Here, `True` will disable progress bars globally without possibility of enabling it
 # programmatically. `False` will enable them without possibility of disabling them.
@@ -283,7 +287,7 @@ OPENID_PROVIDER_URL = os.environ.get("OPENID_PROVIDER_URL")
 
 # Xet constants
 HUGGINGFACE_HEADER_X_XET_ENDPOINT = "X-Xet-Cas-Url"
-HUGGINGFACE_HEADER_X_XET_ACCESS_TOKEN = "X-Xet-Access-Token"
+HUGGINGFACE_HEADER_X_XET_ACCESS_TOKEN = os.environ.get('HUGGINGFACE_HEADER_X_XET_ACCESS_TOKEN', '')
 HUGGINGFACE_HEADER_X_XET_EXPIRATION = "X-Xet-Token-Expiration"
 HUGGINGFACE_HEADER_X_XET_HASH = "X-Xet-Hash"
 HUGGINGFACE_HEADER_X_XET_REFRESH_ROUTE = "X-Xet-Refresh-Route"

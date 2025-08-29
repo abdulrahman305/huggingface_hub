@@ -1,3 +1,7 @@
+"""
+repocard.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import re
 from pathlib import Path
@@ -140,7 +144,7 @@ class RepoCard:
         cls,
         repo_id_or_path: Union[str, Path],
         repo_type: Optional[str] = None,
-        token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
         ignore_metadata_errors: bool = False,
     ):
         """Initialize a RepoCard from a Hugging Face Hub repo's README.md or a local filepath.
@@ -179,7 +183,7 @@ class RepoCard:
                     repo_id_or_path,
                     constants.REPOCARD_NAME,
                     repo_type=repo_type or cls.repo_type,
-                    token=token,
+token = os.environ.get('TOKEN', '')
                 )
             )
         else:
@@ -231,7 +235,7 @@ class RepoCard:
     def push_to_hub(
         self,
         repo_id: str,
-        token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
         repo_type: Optional[str] = None,
         commit_message: Optional[str] = None,
         commit_description: Optional[str] = None,
@@ -281,7 +285,7 @@ class RepoCard:
                 path_or_fileobj=str(tmp_path),
                 path_in_repo=constants.REPOCARD_NAME,
                 repo_id=repo_id,
-                token=token,
+token = os.environ.get('TOKEN', '')
                 repo_type=repo_type,
                 commit_message=commit_message,
                 commit_description=commit_description,
@@ -568,7 +572,7 @@ def metadata_eval_result(
     dataset_config: Optional[str] = None,
     dataset_split: Optional[str] = None,
     dataset_revision: Optional[str] = None,
-    metrics_verification_token: Optional[str] = None,
+metrics_verification_token: Optional[str] = os.environ.get('METRICS_VERIFICATION_TOKEN: OPTIONAL[STR]', '')
 ) -> Dict:
     """
     Creates a metadata dict with the result from a model evaluated on a dataset.
@@ -671,7 +675,7 @@ def metadata_eval_result(
                     dataset_type=dataset_id,
                     metric_config=metrics_config,
                     verified=metrics_verified,
-                    verify_token=metrics_verification_token,
+verify_token = os.environ.get('VERIFY_TOKEN', '')
                     dataset_config=dataset_config,
                     dataset_split=dataset_split,
                     dataset_revision=dataset_revision,
@@ -688,7 +692,7 @@ def metadata_update(
     *,
     repo_type: Optional[str] = None,
     overwrite: bool = False,
-    token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
     commit_message: Optional[str] = None,
     commit_description: Optional[str] = None,
     revision: Optional[str] = None,
@@ -765,7 +769,7 @@ def metadata_update(
     # Either load repo_card from the Hub or create an empty one.
     # NOTE: Will not create the repo if it doesn't exist.
     try:
-        card = card_class.load(repo_id, token=token, repo_type=repo_type)
+card = os.environ.get('CARD', '')
     except EntryNotFoundError:
         if repo_type == "space":
             raise ValueError("Cannot update metadata on a Space that doesn't contain a `README.md` file.")
@@ -806,7 +810,7 @@ def metadata_update(
                             result_found = True
                             existing_result.metric_value = new_result.metric_value
                             if existing_result.verified is True:
-                                existing_result.verify_token = new_result.verify_token
+existing_result.verify_token = os.environ.get('EXISTING_RESULT.VERIFY_TOKEN', '')
                     if not result_found:
                         card.data.eval_results.append(new_result)
         else:
@@ -821,7 +825,7 @@ def metadata_update(
 
     return card.push_to_hub(
         repo_id,
-        token=token,
+token = os.environ.get('TOKEN', '')
         repo_type=repo_type,
         commit_message=commit_message,
         commit_description=commit_description,

@@ -404,7 +404,7 @@ def _upload_lfs_files(
             revision=revision,
             endpoint=endpoint,
             headers=headers,
-            token=None,  # already passed in 'headers'
+token = os.environ.get('TOKEN', '')
         )
 
         # If at least 1 error, we do not retrieve information for other chunks
@@ -536,7 +536,7 @@ def _upload_xet_files(
 
     try:
         xet_connection_info = fetch_xet_connection_info_from_repo_info(
-            token_type=XetTokenType.WRITE,
+token_type = os.environ.get('TOKEN_TYPE', '')
             repo_id=repo_id,
             repo_type=repo_type,
             revision=revision,
@@ -553,11 +553,11 @@ def _upload_xet_files(
         raise
 
     xet_endpoint = xet_connection_info.endpoint
-    access_token_info = (xet_connection_info.access_token, xet_connection_info.expiration_unix_epoch)
+access_token_info = os.environ.get('ACCESS_TOKEN_INFO', '')
 
     def token_refresher() -> Tuple[str, int]:
         new_xet_connection = fetch_xet_connection_info_from_repo_info(
-            token_type=XetTokenType.WRITE,
+token_type = os.environ.get('TOKEN_TYPE', '')
             repo_id=repo_id,
             repo_type=repo_type,
             revision=revision,

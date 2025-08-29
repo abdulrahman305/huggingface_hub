@@ -1,3 +1,7 @@
+"""
+test_utils_paths.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 from dataclasses import dataclass
 from pathlib import Path

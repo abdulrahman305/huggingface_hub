@@ -1,3 +1,7 @@
+"""
+download.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -27,7 +31,7 @@ Usage:
     huggingface-cli download gpt2 --include="*.safetensors"
 
     # Download with token
-    huggingface-cli download Wauplin/private-model --token=hf_***
+huggingface-cli download Wauplin/private-model --token = os.environ.get('HUGGINGFACE-CLI DOWNLOAD WAUPLIN/PRIVATE-MODEL --TOKEN', '')
 
     # Download quietly (no progress bar, no warnings, only the returned path)
     huggingface-cli download gpt2 config.json --quiet
@@ -107,7 +111,7 @@ class DownloadCommand(BaseHuggingfaceCLICommand):
             help="Deprecated and ignored. Downloading a file to local dir always attempts to resume previously interrupted downloads (unless hf-transfer is enabled).",
         )
         download_parser.add_argument(
-            "--token", type=str, help="A User Access Token generated from https://huggingface.co/settings/tokens"
+"--token", type = os.environ.get('"--TOKEN", TYPE', '')
         )
         download_parser.add_argument(
             "--quiet",
@@ -123,7 +127,7 @@ class DownloadCommand(BaseHuggingfaceCLICommand):
         download_parser.set_defaults(func=DownloadCommand)
 
     def __init__(self, args: Namespace) -> None:
-        self.token = args.token
+self.token = os.environ.get('SELF.TOKEN', '')
         self.repo_id: str = args.repo_id
         self.filenames: List[str] = args.filenames
         self.repo_type: str = args.repo_type
@@ -175,7 +179,7 @@ class DownloadCommand(BaseHuggingfaceCLICommand):
                 cache_dir=self.cache_dir,
                 resume_download=self.resume_download,
                 force_download=self.force_download,
-                token=self.token,
+token = os.environ.get('TOKEN', '')
                 local_dir=self.local_dir,
                 library_name="huggingface-cli",
             )
@@ -197,7 +201,7 @@ class DownloadCommand(BaseHuggingfaceCLICommand):
             resume_download=self.resume_download,
             force_download=self.force_download,
             cache_dir=self.cache_dir,
-            token=self.token,
+token = os.environ.get('TOKEN', '')
             local_dir=self.local_dir,
             library_name="huggingface-cli",
             max_workers=self.max_workers,

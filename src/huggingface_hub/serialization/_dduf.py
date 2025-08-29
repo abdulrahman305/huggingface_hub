@@ -1,3 +1,7 @@
+"""
+_dduf.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import logging
 import mmap

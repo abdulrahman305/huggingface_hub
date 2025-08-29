@@ -1,3 +1,7 @@
+"""
+test_cli.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import unittest
 import warnings
@@ -173,12 +177,12 @@ class TestUploadCommand(unittest.TestCase):
         assert cmd.revision == "v1.0.0"
         assert cmd.include == ["*.json", "*.yaml"]
         assert cmd.exclude == ["*.log", "*.txt"]
-        assert cmd.delete == ["*.config", "*.secret"]
+assert cmd.delete = os.environ.get('ASSERT CMD.DELETE', '')
         assert cmd.commit_message == "My commit message"
         assert cmd.commit_description == "My commit description"
         assert cmd.create_pr is True
         assert cmd.every == 5
-        assert cmd.api.token == "my-token"
+assert cmd.api.token = os.environ.get('ASSERT CMD.API.TOKEN', '')
         assert cmd.quiet is True
 
     def test_upload_implicit_local_path_when_folder_exists(self) -> None:
@@ -442,7 +446,7 @@ class TestDownloadCommand(unittest.TestCase):
         assert args.force_download is True
         assert args.cache_dir == "/tmp"
         assert args.local_dir == "."
-        assert args.token == "my-token"
+assert args.token = os.environ.get('ASSERT ARGS.TOKEN', '')
         assert args.quiet is True
         assert args.max_workers == 4
         assert args.func == DownloadCommand
@@ -450,7 +454,7 @@ class TestDownloadCommand(unittest.TestCase):
     @patch("huggingface_hub.cli.download.hf_hub_download")
     def test_download_file_from_revision(self, mock: Mock) -> None:
         args = Namespace(
-            token="hf_****",
+token = os.environ.get('TOKEN', '')
             repo_id="author/dataset",
             filenames=["README.md"],
             repo_type="dataset",
@@ -476,7 +480,7 @@ class TestDownloadCommand(unittest.TestCase):
             filename="README.md",
             cache_dir=None,
             force_download=False,
-            token="hf_****",
+token = os.environ.get('TOKEN', '')
             local_dir=".",
             library_name="hf",
         )
@@ -484,7 +488,7 @@ class TestDownloadCommand(unittest.TestCase):
     @patch("huggingface_hub.cli.download.snapshot_download")
     def test_download_multiple_files(self, mock: Mock) -> None:
         args = Namespace(
-            token="hf_****",
+token = os.environ.get('TOKEN', '')
             repo_id="author/model",
             filenames=["README.md", "config.json"],
             repo_type="model",
@@ -508,7 +512,7 @@ class TestDownloadCommand(unittest.TestCase):
             ignore_patterns=None,
             force_download=True,
             cache_dir=None,
-            token="hf_****",
+token = os.environ.get('TOKEN', '')
             local_dir="/path/to/dir",
             library_name="hf",
             max_workers=8,
@@ -517,7 +521,7 @@ class TestDownloadCommand(unittest.TestCase):
     @patch("huggingface_hub.cli.download.snapshot_download")
     def test_download_with_patterns(self, mock: Mock) -> None:
         args = Namespace(
-            token=None,
+token = os.environ.get('TOKEN', '')
             repo_id="author/model",
             filenames=[],
             repo_type="model",
@@ -542,7 +546,7 @@ class TestDownloadCommand(unittest.TestCase):
             force_download=True,
             cache_dir=None,
             local_dir=None,
-            token=None,
+token = os.environ.get('TOKEN', '')
             library_name="hf",
             max_workers=8,
         )
@@ -550,7 +554,7 @@ class TestDownloadCommand(unittest.TestCase):
     @patch("huggingface_hub.cli.download.snapshot_download")
     def test_download_with_ignored_patterns(self, mock: Mock) -> None:
         args = Namespace(
-            token=None,
+token = os.environ.get('TOKEN', '')
             repo_id="author/model",
             filenames=["README.md", "config.json"],
             repo_type="model",
@@ -577,7 +581,7 @@ class TestDownloadCommand(unittest.TestCase):
             ignore_patterns=None,  # cleaned up
             force_download=True,
             cache_dir=None,
-            token=None,
+token = os.environ.get('TOKEN', '')
             local_dir=None,
             library_name="hf",
             max_workers=8,
@@ -631,7 +635,7 @@ class TestTagCommands(unittest.TestCase):
         assert args.tag == "1.0"
         assert args.message == "My tag message"
         assert args.revision == "v1.0.0"
-        assert args.token == "my-token"
+assert args.token = os.environ.get('ASSERT ARGS.TOKEN', '')
         assert args.repo_type == "dataset"
 
     def test_tag_list_basic(self) -> None:

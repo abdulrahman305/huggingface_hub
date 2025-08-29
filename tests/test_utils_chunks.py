@@ -1,3 +1,7 @@
+"""
+test_utils_chunks.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 
 from huggingface_hub.utils._chunk_utils import chunk_iterable

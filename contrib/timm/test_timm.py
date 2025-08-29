@@ -1,3 +1,7 @@
+"""
+test_timm.py - Auto-documented by GitOps Agent
+"""
+
 import timm
 
 from ..utils import production_endpoint

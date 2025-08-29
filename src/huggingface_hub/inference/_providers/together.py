@@ -1,3 +1,7 @@
+"""
+together.py - Auto-documented by GitOps Agent
+"""
+
 import base64
 from abc import ABC
 from typing import Any, Dict, Optional, Union

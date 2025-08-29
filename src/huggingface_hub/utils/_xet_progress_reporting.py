@@ -1,3 +1,7 @@
+"""
+_xet_progress_reporting.py - Auto-documented by GitOps Agent
+"""
+
 from collections import OrderedDict
 from typing import List
 

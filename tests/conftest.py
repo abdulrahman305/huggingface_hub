@@ -1,3 +1,7 @@
+"""
+conftest.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import shutil
 from typing import Generator

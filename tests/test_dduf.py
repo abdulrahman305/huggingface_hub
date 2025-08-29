@@ -1,3 +1,7 @@
+"""
+test_dduf.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import zipfile
 from pathlib import Path

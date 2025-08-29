@@ -1,3 +1,7 @@
+"""
+types.py - Auto-documented by GitOps Agent
+"""
+
 from typing import Dict, List, Literal, TypedDict, Union
 
 from typing_extensions import NotRequired

@@ -1,3 +1,7 @@
+"""
+_space_api.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2019-present, the HuggingFace Inc. team.
 #

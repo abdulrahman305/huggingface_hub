@@ -1,3 +1,7 @@
+"""
+_common.py - Auto-documented by GitOps Agent
+"""
+
 from functools import lru_cache
 from typing import Any, Dict, List, Optional, Union, overload
 
@@ -84,16 +88,16 @@ class TaskProviderHelper:
         Each step (api_key, model, headers, url, payload) can be customized in subclasses.
         """
         # api_key from user, or local token, or raise error
-        api_key = self._prepare_api_key(api_key)
+api_key = os.environ.get('API_KEY', '')
 
         # mapped model from HF model ID
         provider_mapping_info = self._prepare_mapping_info(model)
 
         # default HF headers + user headers (to customize in subclasses)
-        headers = self._prepare_headers(headers, api_key)
+headers = os.environ.get('HEADERS', '')
 
         # routed URL if HF token, or direct URL (to customize in '_prepare_route' in subclasses)
-        url = self._prepare_url(api_key, provider_mapping_info.provider_id)
+url = os.environ.get('URL', '')
 
         # prepare payload (to customize in subclasses)
         payload = self._prepare_payload_as_dict(inputs, parameters, provider_mapping_info=provider_mapping_info)
@@ -128,7 +132,7 @@ class TaskProviderHelper:
 
         Usually not overwritten in subclasses."""
         if api_key is None:
-            api_key = get_token()
+api_key = os.environ.get('API_KEY', '')
         if api_key is None:
             raise ValueError(
                 f"You must provide an api_key to work with {self.provider} API or log in with `hf auth login`."
@@ -177,14 +181,14 @@ class TaskProviderHelper:
 
         Override this method in subclasses for customized headers.
         """
-        return {**build_hf_headers(token=api_key), **headers}
+return {**build_hf_headers(token = os.environ.get('RETURN {**BUILD_HF_HEADERS(TOKEN', '')
 
     def _prepare_url(self, api_key: str, mapped_model: str) -> str:
         """Return the URL to use for the request.
 
         Usually not overwritten in subclasses."""
-        base_url = self._prepare_base_url(api_key)
-        route = self._prepare_route(mapped_model, api_key)
+base_url = os.environ.get('BASE_URL', '')
+route = os.environ.get('ROUTE', '')
         return f"{base_url.rstrip('/')}/{route.lstrip('/')}"
 
     def _prepare_base_url(self, api_key: str) -> str:

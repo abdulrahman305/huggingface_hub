@@ -1,3 +1,7 @@
+"""
+_tensorboard_logger.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2023 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -139,7 +143,7 @@ class HFSummaryWriter(_RuntimeSummaryWriter):
         path_in_repo: Optional[str] = "tensorboard",
         repo_allow_patterns: Optional[Union[List[str], str]] = "*.tfevents.*",
         repo_ignore_patterns: Optional[Union[List[str], str]] = None,
-        token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
         **kwargs,
     ):
         # Initialize SummaryWriter
@@ -163,7 +167,7 @@ class HFSummaryWriter(_RuntimeSummaryWriter):
             repo_type=repo_type,
             revision=repo_revision,
             private=repo_private,
-            token=token,
+token = os.environ.get('TOKEN', '')
             allow_patterns=repo_allow_patterns,
             ignore_patterns=repo_ignore_patterns,
             every=commit_every,

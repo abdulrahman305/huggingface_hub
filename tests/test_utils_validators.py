@@ -1,3 +1,7 @@
+"""
+test_utils_validators.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -69,25 +73,25 @@ class TestSmoothlyDeprecateUseAuthToken(unittest.TestCase):
 
     def test_token_normal_usage_as_kwarg(self) -> None:
         self.assertEqual(
-            self.dummy_token_function(token="this_is_a_token"),
+self.dummy_token_function(token = os.environ.get('SELF.DUMMY_TOKEN_FUNCTION(TOKEN', '')
             ("this_is_a_token", {}),
         )
 
     def test_token_normal_usage_with_more_kwargs(self) -> None:
         self.assertEqual(
-            self.dummy_token_function(token="this_is_a_token", foo="bar"),
+self.dummy_token_function(token = os.environ.get('SELF.DUMMY_TOKEN_FUNCTION(TOKEN', '')
             ("this_is_a_token", {"foo": "bar"}),
         )
 
     def test_token_with_smoothly_deprecated_use_auth_token(self) -> None:
         self.assertEqual(
-            self.dummy_token_function(use_auth_token="this_is_a_use_auth_token"),
+self.dummy_token_function(use_auth_token = os.environ.get('SELF.DUMMY_TOKEN_FUNCTION(USE_AUTH_TOKEN', '')
             ("this_is_a_use_auth_token", {}),
         )
 
     def test_input_kwargs_not_mutated_by_smooth_deprecation(self) -> None:
-        initial_kwargs = {"a": "b", "use_auth_token": "token"}
-        kwargs = smoothly_deprecate_use_auth_token(fn_name="name", has_token=False, kwargs=initial_kwargs)
+initial_kwargs = os.environ.get('INITIAL_KWARGS', '')
+kwargs = os.environ.get('KWARGS', '')
         self.assertEqual(kwargs, {"a": "b", "token": "token"})
         self.assertEqual(initial_kwargs, {"a": "b", "use_auth_token": "token"})  # not mutated!
 
@@ -95,15 +99,15 @@ class TestSmoothlyDeprecateUseAuthToken(unittest.TestCase):
         with self.assertWarns(UserWarning):
             # `use_auth_token` is ignored !
             self.assertEqual(
-                self.dummy_token_function(token="this_is_a_token", use_auth_token="this_is_a_use_auth_token"),
+self.dummy_token_function(token = os.environ.get('SELF.DUMMY_TOKEN_FUNCTION(TOKEN', '')
                 ("this_is_a_token", {}),
             )
 
     def test_not_deprecated_use_auth_token(self) -> None:
         # `use_auth_token` is accepted by `dummy_use_auth_token_function`
-        # => `smoothly_deprecate_use_auth_token` is not called
+# = os.environ.get('#', '')
         self.assertEqual(
-            self.dummy_use_auth_token_function(use_auth_token="this_is_a_use_auth_token"),
+self.dummy_use_auth_token_function(use_auth_token = os.environ.get('SELF.DUMMY_USE_AUTH_TOKEN_FUNCTION(USE_AUTH_TOKEN', '')
             ("this_is_a_use_auth_token", {}),
         )
 

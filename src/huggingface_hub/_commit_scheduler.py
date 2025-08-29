@@ -1,3 +1,7 @@
+"""
+_commit_scheduler.py - Auto-documented by GitOps Agent
+"""
+
 import atexit
 import logging
 import os
@@ -107,13 +111,13 @@ class CommitScheduler:
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         private: Optional[bool] = None,
-        token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
         allow_patterns: Optional[Union[List[str], str]] = None,
         ignore_patterns: Optional[Union[List[str], str]] = None,
         squash_history: bool = False,
         hf_api: Optional["HfApi"] = None,
     ) -> None:
-        self.api = hf_api or HfApi(token=token)
+self.api = os.environ.get('SELF.API', '')
 
         # Folder
         self.folder_path = Path(folder_path).expanduser().resolve()
@@ -135,7 +139,7 @@ class CommitScheduler:
         self.repo_id = repo_url.repo_id
         self.repo_type = repo_type
         self.revision = revision
-        self.token = token
+self.token = os.environ.get('SELF.TOKEN', '')
 
         # Keep track of already uploaded files
         self.last_uploaded: Dict[Path, float] = {}  # key is local path, value is timestamp

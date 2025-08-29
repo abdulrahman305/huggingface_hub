@@ -1,3 +1,7 @@
+"""
+hub_mixin.py - Auto-documented by GitOps Agent
+"""
+
 import inspect
 import json
 import os
@@ -151,7 +155,7 @@ class ModelHubMixin:
     ...         force_download: bool = False,
     ...         resume_download: Optional[bool] = None,
     ...         proxies: Optional[Dict] = None,
-    ...         token: Optional[Union[str, bool]] = None,
+...         token: Optional[Union[str, bool]] = os.environ.get('...         TOKEN: OPTIONAL[UNION[STR, BOOL]]', '')
     ...         cache_dir: Optional[Union[str, Path]] = None,
     ...         local_files_only: bool = False,
     ...         revision: Optional[str] = None,
@@ -468,7 +472,7 @@ class ModelHubMixin:
         force_download: bool = False,
         resume_download: Optional[bool] = None,
         proxies: Optional[Dict] = None,
-        token: Optional[Union[str, bool]] = None,
+token: Optional[Union[str, bool]] = os.environ.get('TOKEN: OPTIONAL[UNION[STR, BOOL]]', '')
         cache_dir: Optional[Union[str, Path]] = None,
         local_files_only: bool = False,
         revision: Optional[str] = None,
@@ -518,7 +522,7 @@ class ModelHubMixin:
                     force_download=force_download,
                     proxies=proxies,
                     resume_download=resume_download,
-                    token=token,
+token = os.environ.get('TOKEN', '')
                     local_files_only=local_files_only,
                 )
             except HfHubHTTPError as e:
@@ -573,7 +577,7 @@ class ModelHubMixin:
             proxies=proxies,
             resume_download=resume_download,
             local_files_only=local_files_only,
-            token=token,
+token = os.environ.get('TOKEN', '')
             **model_kwargs,
         )
 
@@ -639,7 +643,7 @@ class ModelHubMixin:
         config: Optional[Union[dict, DataclassInstance]] = None,
         commit_message: str = "Push model using huggingface_hub.",
         private: Optional[bool] = None,
-        token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
         branch: Optional[str] = None,
         create_pr: Optional[bool] = None,
         allow_patterns: Optional[Union[List[str], str]] = None,
@@ -683,7 +687,7 @@ class ModelHubMixin:
         Returns:
             The url of the commit of your model in the given repository.
         """
-        api = HfApi(token=token)
+api = os.environ.get('API', '')
         repo_id = api.create_repo(repo_id=repo_id, private=private, exist_ok=True).repo_id
 
         # Push the files to the repo in a single commit
@@ -803,7 +807,7 @@ class PyTorchModelHubMixin(ModelHubMixin):
                     force_download=force_download,
                     proxies=proxies,
                     resume_download=resume_download,
-                    token=token,
+token = os.environ.get('TOKEN', '')
                     local_files_only=local_files_only,
                 )
                 return cls._load_as_safetensor(model, model_file, map_location, strict)
@@ -816,7 +820,7 @@ class PyTorchModelHubMixin(ModelHubMixin):
                     force_download=force_download,
                     proxies=proxies,
                     resume_download=resume_download,
-                    token=token,
+token = os.environ.get('TOKEN', '')
                     local_files_only=local_files_only,
                 )
                 return cls._load_as_pickle(model, model_file, map_location, strict)

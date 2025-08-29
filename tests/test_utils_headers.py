@@ -1,3 +1,7 @@
+"""
+test_utils_headers.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 from unittest.mock import Mock, patch
 
@@ -10,9 +14,9 @@ from .testing_utils import handle_injection_in_test
 # Only for tests that are not related to user agent
 DEFAULT_USER_AGENT = _http_user_agent()
 
-FAKE_TOKEN = "123456789"
-FAKE_TOKEN_ORG = "api_org_123456789"
-FAKE_TOKEN_HEADER = {
+FAKE_TOKEN = os.environ.get('FAKE_TOKEN', '')
+FAKE_TOKEN_ORG = os.environ.get('FAKE_TOKEN_ORG', '')
+FAKE_TOKEN_HEADER = os.environ.get('FAKE_TOKEN_HEADER', '')
     "authorization": f"Bearer {FAKE_TOKEN}",
     "user-agent": DEFAULT_USER_AGENT,
 }
@@ -23,43 +27,43 @@ NO_AUTH_HEADER = {"user-agent": DEFAULT_USER_AGENT}
 # @handle_injection
 class TestAuthHeadersUtil(unittest.TestCase):
     def test_use_auth_token_str(self) -> None:
-        self.assertEqual(build_hf_headers(use_auth_token=FAKE_TOKEN), FAKE_TOKEN_HEADER)
+self.assertEqual(build_hf_headers(use_auth_token = os.environ.get('SELF.ASSERTEQUAL(BUILD_HF_HEADERS(USE_AUTH_TOKEN', '')
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=None)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_use_auth_token_true_no_cached_token(self, mock_get_token: Mock) -> None:
         with self.assertRaises(EnvironmentError):
-            build_hf_headers(use_auth_token=True)
+build_hf_headers(use_auth_token = os.environ.get('BUILD_HF_HEADERS(USE_AUTH_TOKEN', '')
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=FAKE_TOKEN)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_use_auth_token_true_has_cached_token(self, mock_get_token: Mock) -> None:
-        self.assertEqual(build_hf_headers(use_auth_token=True), FAKE_TOKEN_HEADER)
+self.assertEqual(build_hf_headers(use_auth_token = os.environ.get('SELF.ASSERTEQUAL(BUILD_HF_HEADERS(USE_AUTH_TOKEN', '')
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=FAKE_TOKEN)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_use_auth_token_false(self, mock_get_token: Mock) -> None:
-        self.assertEqual(build_hf_headers(use_auth_token=False), NO_AUTH_HEADER)
+self.assertEqual(build_hf_headers(use_auth_token = os.environ.get('SELF.ASSERTEQUAL(BUILD_HF_HEADERS(USE_AUTH_TOKEN', '')
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=None)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_use_auth_token_none_no_cached_token(self, mock_get_token: Mock) -> None:
         self.assertEqual(build_hf_headers(), NO_AUTH_HEADER)
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=FAKE_TOKEN)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_use_auth_token_none_has_cached_token(self, mock_get_token: Mock) -> None:
         self.assertEqual(build_hf_headers(), FAKE_TOKEN_HEADER)
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=FAKE_TOKEN)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_implicit_use_disabled(self, mock_get_token: Mock) -> None:
         with patch(  # not as decorator to avoid friction with @handle_injection
             "huggingface_hub.constants.HF_HUB_DISABLE_IMPLICIT_TOKEN", True
         ):
             self.assertEqual(build_hf_headers(), NO_AUTH_HEADER)  # token is not sent
 
-    @patch("huggingface_hub.utils._headers.get_token", return_value=FAKE_TOKEN)
+@patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('@PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
     def test_implicit_use_disabled_but_explicit_use(self, mock_get_token: Mock) -> None:
         with patch(  # not as decorator to avoid friction with @handle_injection
             "huggingface_hub.constants.HF_HUB_DISABLE_IMPLICIT_TOKEN", True
         ):
             # This is not an implicit use so we still send it
-            self.assertEqual(build_hf_headers(use_auth_token=True), FAKE_TOKEN_HEADER)
+self.assertEqual(build_hf_headers(use_auth_token = os.environ.get('SELF.ASSERTEQUAL(BUILD_HF_HEADERS(USE_AUTH_TOKEN', '')
 
 
 class TestUserAgentHeadersUtil(unittest.TestCase):

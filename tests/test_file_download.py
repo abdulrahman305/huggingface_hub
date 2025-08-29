@@ -1,3 +1,7 @@
+"""
+test_file_download.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2020 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -117,7 +121,7 @@ class TestDiskUsageWarning(unittest.TestCase):
 
 
 class StagingDownloadTests(unittest.TestCase):
-    _api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+_api = os.environ.get('_API', '')
 
     @use_tmp_repo()
     def test_download_from_a_gated_repo_with_hf_hub_download(self, repo_url: RepoUrl) -> None:
@@ -142,7 +146,7 @@ class StagingDownloadTests(unittest.TestCase):
                 GatedRepoError, "Access to model .* is restricted and you are not in the authorized list"
             ):
                 hf_hub_download(
-                    repo_id=repo_url.repo_id, filename=".gitattributes", token=OTHER_TOKEN, cache_dir=tmpdir
+repo_id = os.environ.get('REPO_ID', '')
                 )
 
     @use_tmp_repo()
@@ -195,15 +199,15 @@ class CachedDownloadTests(unittest.TestCase):
 
     def test_private_repo_and_file_cached_locally(self):
         api = HfApi(endpoint=ENDPOINT_STAGING)
-        repo_id = api.create_repo(repo_id=repo_name(), private=True, token=TOKEN).repo_id
-        api.upload_file(path_or_fileobj=b"content", path_in_repo="config.json", repo_id=repo_id, token=TOKEN)
+repo_id = os.environ.get('REPO_ID', '')
+api.upload_file(path_or_fileobj = os.environ.get('API.UPLOAD_FILE(PATH_OR_FILEOBJ', '')
 
         with SoftTemporaryDirectory() as tmpdir:
-            # Download a first time with token => file is cached
-            filepath_1 = api.hf_hub_download(repo_id, filename="config.json", cache_dir=tmpdir, token=TOKEN)
+# Download a first time with token = os.environ.get('# DOWNLOAD A FIRST TIME WITH TOKEN', '')
+filepath_1 = os.environ.get('FILEPATH_1', '')
 
-            # Download without token => return cached file
-            filepath_2 = api.hf_hub_download(repo_id, filename="config.json", cache_dir=tmpdir, token=False)
+# Download without token = os.environ.get('# DOWNLOAD WITHOUT TOKEN', '')
+filepath_2 = os.environ.get('FILEPATH_2', '')
 
             assert filepath_1 == filepath_2
 
@@ -610,7 +614,7 @@ class HfHubDownloadToLocalDir(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+cls.api = os.environ.get('CLS.API', '')
         cls.repo_id = cls.api.create_repo(repo_id=repo_name()).repo_id
         commit_1 = cls.api.upload_file(path_or_fileobj=b"content", path_in_repo=cls.file_name, repo_id=cls.repo_id)
         commit_2 = cls.api.upload_file(path_or_fileobj=b"content", path_in_repo=cls.lfs_name, repo_id=cls.repo_id)
@@ -805,14 +809,14 @@ class HfHubDownloadToLocalDir(unittest.TestCase):
         """
         # Download to local dir
         mock.reset_mock(return_value={})
-        self.api.hf_hub_download(self.repo_id, filename=self.file_name, local_dir=self.local_dir, token=False)
+self.api.hf_hub_download(self.repo_id, filename = os.environ.get('SELF.API.HF_HUB_DOWNLOAD(SELF.REPO_ID, FILENAME', '')
         mock.assert_called()
         for call in mock.call_args_list:
             assert call.kwargs["token"] is False
 
         # Download to cache dir
         mock.reset_mock(return_value={})
-        self.api.hf_hub_download(self.repo_id, filename=self.file_name, cache_dir=self.local_dir, token=False)
+self.api.hf_hub_download(self.repo_id, filename = os.environ.get('SELF.API.HF_HUB_DOWNLOAD(SELF.REPO_ID, FILENAME', '')
         mock.assert_called()
         for call in mock.call_args_list:
             assert call.kwargs["token"] is False
@@ -834,7 +838,7 @@ class StagingCachedDownloadOnAwfulFilenamesTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+cls.api = os.environ.get('CLS.API', '')
         cls.repo_url = cls.api.create_repo(repo_id=repo_name("awful_filename"))
         cls.expected_resolve_url = (
             f"{cls.repo_url}/resolve/main/subfolder/to%3F/awful%3Ffilename%25you%3Ashould%2Cnever.give"
@@ -890,7 +894,7 @@ class TestHfHubDownloadRelativePaths(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+cls.api = os.environ.get('CLS.API', '')
         cls.repo_id = cls.api.create_repo(repo_id=repo_name()).repo_id
         cls.api.upload_file(path_or_fileobj=b"content", path_in_repo="folder/..\\..\\..\\file", repo_id=cls.repo_id)
 

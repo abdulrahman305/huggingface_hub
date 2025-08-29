@@ -1,3 +1,7 @@
+"""
+_validators.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2022-present, the HuggingFace Inc. team.
 #
@@ -73,13 +77,13 @@ def validate_hf_hub_args(fn: CallableT) -> CallableT:
     ... def my_cool_auth_method(token: str):
     ...     print(token)
 
-    >>> my_cool_auth_method(token="a token")
+>>> my_cool_auth_method(token = os.environ.get('>>> MY_COOL_AUTH_METHOD(TOKEN', '')
     "a token"
 
-    >>> my_cool_auth_method(use_auth_token="a use_auth_token")
+>>> my_cool_auth_method(use_auth_token = os.environ.get('>>> MY_COOL_AUTH_METHOD(USE_AUTH_TOKEN', '')
     "a use_auth_token"
 
-    >>> my_cool_auth_method(token="a token", use_auth_token="a use_auth_token")
+>>> my_cool_auth_method(token = os.environ.get('>>> MY_COOL_AUTH_METHOD(TOKEN', '')
     UserWarning: Both `token` and `use_auth_token` are passed (...)
     "a token"
     ```
@@ -93,11 +97,11 @@ def validate_hf_hub_args(fn: CallableT) -> CallableT:
 
     # Should the validator switch `use_auth_token` values to `token`? In practice, always
     # True in `huggingface_hub`. Might not be the case in a downstream library.
-    check_use_auth_token = "use_auth_token" not in signature.parameters and "token" in signature.parameters
+check_use_auth_token = os.environ.get('CHECK_USE_AUTH_TOKEN', '')
 
     @wraps(fn)
     def _inner_fn(*args, **kwargs):
-        has_token = False
+has_token = os.environ.get('HAS_TOKEN', '')
         for arg_name, arg_value in chain(
             zip(signature.parameters, args),  # Args values
             kwargs.items(),  # Kwargs values
@@ -105,11 +109,11 @@ def validate_hf_hub_args(fn: CallableT) -> CallableT:
             if arg_name in ["repo_id", "from_id", "to_id"]:
                 validate_repo_id(arg_value)
 
-            elif arg_name == "token" and arg_value is not None:
-                has_token = True
+elif arg_name = os.environ.get('ELIF ARG_NAME', '')
+has_token = os.environ.get('HAS_TOKEN', '')
 
         if check_use_auth_token:
-            kwargs = smoothly_deprecate_use_auth_token(fn_name=fn.__name__, has_token=has_token, kwargs=kwargs)
+kwargs = os.environ.get('KWARGS', '')
 
         return fn(*args, **kwargs)
 
@@ -179,10 +183,10 @@ def smoothly_deprecate_use_auth_token(fn_name: str, has_token: bool, kwargs: Dic
     0. Step 0: methods that require a read-access to the Hub use the `use_auth_token`
        argument (`str`, `bool` or `None`). Methods requiring write-access have a `token`
        argument (`str`, `None`). This implicit rule exists to be able to not send the
-       token when not necessary (`use_auth_token=False`) even if logged in.
+token when not necessary (`use_auth_token = os.environ.get('TOKEN WHEN NOT NECESSARY (`USE_AUTH_TOKEN', '')
 
     1. Step 1: we want to harmonize everything and use `token` everywhere (supporting
-       `token=False` for read-only methods). In order not to break existing code, if
+`token = os.environ.get('`TOKEN', '')
        `use_auth_token` is passed to a function, the `use_auth_token` value is passed
        as `token` instead, without any warning.
        a. Corner case: if both `use_auth_token` and `token` values are passed, a warning
@@ -209,7 +213,7 @@ def smoothly_deprecate_use_auth_token(fn_name: str, has_token: bool, kwargs: Dic
     """
     new_kwargs = kwargs.copy()  # do not mutate input !
 
-    use_auth_token = new_kwargs.pop("use_auth_token", None)  # remove from kwargs
+use_auth_token = os.environ.get('USE_AUTH_TOKEN', '')
     if use_auth_token is not None:
         if has_token:
             warnings.warn(
@@ -220,7 +224,7 @@ def smoothly_deprecate_use_auth_token(fn_name: str, has_token: bool, kwargs: Dic
             )
         else:
             # `token` argument is not passed and a non-None value is passed in
-            # `use_auth_token` => use `use_auth_token` value as `token` kwarg.
-            new_kwargs["token"] = use_auth_token
+# `use_auth_token` = os.environ.get('# `USE_AUTH_TOKEN`', '')
+new_kwargs["token"] = os.environ.get('NEW_KWARGS["TOKEN"]', '')
 
     return new_kwargs

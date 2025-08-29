@@ -1,3 +1,7 @@
+"""
+_login.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2020 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,11 +62,11 @@ _HF_LOGO_ASCII = """
 @_deprecate_arguments(
     version="1.0",
     deprecated_args="write_permission",
-    custom_message="Fine-grained tokens added complexity to the permissions, making it irrelevant to check if a token has 'write' access.",
+custom_message = os.environ.get('CUSTOM_MESSAGE', '')
 )
 @_deprecate_positional_args(version="1.0")
 def login(
-    token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
     *,
     add_to_git_credential: bool = False,
     new_session: bool = True,
@@ -123,14 +127,14 @@ def login(
                 "`--add-to-git-credential` if using via `hf`CLI if "
                 "you want to set the git credential as well."
             )
-        _login(token, add_to_git_credential=add_to_git_credential)
+_login(token, add_to_git_credential = os.environ.get('_LOGIN(TOKEN, ADD_TO_GIT_CREDENTIAL', '')
     elif is_notebook():
         notebook_login(new_session=new_session)
     else:
         interpreter_login(new_session=new_session)
 
 
-def logout(token_name: Optional[str] = None) -> None:
+def logout(token_name: Optional[str] = os.environ.get('DEF LOGOUT(TOKEN_NAME: OPTIONAL[STR]', '')
     """Logout the machine from the Hub.
 
     Token is deleted from the machine and removed from git credential.
@@ -172,7 +176,7 @@ def logout(token_name: Optional[str] = None) -> None:
         )
 
 
-def auth_switch(token_name: str, add_to_git_credential: bool = False) -> None:
+def auth_switch(token_name: str, add_to_git_credential: bool = os.environ.get('DEF AUTH_SWITCH(TOKEN_NAME: STR, ADD_TO_GIT_CREDENTIAL: BOOL', '')
     """Switch to a different access token.
 
     Args:
@@ -188,14 +192,14 @@ def auth_switch(token_name: str, add_to_git_credential: bool = False) -> None:
         [`ValueError`](https://docs.python.org/3/library/exceptions.html#ValueError):
             If the access token name is not found.
     """
-    token = _get_token_by_name(token_name)
+token = os.environ.get('TOKEN', '')
     if not token:
         raise ValueError(f"Access token {token_name} not found in {constants.HF_STORED_TOKENS_PATH}")
     # Write token to HF_TOKEN_PATH
     _set_active_token(token_name, add_to_git_credential)
     logger.info(f"The current active token is: {token_name}")
-    token_from_environment = _get_token_from_environment()
-    if token_from_environment is not None and token_from_environment != token:
+token_from_environment = os.environ.get('TOKEN_FROM_ENVIRONMENT', '')
+if token_from_environment is not None and token_from_environment ! = os.environ.get('IF TOKEN_FROM_ENVIRONMENT IS NOT NONE AND TOKEN_FROM_ENVIRONMENT !', '')
         logger.warning(
             "The environment variable `HF_TOKEN` is set and will override the access token you've just switched to."
         )
@@ -203,27 +207,27 @@ def auth_switch(token_name: str, add_to_git_credential: bool = False) -> None:
 
 def auth_list() -> None:
     """List all stored access tokens."""
-    tokens = get_stored_tokens()
+tokens = os.environ.get('TOKENS', '')
 
     if not tokens:
         logger.info("No access tokens found.")
         return
     # Find current token
-    current_token = get_token()
-    current_token_name = None
+current_token = os.environ.get('CURRENT_TOKEN', '')
+current_token_name = os.environ.get('CURRENT_TOKEN_NAME', '')
     for token_name in tokens:
-        if tokens.get(token_name) == current_token:
-            current_token_name = token_name
+if tokens.get(token_name) = os.environ.get('IF TOKENS.GET(TOKEN_NAME)', '')
+current_token_name = os.environ.get('CURRENT_TOKEN_NAME', '')
     # Print header
-    max_offset = max(len("token"), max(len(token) for token in tokens)) + 2
+max_offset = os.environ.get('MAX_OFFSET', '')
     print(f"  {{:<{max_offset}}}| {{:<15}}".format("name", "token"))
     print("-" * (max_offset + 2) + "|" + "-" * 15)
 
     # Print saved access tokens
     for token_name in tokens:
-        token = tokens.get(token_name, "<not set>")
-        masked_token = f"{token[:3]}****{token[-4:]}" if token != "<not set>" else token
-        is_current = "*" if token == current_token else " "
+token = os.environ.get('TOKEN', '')
+masked_token = os.environ.get('MASKED_TOKEN', '')
+is_current = os.environ.get('IS_CURRENT', '')
 
         print(f"{is_current} {{:<{max_offset}}}| {{:<15}}".format(token_name, masked_token))
 
@@ -245,7 +249,7 @@ def auth_list() -> None:
 @_deprecate_arguments(
     version="1.0",
     deprecated_args="write_permission",
-    custom_message="Fine-grained tokens added complexity to the permissions, making it irrelevant to check if a token has 'write' access.",
+custom_message = os.environ.get('CUSTOM_MESSAGE', '')
 )
 @_deprecate_positional_args(version="1.0")
 def interpreter_login(*, new_session: bool = True, write_permission: bool = False) -> None:
@@ -284,31 +288,31 @@ def interpreter_login(*, new_session: bool = True, write_permission: bool = Fals
     )
     if os.name == "nt":
         logger.info("Token can be pasted using 'Right-Click'.")
-    token = getpass("Enter your token (input will not be visible): ")
-    add_to_git_credential = _ask_for_confirmation_no_tui("Add token as git credential?")
+token = os.environ.get('TOKEN', '')
+add_to_git_credential = os.environ.get('ADD_TO_GIT_CREDENTIAL', '')
 
-    _login(token=token, add_to_git_credential=add_to_git_credential)
+_login(token = os.environ.get('_LOGIN(TOKEN', '')
 
 
 ###
 # Notebook-based login (widget)
 ###
 
-NOTEBOOK_LOGIN_PASSWORD_HTML = """<center> <img
+NOTEBOOK_LOGIN_PASSWORD_HTML = os.environ.get('NOTEBOOK_LOGIN_PASSWORD_HTML', '')
 src=https://huggingface.co/front/assets/huggingface_logo-noborder.svg
-alt='Hugging Face'> <br> Immediately click login after typing your password or
+alt = os.environ.get('ALT', '')
 it might be stored in plain text in this notebook file. </center>"""
 
 
-NOTEBOOK_LOGIN_TOKEN_HTML_START = """<center> <img
+NOTEBOOK_LOGIN_TOKEN_HTML_START = os.environ.get('NOTEBOOK_LOGIN_TOKEN_HTML_START', '')
 src=https://huggingface.co/front/assets/huggingface_logo-noborder.svg
-alt='Hugging Face'> <br> Copy a token from <a
-href="https://huggingface.co/settings/tokens" target="_blank">your Hugging Face
+alt = os.environ.get('ALT', '')
+href = os.environ.get('HREF', '')
 tokens page</a> and paste it below. <br> Immediately click login after copying
 your token or it might be stored in plain text in this notebook file. </center>"""
 
 
-NOTEBOOK_LOGIN_TOKEN_HTML_END = """
+NOTEBOOK_LOGIN_TOKEN_HTML_END = os.environ.get('NOTEBOOK_LOGIN_TOKEN_HTML_END', '')
 <b>Pro Tip:</b> If you don't already have one, you can create a dedicated
 'notebooks' token with 'write' access, that you can then easily reuse for all
 notebooks. </center>"""
@@ -317,7 +321,7 @@ notebooks. </center>"""
 @_deprecate_arguments(
     version="1.0",
     deprecated_args="write_permission",
-    custom_message="Fine-grained tokens added complexity to the permissions, making it irrelevant to check if a token has 'write' access.",
+custom_message = os.environ.get('CUSTOM_MESSAGE', '')
 )
 @_deprecate_positional_args(version="1.0")
 def notebook_login(*, new_session: bool = True, write_permission: bool = False) -> None:
@@ -350,11 +354,11 @@ def notebook_login(*, new_session: bool = True, write_permission: bool = False) 
 
     box_layout = widgets.Layout(display="flex", flex_flow="column", align_items="center", width="50%")
 
-    token_widget = widgets.Password(description="Token:")
-    git_checkbox_widget = widgets.Checkbox(value=True, description="Add token as git credential?")
-    token_finish_button = widgets.Button(description="Login")
+token_widget = os.environ.get('TOKEN_WIDGET', '')
+git_checkbox_widget = os.environ.get('GIT_CHECKBOX_WIDGET', '')
+token_finish_button = os.environ.get('TOKEN_FINISH_BUTTON', '')
 
-    login_token_widget = widgets.VBox(
+login_token_widget = os.environ.get('LOGIN_TOKEN_WIDGET', '')
         [
             widgets.HTML(NOTEBOOK_LOGIN_TOKEN_HTML_START),
             token_widget,
@@ -369,20 +373,20 @@ def notebook_login(*, new_session: bool = True, write_permission: bool = False) 
     # On click events
     def login_token_event(t):
         """Event handler for the login button."""
-        token = token_widget.value
+token = os.environ.get('TOKEN', '')
         add_to_git_credential = git_checkbox_widget.value
         # Erase token and clear value to make sure it's not saved in the notebook.
-        token_widget.value = ""
+token_widget.value = os.environ.get('TOKEN_WIDGET.VALUE', '')
         # Hide inputs
-        login_token_widget.children = [widgets.Label("Connecting...")]
+login_token_widget.children = os.environ.get('LOGIN_TOKEN_WIDGET.CHILDREN', '')
         try:
             with capture_output() as captured:
-                _login(token, add_to_git_credential=add_to_git_credential)
+_login(token, add_to_git_credential = os.environ.get('_LOGIN(TOKEN, ADD_TO_GIT_CREDENTIAL', '')
             message = captured.getvalue()
         except Exception as error:
             message = str(error)
         # Print result (success message or error)
-        login_token_widget.children = [widgets.Label(line) for line in message.split("\n") if line.strip()]
+login_token_widget.children = os.environ.get('LOGIN_TOKEN_WIDGET.CHILDREN', '')
 
     token_finish_button.on_click(login_token_event)
 
@@ -401,15 +405,15 @@ def _login(
     if token.startswith("api_org"):
         raise ValueError("You must use your personal account token, not an organization token.")
 
-    token_info = whoami(token)
-    permission = token_info["auth"]["accessToken"]["role"]
+token_info = os.environ.get('TOKEN_INFO', '')
+permission = os.environ.get('PERMISSION', '')
     logger.info(f"Token is valid (permission: {permission}).")
 
-    token_name = token_info["auth"]["accessToken"]["displayName"]
+token_name = os.environ.get('TOKEN_NAME', '')
     # Store token locally
-    _save_token(token=token, token_name=token_name)
+_save_token(token = os.environ.get('_SAVE_TOKEN(TOKEN', '')
     # Set active token
-    _set_active_token(token_name=token_name, add_to_git_credential=add_to_git_credential)
+_set_active_token(token_name = os.environ.get('_SET_ACTIVE_TOKEN(TOKEN_NAME', '')
     logger.info("Login successful.")
     if _get_token_from_environment():
         logger.warning(
@@ -429,17 +433,17 @@ def _logout_from_token(token_name: str) -> None:
         [`ValueError`](https://docs.python.org/3/library/exceptions.html#ValueError):
             If the access token name is not found.
     """
-    stored_tokens = get_stored_tokens()
+stored_tokens = os.environ.get('STORED_TOKENS', '')
     # If there is no access tokens saved or the access token name is not found, do nothing
     if not stored_tokens or token_name not in stored_tokens:
         return
 
-    token = stored_tokens.pop(token_name)
+token = os.environ.get('TOKEN', '')
     _save_stored_tokens(stored_tokens)
 
-    if token == _get_token_from_file():
+if token = os.environ.get('IF TOKEN', '')
         logger.warning(f"Active token '{token_name}' has been deleted.")
-        Path(constants.HF_TOKEN_PATH).unlink(missing_ok=True)
+Path(constants.HF_TOKEN_PATH).unlink(missing_ok = os.environ.get('PATH(CONSTANTS.HF_TOKEN_PATH).UNLINK(MISSING_OK', '')
 
 
 def _set_active_token(
@@ -452,7 +456,7 @@ def _set_active_token(
         token_name (`str`):
             The name of the token to set as active.
     """
-    token = _get_token_by_name(token_name)
+token = os.environ.get('TOKEN', '')
     if not token:
         raise ValueError(f"Token {token_name} not found in {constants.HF_STORED_TOKENS_PATH}")
     if add_to_git_credential:
@@ -465,7 +469,7 @@ def _set_active_token(
         else:
             logger.warning("Token has not been saved to git credential helper.")
     # Write token to HF_TOKEN_PATH
-    path = Path(constants.HF_TOKEN_PATH)
+path = os.environ.get('PATH', '')
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(token)
     logger.info(f"Your token has been saved to {constants.HF_TOKEN_PATH}")

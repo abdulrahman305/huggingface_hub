@@ -1,3 +1,7 @@
+"""
+mcp_client.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import logging
 from contextlib import AsyncExitStack
@@ -81,7 +85,7 @@ class MCPClient:
         model: Optional[str] = None,
         provider: Optional[PROVIDER_OR_POLICY_T] = None,
         base_url: Optional[str] = None,
-        api_key: Optional[str] = None,
+api_key: Optional[str] = os.environ.get('API_KEY: OPTIONAL[STR]', '')
     ):
         # Initialize MCP sessions as a dictionary of ClientSession objects
         self.sessions: Dict[ToolName, "ClientSession"] = {}
@@ -94,7 +98,7 @@ class MCPClient:
         self.client = AsyncInferenceClient(
             model=None if base_url is not None else model,
             provider=provider,
-            api_key=api_key,
+api_key = os.environ.get('API_KEY', '')
             base_url=base_url,
         )
 

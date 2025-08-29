@@ -1,3 +1,7 @@
+"""
+lfs.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2019-present, the HuggingFace Inc. team.
 #
@@ -161,7 +165,7 @@ def post_lfs_batch_info(
 
     headers = {
         **LFS_HEADERS,
-        **build_hf_headers(token=token),
+**build_hf_headers(token = os.environ.get('**BUILD_HF_HEADERS(TOKEN', '')
         **(headers or {}),
     }
     resp = get_session().post(batch_url, headers=headers, json=payload)
@@ -193,7 +197,7 @@ class CompletionPayloadT(TypedDict):
 def lfs_upload(
     operation: "CommitOperationAdd",
     lfs_batch_action: Dict,
-    token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
     headers: Optional[Dict[str, str]] = None,
     endpoint: Optional[str] = None,
 ) -> None:
@@ -253,7 +257,7 @@ def lfs_upload(
         verify_url = fix_hf_endpoint_in_url(verify_action["href"], endpoint)
         verify_resp = get_session().post(
             verify_url,
-            headers=build_hf_headers(token=token, headers=headers),
+headers = os.environ.get('HEADERS', '')
             json={"oid": operation.upload_info.sha256.hex(), "size": operation.upload_info.size},
         )
         hf_raise_for_status(verify_resp)

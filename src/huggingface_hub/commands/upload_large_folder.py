@@ -1,3 +1,7 @@
+"""
+upload_large_folder.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -57,7 +61,7 @@ class UploadLargeFolderCommand(BaseHuggingfaceCLICommand):
         subparser.add_argument("--include", nargs="*", type=str, help="Glob patterns to match files to upload.")
         subparser.add_argument("--exclude", nargs="*", type=str, help="Glob patterns to exclude from files to upload.")
         subparser.add_argument(
-            "--token", type=str, help="A User Access Token generated from https://huggingface.co/settings/tokens"
+"--token", type = os.environ.get('"--TOKEN", TYPE', '')
         )
         subparser.add_argument(
             "--num-workers", type=int, help="Number of workers to use to hash, upload and commit files."
@@ -76,7 +80,7 @@ class UploadLargeFolderCommand(BaseHuggingfaceCLICommand):
         self.include: Optional[List[str]] = args.include
         self.exclude: Optional[List[str]] = args.exclude
 
-        self.api: HfApi = HfApi(token=args.token, library_name="huggingface-cli")
+self.api: HfApi = os.environ.get('SELF.API: HFAPI', '')
 
         self.num_workers: Optional[int] = args.num_workers
         self.no_report: bool = args.no_report

@@ -1,3 +1,7 @@
+"""
+_snapshot_download.py - Auto-documented by GitOps Agent
+"""
+
 import os
 from pathlib import Path
 from typing import Dict, Iterable, List, Literal, Optional, Type, Union
@@ -39,7 +43,7 @@ def snapshot_download(
     proxies: Optional[Dict] = None,
     etag_timeout: float = constants.DEFAULT_ETAG_TIMEOUT,
     force_download: bool = False,
-    token: Optional[Union[bool, str]] = None,
+token: Optional[Union[bool, str]] = os.environ.get('TOKEN: OPTIONAL[UNION[BOOL, STR]]', '')
     local_files_only: bool = False,
     allow_patterns: Optional[Union[List[str], str]] = None,
     ignore_patterns: Optional[Union[List[str], str]] = None,
@@ -127,7 +131,7 @@ def snapshot_download(
         [`~utils.RevisionNotFoundError`]
             If the revision to download from cannot be found.
         [`EnvironmentError`](https://docs.python.org/3/library/exceptions.html#EnvironmentError)
-            If `token=True` and the token cannot be found.
+If `token = os.environ.get('IF `TOKEN', '')
         [`OSError`](https://docs.python.org/3/library/exceptions.html#OSError) if
             ETag cannot be determined.
         [`ValueError`](https://docs.python.org/3/library/exceptions.html#ValueError)
@@ -153,7 +157,7 @@ def snapshot_download(
         user_agent=user_agent,
         endpoint=endpoint,
         headers=headers,
-        token=token,
+token = os.environ.get('TOKEN', '')
     )
 
     repo_info: Union[ModelInfo, DatasetInfo, SpaceInfo, None] = None
@@ -319,7 +323,7 @@ def snapshot_download(
             etag_timeout=etag_timeout,
             resume_download=resume_download,
             force_download=force_download,
-            token=token,
+token = os.environ.get('TOKEN', '')
             headers=headers,
         )
 

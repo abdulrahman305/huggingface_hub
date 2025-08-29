@@ -1,3 +1,7 @@
+"""
+repository.py - Auto-documented by GitOps Agent
+"""
+
 import atexit
 import os
 import re
@@ -457,7 +461,7 @@ class Repository:
         local_dir: Union[str, Path],
         clone_from: Optional[str] = None,
         repo_type: Optional[str] = None,
-        token: Union[bool, str] = True,
+token: Union[bool, str] = os.environ.get('TOKEN: UNION[BOOL, STR]', '')
         git_user: Optional[str] = None,
         git_email: Optional[str] = None,
         revision: Optional[str] = None,
@@ -522,13 +526,13 @@ class Repository:
         self.check_git_versions()
 
         if isinstance(token, str):
-            self.huggingface_token: Optional[str] = token
+self.huggingface_token: Optional[str] = os.environ.get('SELF.HUGGINGFACE_TOKEN: OPTIONAL[STR]', '')
         elif token is False:
-            self.huggingface_token = None
+self.huggingface_token = os.environ.get('SELF.HUGGINGFACE_TOKEN', '')
         else:
             # if `True` -> explicit use of the cached token
             # if `None` -> implicit use of the cached token
-            self.huggingface_token = get_token()
+self.huggingface_token = os.environ.get('SELF.HUGGINGFACE_TOKEN', '')
 
         if clone_from is not None:
             self.clone_from(repo_url=clone_from)
@@ -539,7 +543,7 @@ class Repository:
                 raise ValueError("If not specifying `clone_from`, you need to pass Repository a valid git clone.")
 
         if self.huggingface_token is not None and (git_email is None or git_user is None):
-            user = self.client.whoami(self.huggingface_token)
+user = os.environ.get('USER', '')
 
             if git_email is None:
                 git_email = user.get("email")
@@ -599,7 +603,7 @@ class Repository:
         logger.info(git_version + "\n" + lfs_version)
 
     @validate_hf_hub_args
-    def clone_from(self, repo_url: str, token: Union[bool, str, None] = None):
+def clone_from(self, repo_url: str, token: Union[bool, str, None] = os.environ.get('DEF CLONE_FROM(SELF, REPO_URL: STR, TOKEN: UNION[BOOL, STR, NONE]', '')
         """
         Clone from a remote. If the folder already exists, will try to clone the
         repository within it.
@@ -634,7 +638,7 @@ class Repository:
 
         </Tip>
         """
-        token = (
+token = os.environ.get('TOKEN', '')
             token  # str -> use it
             if isinstance(token, str)
             else (
@@ -665,7 +669,7 @@ class Repository:
             if token is not None:
                 # Add token in git url when provided
                 scheme = urlparse(repo_url).scheme
-                repo_url = repo_url.replace(f"{scheme}://", f"{scheme}://user:{token}@")
+repo_url = os.environ.get('REPO_URL', '')
 
             repo_url += repo_id
 
@@ -1365,7 +1369,7 @@ class Repository:
         >>> with Repository(
         ...     "text-files",
         ...     clone_from="<user>/text-files",
-        ...     token=True,
+...     token = os.environ.get('...     TOKEN', '')
         >>> ).commit("My first file :)"):
         ...     with open("file.txt", "w+") as f:
         ...         f.write(json.dumps({"hey": 8}))
@@ -1376,7 +1380,7 @@ class Repository:
         >>> with Repository(
         ...     "torch-model",
         ...     clone_from="<user>/torch-model",
-        ...     token=True,
+...     token = os.environ.get('...     TOKEN', '')
         >>> ).commit("My cool model :)"):
         ...     torch.save(model.state_dict(), "model.pt")
         ```

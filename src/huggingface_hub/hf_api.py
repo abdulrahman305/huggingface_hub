@@ -1,3 +1,7 @@
+"""
+hf_api.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2019-present, the HuggingFace Inc. team.
 #
@@ -888,7 +892,7 @@ class ModelInfo:
 
         self.tags = kwargs.pop("tags", None)
         self.pipeline_tag = kwargs.pop("pipeline_tag", None)
-        self.mask_token = kwargs.pop("mask_token", None)
+self.mask_token = os.environ.get('SELF.MASK_TOKEN', '')
         self.trending_score = kwargs.pop("trendingScore", None)
 
         card_data = kwargs.pop("cardData", None) or kwargs.pop("card_data", None)
@@ -1706,14 +1710,14 @@ class HfApi:
     def __init__(
         self,
         endpoint: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         library_name: Optional[str] = None,
         library_version: Optional[str] = None,
         user_agent: Union[Dict, str, None] = None,
         headers: Optional[Dict[str, str]] = None,
     ) -> None:
         self.endpoint = endpoint if endpoint is not None else constants.ENDPOINT
-        self.token = token
+self.token = os.environ.get('SELF.TOKEN', '')
         self.library_name = library_name
         self.library_version = library_version
         self.user_agent = user_agent
@@ -1761,7 +1765,7 @@ class HfApi:
         return self._thread_pool.submit(fn, *args, **kwargs)
 
     @validate_hf_hub_args
-    def whoami(self, token: Union[bool, str, None] = None) -> Dict:
+def whoami(self, token: Union[bool, str, None] = os.environ.get('DEF WHOAMI(SELF, TOKEN: UNION[BOOL, STR, NONE]', '')
         """
         Call HF API to know "whoami".
 
@@ -1773,26 +1777,26 @@ class HfApi:
                 To disable authentication, pass `False`.
         """
         # Get the effective token using the helper function get_token
-        effective_token = token or self.token or get_token() or True
+effective_token = os.environ.get('EFFECTIVE_TOKEN', '')
         r = get_session().get(
             f"{self.endpoint}/api/whoami-v2",
-            headers=self._build_hf_headers(token=effective_token),
+headers = os.environ.get('HEADERS', '')
         )
         try:
             hf_raise_for_status(r)
         except HTTPError as e:
             if e.response.status_code == 401:
-                error_message = "Invalid user token."
+error_message = os.environ.get('ERROR_MESSAGE', '')
                 # Check which token is the effective one and generate the error message accordingly
-                if effective_token == _get_token_from_google_colab():
-                    error_message += " The token from Google Colab vault is invalid. Please update it from the UI."
-                elif effective_token == _get_token_from_environment():
+if effective_token = os.environ.get('IF EFFECTIVE_TOKEN', '')
+error_message + = os.environ.get('ERROR_MESSAGE +', '')
+elif effective_token = os.environ.get('ELIF EFFECTIVE_TOKEN', '')
                     error_message += (
                         " The token from HF_TOKEN environment variable is invalid. "
                         "Note that HF_TOKEN takes precedence over `hf auth login`."
                     )
-                elif effective_token == _get_token_from_file():
-                    error_message += " The token stored is invalid. Please run `hf auth login` to update it."
+elif effective_token = os.environ.get('ELIF EFFECTIVE_TOKEN', '')
+error_message + = os.environ.get('ERROR_MESSAGE +', '')
                 raise HTTPError(error_message, request=e.request, response=e.response) from e
             raise
         return r.json()
@@ -1806,7 +1810,7 @@ class HfApi:
         ),
     )
     def get_token_permission(
-        self, token: Union[bool, str, None] = None
+self, token: Union[bool, str, None] = os.environ.get('SELF, TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Literal["read", "write", "fineGrained", None]:
         """
         Check if a given `token` is valid and return its permissions.
@@ -1833,7 +1837,7 @@ class HfApi:
             token passed, if token is invalid or if role is not returned by the server. This typically happens when the token is an OAuth token.
         """
         try:
-            return self.whoami(token=token)["auth"]["accessToken"]["role"]
+return self.whoami(token = os.environ.get('RETURN SELF.WHOAMI(TOKEN', '')
         except (LocalTokenNotFoundError, HTTPError, KeyError):
             return None
 
@@ -1882,7 +1886,7 @@ class HfApi:
         full: Optional[bool] = None,
         cardData: bool = False,
         fetch_config: bool = False,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         # Deprecated arguments - use `filter` instead
         language: Optional[Union[str, List[str]]] = None,
         library: Optional[Union[str, List[str]]] = None,
@@ -1996,7 +2000,7 @@ class HfApi:
             raise ValueError("`emissions_thresholds` were passed without setting `cardData=True`.")
 
         path = f"{self.endpoint}/api/models"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         params: Dict[str, Any] = {}
 
         # Build the filter list
@@ -2100,7 +2104,7 @@ class HfApi:
         # Additional data to fetch
         expand: Optional[List[ExpandDatasetProperty_T]] = None,
         full: Optional[bool] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         # Deprecated arguments - use `filter` instead
         tags: Optional[Union[str, List[str]]] = None,
     ) -> Iterable[DatasetInfo]:
@@ -2216,7 +2220,7 @@ class HfApi:
             raise ValueError("`expand` cannot be used if `full` is passed.")
 
         path = f"{self.endpoint}/api/datasets"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         params: Dict[str, Any] = {}
 
         # Build `filter` list
@@ -2306,7 +2310,7 @@ class HfApi:
         # Additional data to fetch
         expand: Optional[List[ExpandSpaceProperty_T]] = None,
         full: Optional[bool] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Iterable[SpaceInfo]:
         """
         List spaces hosted on the Huggingface Hub, given some filters.
@@ -2355,7 +2359,7 @@ class HfApi:
             raise ValueError("`expand` cannot be used if `full` is passed.")
 
         path = f"{self.endpoint}/api/spaces"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         params: Dict[str, Any] = {}
         if filter is not None:
             params["filter"] = filter
@@ -2403,7 +2407,7 @@ class HfApi:
         self,
         repo_id: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> None:
         """
@@ -2445,7 +2449,7 @@ class HfApi:
         if repo_type is None:
             repo_type = constants.REPO_TYPE_MODEL
         response = get_session().delete(
-            url=f"{self.endpoint}/api/{repo_type}s/{repo_id}/like", headers=self._build_hf_headers(token=token)
+url = os.environ.get('URL', '')
         )
         hf_raise_for_status(response)
 
@@ -2454,7 +2458,7 @@ class HfApi:
         self,
         user: Optional[str] = None,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> UserLikes:
         """
         List all public repos liked by a user on huggingface.co.
@@ -2496,7 +2500,7 @@ class HfApi:
         """
         # User is either provided explicitly or retrieved from current token.
         if user is None:
-            me = self.whoami(token=token)
+me = os.environ.get('ME', '')
             if me["type"] == "user":
                 user = me["name"]
             else:
@@ -2505,7 +2509,7 @@ class HfApi:
                 )
 
         path = f"{self.endpoint}/api/users/{user}/likes"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         likes = list(paginate(path, params={}, headers=headers))
         # Looping over a list of items similar to:
@@ -2531,7 +2535,7 @@ class HfApi:
         repo_id: str,
         *,
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Iterable[User]:
         """
         List all users who liked a given repo on the hugging Face Hub.
@@ -2561,7 +2565,7 @@ class HfApi:
         if repo_type is None:
             repo_type = constants.REPO_TYPE_MODEL
         path = f"{self.endpoint}/api/{repo_type}s/{repo_id}/likers"
-        for liker in paginate(path, params={}, headers=self._build_hf_headers(token=token)):
+for liker in paginate(path, params = os.environ.get('FOR LIKER IN PAGINATE(PATH, PARAMS', '')
             yield User(username=liker["user"], fullname=liker["fullname"], avatar_url=liker["avatarUrl"])
 
     @validate_hf_hub_args
@@ -2574,7 +2578,7 @@ class HfApi:
         securityStatus: Optional[bool] = None,
         files_metadata: bool = False,
         expand: Optional[List[ExpandModelProperty_T]] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> ModelInfo:
         """
         Get info on one specific model on huggingface.co
@@ -2624,7 +2628,7 @@ class HfApi:
         if expand and (securityStatus or files_metadata):
             raise ValueError("`expand` cannot be used if `securityStatus` or `files_metadata` are set.")
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         path = (
             f"{self.endpoint}/api/models/{repo_id}"
             if revision is None
@@ -2651,7 +2655,7 @@ class HfApi:
         timeout: Optional[float] = None,
         files_metadata: bool = False,
         expand: Optional[List[ExpandDatasetProperty_T]] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> DatasetInfo:
         """
         Get info on one specific dataset on huggingface.co.
@@ -2698,7 +2702,7 @@ class HfApi:
         if expand and files_metadata:
             raise ValueError("`expand` cannot be used if `files_metadata` is set.")
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         path = (
             f"{self.endpoint}/api/datasets/{repo_id}"
             if revision is None
@@ -2724,7 +2728,7 @@ class HfApi:
         timeout: Optional[float] = None,
         files_metadata: bool = False,
         expand: Optional[List[ExpandSpaceProperty_T]] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> SpaceInfo:
         """
         Get info on one specific Space on huggingface.co.
@@ -2771,7 +2775,7 @@ class HfApi:
         if expand and files_metadata:
             raise ValueError("`expand` cannot be used if `files_metadata` is set.")
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         path = (
             f"{self.endpoint}/api/spaces/{repo_id}"
             if revision is None
@@ -2798,7 +2802,7 @@ class HfApi:
         timeout: Optional[float] = None,
         files_metadata: bool = False,
         expand: Optional[Union[ExpandModelProperty_T, ExpandDatasetProperty_T, ExpandSpaceProperty_T]] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Union[ModelInfo, DatasetInfo, SpaceInfo]:
         """
         Get the info object for a given repo of a given type.
@@ -2856,7 +2860,7 @@ class HfApi:
         return method(
             repo_id,
             revision=revision,
-            token=token,
+token = os.environ.get('TOKEN', '')
             timeout=timeout,
             expand=expand,  # type: ignore[arg-type]
             files_metadata=files_metadata,
@@ -2868,7 +2872,7 @@ class HfApi:
         repo_id: str,
         *,
         repo_type: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> bool:
         """
         Checks if a repository exists on the Hugging Face Hub.
@@ -2899,7 +2903,7 @@ class HfApi:
             ```
         """
         try:
-            self.repo_info(repo_id=repo_id, repo_type=repo_type, token=token)
+self.repo_info(repo_id = os.environ.get('SELF.REPO_INFO(REPO_ID', '')
             return True
         except GatedRepoError:
             return True  # we don't have access but it exists
@@ -2913,7 +2917,7 @@ class HfApi:
         revision: str,
         *,
         repo_type: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> bool:
         """
         Checks if a specific revision exists on a repo on the Hugging Face Hub.
@@ -2946,7 +2950,7 @@ class HfApi:
             ```
         """
         try:
-            self.repo_info(repo_id=repo_id, revision=revision, repo_type=repo_type, token=token)
+self.repo_info(repo_id = os.environ.get('SELF.REPO_INFO(REPO_ID', '')
             return True
         except RevisionNotFoundError:
             return False
@@ -2961,7 +2965,7 @@ class HfApi:
         *,
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> bool:
         """
         Checks if a file exists in a repository on the Hugging Face Hub.
@@ -3003,8 +3007,8 @@ class HfApi:
         )
         try:
             if token is None:
-                token = self.token
-            get_hf_file_metadata(url, token=token)
+token = os.environ.get('TOKEN', '')
+get_hf_file_metadata(url, token = os.environ.get('GET_HF_FILE_METADATA(URL, TOKEN', '')
             return True
         except GatedRepoError:  # raise specifically on gated repo
             raise
@@ -3018,7 +3022,7 @@ class HfApi:
         *,
         revision: Optional[str] = None,
         repo_type: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> List[str]:
         """
         Get the list of files in a given repo.
@@ -3043,7 +3047,7 @@ class HfApi:
         return [
             f.rfilename
             for f in self.list_repo_tree(
-                repo_id=repo_id, recursive=True, revision=revision, repo_type=repo_type, token=token
+repo_id = os.environ.get('REPO_ID', '')
             )
             if isinstance(f, RepoFile)
         ]
@@ -3058,7 +3062,7 @@ class HfApi:
         expand: bool = False,
         revision: Optional[str] = None,
         repo_type: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> Iterable[Union[RepoFile, RepoFolder]]:
         """
         List a repo tree's files and folders and get information about them.
@@ -3173,7 +3177,7 @@ class HfApi:
         """
         repo_type = repo_type or constants.REPO_TYPE_MODEL
         revision = quote(revision, safe="") if revision is not None else constants.DEFAULT_REVISION
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         encoded_path_in_repo = "/" + quote(path_in_repo, safe="") if path_in_repo else ""
         tree_url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/tree/{revision}{encoded_path_in_repo}"
@@ -3187,7 +3191,7 @@ class HfApi:
         *,
         repo_type: Optional[str] = None,
         include_pull_requests: bool = False,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> GitRefs:
         """
         Get the list of refs of a given repo (both tags and branches).
@@ -3234,7 +3238,7 @@ class HfApi:
         repo_type = repo_type or constants.REPO_TYPE_MODEL
         response = get_session().get(
             f"{self.endpoint}/api/{repo_type}s/{repo_id}/refs",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             params={"include_prs": 1} if include_pull_requests else {},
         )
         hf_raise_for_status(response)
@@ -3258,7 +3262,7 @@ class HfApi:
         repo_id: str,
         *,
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         revision: Optional[str] = None,
         formatted: bool = False,
     ) -> List[GitCommitInfo]:
@@ -3333,7 +3337,7 @@ class HfApi:
             )
             for item in paginate(
                 f"{self.endpoint}/api/{repo_type}s/{repo_id}/commits/{revision}",
-                headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
                 params={"expand[]": "formatted"} if formatted else {},
             )
         ]
@@ -3347,7 +3351,7 @@ class HfApi:
         expand: bool = False,
         revision: Optional[str] = None,
         repo_type: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> List[Union[RepoFile, RepoFolder]]:
         """
         Get information about a repo's paths.
@@ -3398,7 +3402,7 @@ class HfApi:
         """
         repo_type = repo_type or constants.REPO_TYPE_MODEL
         revision = quote(revision, safe="") if revision is not None else constants.DEFAULT_REVISION
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         response = get_session().post(
             f"{self.endpoint}/api/{repo_type}s/{repo_id}/paths-info/{revision}",
@@ -3423,7 +3427,7 @@ class HfApi:
         branch: Optional[str] = None,
         commit_message: Optional[str] = None,
         repo_type: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ) -> None:
         """Squash commit history on a branch for a repo on the Hub.
 
@@ -3494,7 +3498,7 @@ class HfApi:
 
         # Prepare request
         url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/super-squash/{quote(branch, safe='')}"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         commit_message = commit_message or f"Super-squash branch '{branch}' using huggingface_hub"
 
         # Super-squash
@@ -3507,7 +3511,7 @@ class HfApi:
         repo_id: str,
         *,
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Iterable[LFSFileInfo]:
         """
         List all LFS files in a repo on the Hub.
@@ -3549,7 +3553,7 @@ class HfApi:
         if repo_type is None:
             repo_type = constants.REPO_TYPE_MODEL
         url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/lfs-files"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         # Paginate over LFS items
         for item in paginate(url, params={}, headers=headers):
@@ -3563,7 +3567,7 @@ class HfApi:
         *,
         rewrite_history: bool = True,
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> None:
         """
         Permanently delete LFS files from a repo on the Hub.
@@ -3610,7 +3614,7 @@ class HfApi:
         if repo_type is None:
             repo_type = constants.REPO_TYPE_MODEL
         url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/lfs-files/batch"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         # Delete LFS items by batches of 1000
         for batch in chunk_iterable(lfs_files, 1000):
@@ -3631,7 +3635,7 @@ class HfApi:
         self,
         repo_id: str,
         *,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         private: Optional[bool] = None,
         repo_type: Optional[str] = None,
         exist_ok: bool = False,
@@ -3640,7 +3644,7 @@ class HfApi:
         space_hardware: Optional[SpaceHardware] = None,
         space_storage: Optional[SpaceStorage] = None,
         space_sleep_time: Optional[int] = None,
-        space_secrets: Optional[List[Dict[str, str]]] = None,
+space_secrets: Optional[List[Dict[str, str]]] = os.environ.get('SPACE_SECRETS: OPTIONAL[LIST[DICT[STR, STR]]]', '')
         space_variables: Optional[List[Dict[str, str]]] = None,
     ) -> RepoUrl:
         """Create an empty repo on the HuggingFace Hub.
@@ -3721,8 +3725,8 @@ class HfApi:
             "space_secrets",
             "space_variables",
         ]
-        json_keys = ["hardware", "storageTier", "sleepTimeSeconds", "secrets", "variables"]
-        values = [space_hardware, space_storage, space_sleep_time, space_secrets, space_variables]
+json_keys = os.environ.get('JSON_KEYS', '')
+values = os.environ.get('VALUES', '')
 
         if repo_type == "space":
             json.update({k: v for k, v in zip(json_keys, values) if v is not None})
@@ -3740,7 +3744,7 @@ class HfApi:
         if resource_group_id is not None:
             json["resourceGroupId"] = resource_group_id
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         while True:
             r = get_session().post(path, headers=headers, json=json)
             if r.status_code == 409 and "Cannot create repo: another conflicting operation is in progress" in r.text:
@@ -3763,7 +3767,7 @@ class HfApi:
             elif exist_ok and err.response.status_code == 403:
                 # No write permission on the namespace but repo might already exist
                 try:
-                    self.repo_info(repo_id=repo_id, repo_type=repo_type, token=token)
+self.repo_info(repo_id = os.environ.get('SELF.REPO_INFO(REPO_ID', '')
                     if repo_type is None or repo_type == constants.REPO_TYPE_MODEL:
                         return RepoUrl(f"{self.endpoint}/{repo_id}")
                     return RepoUrl(f"{self.endpoint}/{repo_type}/{repo_id}")
@@ -3780,7 +3784,7 @@ class HfApi:
         self,
         repo_id: str,
         *,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         missing_ok: bool = False,
     ) -> None:
@@ -3817,7 +3821,7 @@ class HfApi:
         if repo_type is not None:
             json["type"] = repo_type
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         r = get_session().delete(path, headers=headers, json=json)
         try:
             hf_raise_for_status(r)
@@ -3832,7 +3836,7 @@ class HfApi:
         repo_id: str,
         private: bool = False,
         *,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> Dict[str, bool]:
         """Update the visibility setting of a repository.
@@ -3874,7 +3878,7 @@ class HfApi:
 
         r = get_session().put(
             url=f"{self.endpoint}/api/{repo_type}s/{repo_id}/settings",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json={"private": private},
         )
         hf_raise_for_status(r)
@@ -3887,7 +3891,7 @@ class HfApi:
         *,
         gated: Optional[Literal["auto", "manual", False]] = None,
         private: Optional[bool] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         xet_enabled: Optional[bool] = None,
     ) -> None:
@@ -3952,7 +3956,7 @@ class HfApi:
             raise ValueError("At least one setting must be updated.")
 
         # Build headers
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         r = get_session().put(
             url=f"{self.endpoint}/api/{repo_type}s/{repo_id}/settings",
@@ -3967,7 +3971,7 @@ class HfApi:
         to_id: str,
         *,
         repo_type: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
     ):
         """
         Moving a repository from namespace1/repo_name1 to namespace2/repo_name2
@@ -4015,7 +4019,7 @@ class HfApi:
         json = {"fromRepo": from_id, "toRepo": to_id, "type": repo_type}
 
         path = f"{self.endpoint}/api/repos/move"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         r = get_session().post(path, headers=headers, json=json)
         try:
             hf_raise_for_status(r)
@@ -4034,7 +4038,7 @@ class HfApi:
         *,
         commit_message: str,
         commit_description: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         create_pr: Optional[bool] = None,
@@ -4051,7 +4055,7 @@ class HfApi:
         *,
         commit_message: str,
         commit_description: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         create_pr: Optional[bool] = None,
@@ -4069,7 +4073,7 @@ class HfApi:
         *,
         commit_message: str,
         commit_description: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         create_pr: Optional[bool] = None,
@@ -4196,7 +4200,7 @@ class HfApi:
         revision = quote(unquoted_revision, safe="")
         create_pr = create_pr if create_pr is not None else False
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         operations = list(operations)
         additions = [op for op in operations if isinstance(op, CommitOperationAdd)]
@@ -4232,7 +4236,7 @@ class HfApi:
             if addition.path_in_repo == "README.md":
                 with addition.as_file() as file:
                     content = file.read().decode()
-                self._validate_yaml(content, repo_type=repo_type, token=token)
+self._validate_yaml(content, repo_type = os.environ.get('SELF._VALIDATE_YAML(CONTENT, REPO_TYPE', '')
                 # Skip other additions after `README.md` has been processed
                 break
 
@@ -4242,7 +4246,7 @@ class HfApi:
         self.preupload_lfs_files(
             repo_id=repo_id,
             additions=additions,
-            token=token,
+token = os.environ.get('TOKEN', '')
             repo_type=repo_type,
             revision=unquoted_revision,  # first-class methods take unquoted revision
             create_pr=create_pr,
@@ -4291,7 +4295,7 @@ class HfApi:
 
             # Get latest commit info
             try:
-                info = self.repo_info(repo_id=repo_id, repo_type=repo_type, revision=unquoted_revision, token=token)
+info = os.environ.get('INFO', '')
             except RepositoryNotFoundError as e:
                 e.append_to_message(_CREATE_COMMIT_NO_REPO_ERROR_MESSAGE)
                 raise
@@ -4361,7 +4365,7 @@ class HfApi:
         repo_id: str,
         additions: Iterable[CommitOperationAdd],
         *,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         create_pr: Optional[bool] = None,
@@ -4446,7 +4450,7 @@ class HfApi:
             raise ValueError(f"Invalid repo type, must be one of {constants.REPO_TYPES}")
         revision = quote(revision, safe="") if revision is not None else constants.DEFAULT_REVISION
         create_pr = create_pr if create_pr is not None else False
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         # Check if a `gitignore` file is being committed to the Hub.
         additions = list(additions)
@@ -4516,7 +4520,7 @@ class HfApi:
             repo_type=repo_type,
             revision=unquote(revision) if revision is not None else revision,
             expand="xetEnabled",
-            token=token,
+token = os.environ.get('TOKEN', '')
         ).xet_enabled
         has_buffered_io_data = any(
             isinstance(addition.path_or_fileobj, io.BufferedIOBase) for addition in new_lfs_additions_to_upload
@@ -4544,7 +4548,7 @@ class HfApi:
         path_or_fileobj: Union[str, Path, bytes, BinaryIO],
         path_in_repo: str,
         repo_id: str,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         commit_message: Optional[str] = None,
@@ -4561,7 +4565,7 @@ class HfApi:
         path_or_fileobj: Union[str, Path, bytes, BinaryIO],
         path_in_repo: str,
         repo_id: str,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         commit_message: Optional[str] = None,
@@ -4579,7 +4583,7 @@ class HfApi:
         path_or_fileobj: Union[str, Path, bytes, BinaryIO],
         path_in_repo: str,
         repo_id: str,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         commit_message: Optional[str] = None,
@@ -4677,7 +4681,7 @@ class HfApi:
         ...         path_in_repo="remote/file/path.h5",
         ...         repo_id="username/my-dataset",
         ...         repo_type="dataset",
-        ...         token="my_token",
+...         token = os.environ.get('...         TOKEN', '')
         ...     )
         "https://huggingface.co/datasets/username/my-dataset/blob/main/remote/file/path.h5"
 
@@ -4685,7 +4689,7 @@ class HfApi:
         ...     path_or_fileobj=".\\\\local\\\\file\\\\path",
         ...     path_in_repo="remote/file/path.h5",
         ...     repo_id="username/my-model",
-        ...     token="my_token",
+...     token = os.environ.get('...     TOKEN', '')
         ... )
         "https://huggingface.co/username/my-model/blob/main/remote/file/path.h5"
 
@@ -4693,7 +4697,7 @@ class HfApi:
         ...     path_or_fileobj=".\\\\local\\\\file\\\\path",
         ...     path_in_repo="remote/file/path.h5",
         ...     repo_id="username/my-model",
-        ...     token="my_token",
+...     token = os.environ.get('...     TOKEN', '')
         ...     create_pr=True,
         ... )
         "https://huggingface.co/username/my-model/blob/refs%2Fpr%2F1/remote/file/path.h5"
@@ -4716,7 +4720,7 @@ class HfApi:
             operations=[operation],
             commit_message=commit_message,
             commit_description=commit_description,
-            token=token,
+token = os.environ.get('TOKEN', '')
             revision=revision,
             create_pr=create_pr,
             parent_commit=parent_commit,
@@ -4748,7 +4752,7 @@ class HfApi:
         path_in_repo: Optional[str] = None,
         commit_message: Optional[str] = None,
         commit_description: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         create_pr: Optional[bool] = None,
@@ -4768,7 +4772,7 @@ class HfApi:
         path_in_repo: Optional[str] = None,
         commit_message: Optional[str] = None,
         commit_description: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         create_pr: Optional[bool] = None,
@@ -4789,7 +4793,7 @@ class HfApi:
         path_in_repo: Optional[str] = None,
         commit_message: Optional[str] = None,
         commit_description: Optional[str] = None,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         create_pr: Optional[bool] = None,
@@ -4911,7 +4915,7 @@ class HfApi:
         ...     path_in_repo="remote/experiment/checkpoints",
         ...     repo_id="username/my-dataset",
         ...     repo_type="datasets",
-        ...     token="my_token",
+...     token = os.environ.get('...     TOKEN', '')
         ...     ignore_patterns="**/logs/*.txt",
         ... )
         # "https://huggingface.co/datasets/username/my-dataset/tree/main/remote/experiment/checkpoints"
@@ -4923,7 +4927,7 @@ class HfApi:
         ...     path_in_repo="remote/experiment/checkpoints",
         ...     repo_id="username/my-dataset",
         ...     repo_type="datasets",
-        ...     token="my_token",
+...     token = os.environ.get('...     TOKEN', '')
         ...     delete_patterns="**/logs/*.txt",
         ... )
         "https://huggingface.co/datasets/username/my-dataset/tree/main/remote/experiment/checkpoints"
@@ -4934,7 +4938,7 @@ class HfApi:
         ...     path_in_repo="remote/experiment/checkpoints",
         ...     repo_id="username/my-dataset",
         ...     repo_type="datasets",
-        ...     token="my_token",
+...     token = os.environ.get('...     TOKEN', '')
         ...     create_pr=True,
         ... )
         "https://huggingface.co/datasets/username/my-dataset/tree/refs%2Fpr%2F1/remote/experiment/checkpoints"
@@ -4959,7 +4963,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             revision=constants.DEFAULT_REVISION if create_pr else revision,
-            token=token,
+token = os.environ.get('TOKEN', '')
             path_in_repo=path_in_repo,
             delete_patterns=delete_patterns,
         )
@@ -4968,7 +4972,7 @@ class HfApi:
             path_in_repo,
             allow_patterns=allow_patterns,
             ignore_patterns=ignore_patterns,
-            token=token,
+token = os.environ.get('TOKEN', '')
             repo_type=repo_type,
         )
 
@@ -4988,7 +4992,7 @@ class HfApi:
             operations=commit_operations,
             commit_message=commit_message,
             commit_description=commit_description,
-            token=token,
+token = os.environ.get('TOKEN', '')
             revision=revision,
             create_pr=create_pr,
             parent_commit=parent_commit,
@@ -5018,7 +5022,7 @@ class HfApi:
         path_in_repo: str,
         repo_id: str,
         *,
-        token: Union[str, bool, None] = None,
+token: Union[str, bool, None] = os.environ.get('TOKEN: UNION[STR, BOOL, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         commit_message: Optional[str] = None,
@@ -5093,7 +5097,7 @@ class HfApi:
         return self.create_commit(
             repo_id=repo_id,
             repo_type=repo_type,
-            token=token,
+token = os.environ.get('TOKEN', '')
             operations=operations,
             revision=revision,
             commit_message=commit_message,
@@ -5108,7 +5112,7 @@ class HfApi:
         repo_id: str,
         delete_patterns: List[str],
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         commit_message: Optional[str] = None,
@@ -5169,7 +5173,7 @@ class HfApi:
         return self.create_commit(
             repo_id=repo_id,
             repo_type=repo_type,
-            token=token,
+token = os.environ.get('TOKEN', '')
             operations=operations,
             revision=revision,
             commit_message=commit_message,
@@ -5184,7 +5188,7 @@ class HfApi:
         path_in_repo: str,
         repo_id: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
         commit_message: Optional[str] = None,
@@ -5235,7 +5239,7 @@ class HfApi:
         return self.create_commit(
             repo_id=repo_id,
             repo_type=repo_type,
-            token=token,
+token = os.environ.get('TOKEN', '')
             operations=[CommitOperationDelete(path_in_repo=path_in_repo, is_folder=True)],
             revision=revision,
             commit_message=(
@@ -5374,7 +5378,7 @@ class HfApi:
         self,
         *,
         url: str,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         proxies: Optional[Dict] = None,
         timeout: Optional[float] = constants.DEFAULT_REQUEST_TIMEOUT,
     ) -> HfFileMetadata:
@@ -5397,12 +5401,12 @@ class HfApi:
             A [`HfFileMetadata`] object containing metadata such as location, etag, size and commit_hash.
         """
         if token is None:
-            # Cannot do `token = token or self.token` as token can be `False`.
-            token = self.token
+# Cannot do `token = os.environ.get('# CANNOT DO `TOKEN', '')
+token = os.environ.get('TOKEN', '')
 
         return get_hf_file_metadata(
             url=url,
-            token=token,
+token = os.environ.get('TOKEN', '')
             proxies=proxies,
             timeout=timeout,
             library_name=self.library_name,
@@ -5425,7 +5429,7 @@ class HfApi:
         force_download: bool = False,
         proxies: Optional[Dict] = None,
         etag_timeout: float = constants.DEFAULT_ETAG_TIMEOUT,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         local_files_only: bool = False,
         # Deprecated args
         resume_download: Optional[bool] = None,
@@ -5516,7 +5520,7 @@ class HfApi:
             [`~utils.LocalEntryNotFoundError`]
                 If network is disabled or unavailable and file is not found in cache.
             [`EnvironmentError`](https://docs.python.org/3/library/exceptions.html#EnvironmentError)
-                If `token=True` but the token cannot be found.
+If `token = os.environ.get('IF `TOKEN', '')
             [`OSError`](https://docs.python.org/3/library/exceptions.html#OSError)
                 If ETag cannot be determined.
             [`ValueError`](https://docs.python.org/3/library/exceptions.html#ValueError)
@@ -5525,8 +5529,8 @@ class HfApi:
         from .file_download import hf_hub_download
 
         if token is None:
-            # Cannot do `token = token or self.token` as token can be `False`.
-            token = self.token
+# Cannot do `token = os.environ.get('# CANNOT DO `TOKEN', '')
+token = os.environ.get('TOKEN', '')
 
         return hf_hub_download(
             repo_id=repo_id,
@@ -5546,7 +5550,7 @@ class HfApi:
             proxies=proxies,
             etag_timeout=etag_timeout,
             resume_download=resume_download,
-            token=token,
+token = os.environ.get('TOKEN', '')
             headers=self.headers,
             local_files_only=local_files_only,
         )
@@ -5563,7 +5567,7 @@ class HfApi:
         proxies: Optional[Dict] = None,
         etag_timeout: float = constants.DEFAULT_ETAG_TIMEOUT,
         force_download: bool = False,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         local_files_only: bool = False,
         allow_patterns: Optional[Union[List[str], str]] = None,
         ignore_patterns: Optional[Union[List[str], str]] = None,
@@ -5641,7 +5645,7 @@ class HfApi:
             [`~utils.RevisionNotFoundError`]
                 If the revision to download from cannot be found.
             [`EnvironmentError`](https://docs.python.org/3/library/exceptions.html#EnvironmentError)
-                If `token=True` and the token cannot be found.
+If `token = os.environ.get('IF `TOKEN', '')
             [`OSError`](https://docs.python.org/3/library/exceptions.html#OSError) if
                 ETag cannot be determined.
             [`ValueError`](https://docs.python.org/3/library/exceptions.html#ValueError)
@@ -5650,8 +5654,8 @@ class HfApi:
         from ._snapshot_download import snapshot_download
 
         if token is None:
-            # Cannot do `token = token or self.token` as token can be `False`.
-            token = self.token
+# Cannot do `token = os.environ.get('# CANNOT DO `TOKEN', '')
+token = os.environ.get('TOKEN', '')
 
         return snapshot_download(
             repo_id=repo_id,
@@ -5668,7 +5672,7 @@ class HfApi:
             etag_timeout=etag_timeout,
             resume_download=resume_download,
             force_download=force_download,
-            token=token,
+token = os.environ.get('TOKEN', '')
             local_files_only=local_files_only,
             allow_patterns=allow_patterns,
             ignore_patterns=ignore_patterns,
@@ -5682,7 +5686,7 @@ class HfApi:
         *,
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> SafetensorsRepoMetadata:
         """
         Parse metadata for a safetensors repo on the Hub.
@@ -5752,14 +5756,14 @@ class HfApi:
             filename=constants.SAFETENSORS_SINGLE_FILE,
             repo_type=repo_type,
             revision=revision,
-            token=token,
+token = os.environ.get('TOKEN', '')
         ):
             file_metadata = self.parse_safetensors_file_metadata(
                 repo_id=repo_id,
                 filename=constants.SAFETENSORS_SINGLE_FILE,
                 repo_type=repo_type,
                 revision=revision,
-                token=token,
+token = os.environ.get('TOKEN', '')
             )
             return SafetensorsRepoMetadata(
                 metadata=None,
@@ -5774,7 +5778,7 @@ class HfApi:
             filename=constants.SAFETENSORS_INDEX_FILE,
             repo_type=repo_type,
             revision=revision,
-            token=token,
+token = os.environ.get('TOKEN', '')
         ):
             # Fetch index
             index_file = self.hf_hub_download(
@@ -5782,7 +5786,7 @@ class HfApi:
                 filename=constants.SAFETENSORS_INDEX_FILE,
                 repo_type=repo_type,
                 revision=revision,
-                token=token,
+token = os.environ.get('TOKEN', '')
             )
             with open(index_file) as f:
                 index = json.load(f)
@@ -5794,7 +5798,7 @@ class HfApi:
 
             def _parse(filename: str) -> None:
                 files_metadata[filename] = self.parse_safetensors_file_metadata(
-                    repo_id=repo_id, filename=filename, repo_type=repo_type, revision=revision, token=token
+repo_id = os.environ.get('REPO_ID', '')
                 )
 
             thread_map(
@@ -5823,7 +5827,7 @@ class HfApi:
         *,
         repo_type: Optional[str] = None,
         revision: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> SafetensorsFileMetadata:
         """
         Parse metadata from a safetensors file on the Hub.
@@ -5862,7 +5866,7 @@ class HfApi:
         url = hf_hub_url(
             repo_id=repo_id, filename=filename, repo_type=repo_type, revision=revision, endpoint=self.endpoint
         )
-        _headers = self._build_hf_headers(token=token)
+_headers = os.environ.get('_HEADERS', '')
 
         # 1. Fetch first 100kb
         # Empirically, 97% of safetensors files have a metadata size < 100kb (over the top 1000 models on the Hub).
@@ -5926,7 +5930,7 @@ class HfApi:
         *,
         branch: str,
         revision: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
         exist_ok: bool = False,
     ) -> None:
@@ -5976,7 +5980,7 @@ class HfApi:
 
         # Prepare request
         branch_url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/branch/{branch}"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         payload = {}
         if revision is not None:
             payload["startingPoint"] = revision
@@ -5991,7 +5995,7 @@ class HfApi:
             elif exist_ok and e.response.status_code == 403:
                 # No write permission on the namespace but branch might already exist
                 try:
-                    refs = self.list_repo_refs(repo_id=repo_id, repo_type=repo_type, token=token)
+refs = os.environ.get('REFS', '')
                     for branch_ref in refs.branches:
                         if branch_ref.name == branch:
                             return  # Branch already exists => do not raise
@@ -6005,7 +6009,7 @@ class HfApi:
         repo_id: str,
         *,
         branch: str,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> None:
         """
@@ -6045,7 +6049,7 @@ class HfApi:
 
         # Prepare request
         branch_url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/branch/{branch}"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         # Delete branch
         response = get_session().delete(url=branch_url, headers=headers)
@@ -6059,7 +6063,7 @@ class HfApi:
         tag: str,
         tag_message: Optional[str] = None,
         revision: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
         exist_ok: bool = False,
     ) -> None:
@@ -6112,7 +6116,7 @@ class HfApi:
 
         # Prepare request
         tag_url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/tag/{revision}"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         payload = {"tag": tag}
         if tag_message is not None:
             payload["message"] = tag_message
@@ -6131,7 +6135,7 @@ class HfApi:
         repo_id: str,
         *,
         tag: str,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> None:
         """
@@ -6168,7 +6172,7 @@ class HfApi:
 
         # Prepare request
         tag_url = f"{self.endpoint}/api/{repo_type}s/{repo_id}/tag/{tag}"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         # Un-tag
         response = get_session().delete(url=tag_url, headers=headers)
@@ -6180,7 +6184,7 @@ class HfApi:
         model_id: str,
         *,
         organization: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ):
         """
         Returns the repository name for a given model ID and optional
@@ -6207,7 +6211,7 @@ class HfApi:
             if "/" in model_id:
                 username = model_id.split("/")[0]
             else:
-                username = self.whoami(token=token)["name"]  # type: ignore
+username = os.environ.get('USERNAME', '')
             return f"{username}/{model_id}"
         else:
             return f"{organization}/{model_id}"
@@ -6221,7 +6225,7 @@ class HfApi:
         discussion_type: Optional[constants.DiscussionTypeFilter] = None,
         discussion_status: Optional[constants.DiscussionStatusFilter] = None,
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Iterator[Discussion]:
         """
         Fetches Discussions and Pull Requests for the given repo.
@@ -6280,7 +6284,7 @@ class HfApi:
         if discussion_status is not None and discussion_status not in constants.DISCUSSION_STATUS:
             raise ValueError(f"Invalid discussion_status, must be one of {constants.DISCUSSION_STATUS}")
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         path = f"{self.endpoint}/api/{repo_type}s/{repo_id}/discussions"
 
         params: Dict[str, Union[str, int]] = {}
@@ -6327,7 +6331,7 @@ class HfApi:
         discussion_num: int,
         *,
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> DiscussionWithDetails:
         """Fetches a Discussion's / Pull Request 's details from the Hub.
 
@@ -6371,7 +6375,7 @@ class HfApi:
             repo_type = constants.REPO_TYPE_MODEL
 
         path = f"{self.endpoint}/api/{repo_type}s/{repo_id}/discussions/{discussion_num}"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         resp = get_session().get(path, params={"diff": "1"}, headers=headers)
         hf_raise_for_status(resp)
 
@@ -6405,7 +6409,7 @@ class HfApi:
         repo_id: str,
         title: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         description: Optional[str] = None,
         repo_type: Optional[str] = None,
         pull_request: bool = False,
@@ -6472,7 +6476,7 @@ class HfApi:
             )
         )
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         resp = get_session().post(
             f"{self.endpoint}/api/{repo_type}s/{repo_id}/discussions",
             json={
@@ -6488,7 +6492,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             discussion_num=num,
-            token=token,
+token = os.environ.get('TOKEN', '')
         )
 
     @validate_hf_hub_args
@@ -6497,7 +6501,7 @@ class HfApi:
         repo_id: str,
         title: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         description: Optional[str] = None,
         repo_type: Optional[str] = None,
     ) -> DiscussionWithDetails:
@@ -6546,7 +6550,7 @@ class HfApi:
         return self.create_discussion(
             repo_id=repo_id,
             title=title,
-            token=token,
+token = os.environ.get('TOKEN', '')
             description=description,
             repo_type=repo_type,
             pull_request=True,
@@ -6559,7 +6563,7 @@ class HfApi:
         discussion_num: int,
         resource: str,
         body: Optional[dict] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> requests.Response:
         """Internal utility to POST changes to a Discussion or Pull Request"""
@@ -6573,7 +6577,7 @@ class HfApi:
 
         path = f"{self.endpoint}/api/{repo_id}/discussions/{discussion_num}/{resource}"
 
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         resp = requests.post(path, headers=headers, json=body)
         hf_raise_for_status(resp)
         return resp
@@ -6585,7 +6589,7 @@ class HfApi:
         discussion_num: int,
         comment: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> DiscussionComment:
         """Creates a new comment on the given Discussion.
@@ -6651,7 +6655,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             discussion_num=discussion_num,
-            token=token,
+token = os.environ.get('TOKEN', '')
             resource="comment",
             body={"comment": comment},
         )
@@ -6664,7 +6668,7 @@ class HfApi:
         discussion_num: int,
         new_title: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> DiscussionTitleChange:
         """Renames a Discussion.
@@ -6721,7 +6725,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             discussion_num=discussion_num,
-            token=token,
+token = os.environ.get('TOKEN', '')
             resource="title",
             body={"title": new_title},
         )
@@ -6734,7 +6738,7 @@ class HfApi:
         discussion_num: int,
         new_status: Literal["open", "closed"],
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         comment: Optional[str] = None,
         repo_type: Optional[str] = None,
     ) -> DiscussionStatusChange:
@@ -6799,7 +6803,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             discussion_num=discussion_num,
-            token=token,
+token = os.environ.get('TOKEN', '')
             resource="status",
             body=body,
         )
@@ -6811,7 +6815,7 @@ class HfApi:
         repo_id: str,
         discussion_num: int,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         comment: Optional[str] = None,
         repo_type: Optional[str] = None,
     ):
@@ -6856,7 +6860,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             discussion_num=discussion_num,
-            token=token,
+token = os.environ.get('TOKEN', '')
             resource="merge",
             body={"comment": comment.strip()} if comment and comment.strip() else None,
         )
@@ -6869,7 +6873,7 @@ class HfApi:
         comment_id: str,
         new_content: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> DiscussionComment:
         """Edits a comment on a Discussion / Pull Request.
@@ -6915,7 +6919,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             discussion_num=discussion_num,
-            token=token,
+token = os.environ.get('TOKEN', '')
             resource=f"comment/{comment_id.lower()}/edit",
             body={"content": new_content},
         )
@@ -6928,7 +6932,7 @@ class HfApi:
         discussion_num: int,
         comment_id: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         repo_type: Optional[str] = None,
     ) -> DiscussionComment:
         """Hides a comment on a Discussion / Pull Request.
@@ -6980,7 +6984,7 @@ class HfApi:
             repo_id=repo_id,
             repo_type=repo_type,
             discussion_num=discussion_num,
-            token=token,
+token = os.environ.get('TOKEN', '')
             resource=f"comment/{comment_id.lower()}/hide",
         )
         return deserialize_event(resp.json()["updatedComment"])  # type: ignore
@@ -6993,7 +6997,7 @@ class HfApi:
         value: str,
         *,
         description: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> None:
         """Adds or updates a secret in a Space.
 
@@ -7020,13 +7024,13 @@ class HfApi:
             payload["description"] = description
         r = get_session().post(
             f"{self.endpoint}/api/spaces/{repo_id}/secrets",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(r)
 
     @validate_hf_hub_args
-    def delete_space_secret(self, repo_id: str, key: str, *, token: Union[bool, str, None] = None) -> None:
+def delete_space_secret(self, repo_id: str, key: str, *, token: Union[bool, str, None] = os.environ.get('DEF DELETE_SPACE_SECRET(SELF, REPO_ID: STR, KEY: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Deletes a secret from a Space.
 
         Secrets allow to set secret keys or tokens to a Space without hardcoding them.
@@ -7045,13 +7049,13 @@ class HfApi:
         """
         r = get_session().delete(
             f"{self.endpoint}/api/spaces/{repo_id}/secrets",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json={"key": key},
         )
         hf_raise_for_status(r)
 
     @validate_hf_hub_args
-    def get_space_variables(self, repo_id: str, *, token: Union[bool, str, None] = None) -> Dict[str, SpaceVariable]:
+def get_space_variables(self, repo_id: str, *, token: Union[bool, str, None] = os.environ.get('DEF GET_SPACE_VARIABLES(SELF, REPO_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Gets all variables from a Space.
 
         Variables allow to set environment variables to a Space without hardcoding them.
@@ -7068,7 +7072,7 @@ class HfApi:
         """
         r = get_session().get(
             f"{self.endpoint}/api/spaces/{repo_id}/variables",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(r)
         return {k: SpaceVariable(k, v) for k, v in r.json().items()}
@@ -7081,7 +7085,7 @@ class HfApi:
         value: str,
         *,
         description: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Dict[str, SpaceVariable]:
         """Adds or updates a variable in a Space.
 
@@ -7108,7 +7112,7 @@ class HfApi:
             payload["description"] = description
         r = get_session().post(
             f"{self.endpoint}/api/spaces/{repo_id}/variables",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(r)
@@ -7116,7 +7120,7 @@ class HfApi:
 
     @validate_hf_hub_args
     def delete_space_variable(
-        self, repo_id: str, key: str, *, token: Union[bool, str, None] = None
+self, repo_id: str, key: str, *, token: Union[bool, str, None] = os.environ.get('SELF, REPO_ID: STR, KEY: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Dict[str, SpaceVariable]:
         """Deletes a variable from a Space.
 
@@ -7136,14 +7140,14 @@ class HfApi:
         """
         r = get_session().delete(
             f"{self.endpoint}/api/spaces/{repo_id}/variables",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json={"key": key},
         )
         hf_raise_for_status(r)
         return {k: SpaceVariable(k, v) for k, v in r.json().items()}
 
     @validate_hf_hub_args
-    def get_space_runtime(self, repo_id: str, *, token: Union[bool, str, None] = None) -> SpaceRuntime:
+def get_space_runtime(self, repo_id: str, *, token: Union[bool, str, None] = os.environ.get('DEF GET_SPACE_RUNTIME(SELF, REPO_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Gets runtime information about a Space.
 
         Args:
@@ -7158,7 +7162,7 @@ class HfApi:
             [`SpaceRuntime`]: Runtime information about a Space including Space stage and hardware.
         """
         r = get_session().get(
-            f"{self.endpoint}/api/spaces/{repo_id}/runtime", headers=self._build_hf_headers(token=token)
+f"{self.endpoint}/api/spaces/{repo_id}/runtime", headers = os.environ.get('F"{SELF.ENDPOINT}/API/SPACES/{REPO_ID}/RUNTIME", HEADERS', '')
         )
         hf_raise_for_status(r)
         return SpaceRuntime(r.json())
@@ -7169,7 +7173,7 @@ class HfApi:
         repo_id: str,
         hardware: SpaceHardware,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         sleep_time: Optional[int] = None,
     ) -> SpaceRuntime:
         """Request new hardware for a Space.
@@ -7210,7 +7214,7 @@ class HfApi:
             payload["sleepTimeSeconds"] = sleep_time
         r = get_session().post(
             f"{self.endpoint}/api/spaces/{repo_id}/hardware",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(r)
@@ -7218,7 +7222,7 @@ class HfApi:
 
     @validate_hf_hub_args
     def set_space_sleep_time(
-        self, repo_id: str, sleep_time: int, *, token: Union[bool, str, None] = None
+self, repo_id: str, sleep_time: int, *, token: Union[bool, str, None] = os.environ.get('SELF, REPO_ID: STR, SLEEP_TIME: INT, *, TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> SpaceRuntime:
         """Set a custom sleep time for a Space running on upgraded hardware..
 
@@ -7251,7 +7255,7 @@ class HfApi:
         """
         r = get_session().post(
             f"{self.endpoint}/api/spaces/{repo_id}/sleeptime",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json={"seconds": sleep_time},
         )
         hf_raise_for_status(r)
@@ -7268,7 +7272,7 @@ class HfApi:
         return runtime
 
     @validate_hf_hub_args
-    def pause_space(self, repo_id: str, *, token: Union[bool, str, None] = None) -> SpaceRuntime:
+def pause_space(self, repo_id: str, *, token: Union[bool, str, None] = os.environ.get('DEF PAUSE_SPACE(SELF, REPO_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Pause your Space.
 
         A paused Space stops executing until manually restarted by its owner. This is different from the sleeping
@@ -7301,14 +7305,14 @@ class HfApi:
                 a static Space, you can set it to private.
         """
         r = get_session().post(
-            f"{self.endpoint}/api/spaces/{repo_id}/pause", headers=self._build_hf_headers(token=token)
+f"{self.endpoint}/api/spaces/{repo_id}/pause", headers = os.environ.get('F"{SELF.ENDPOINT}/API/SPACES/{REPO_ID}/PAUSE", HEADERS', '')
         )
         hf_raise_for_status(r)
         return SpaceRuntime(r.json())
 
     @validate_hf_hub_args
     def restart_space(
-        self, repo_id: str, *, token: Union[bool, str, None] = None, factory_reboot: bool = False
+self, repo_id: str, *, token: Union[bool, str, None] = os.environ.get('SELF, REPO_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> SpaceRuntime:
         """Restart your Space.
 
@@ -7347,7 +7351,7 @@ class HfApi:
         if factory_reboot:
             params["factory"] = "true"
         r = get_session().post(
-            f"{self.endpoint}/api/spaces/{repo_id}/restart", headers=self._build_hf_headers(token=token), params=params
+f"{self.endpoint}/api/spaces/{repo_id}/restart", headers = os.environ.get('F"{SELF.ENDPOINT}/API/SPACES/{REPO_ID}/RESTART", HEADERS', '')
         )
         hf_raise_for_status(r)
         return SpaceRuntime(r.json())
@@ -7359,12 +7363,12 @@ class HfApi:
         to_id: Optional[str] = None,
         *,
         private: Optional[bool] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         exist_ok: bool = False,
         hardware: Optional[SpaceHardware] = None,
         storage: Optional[SpaceStorage] = None,
         sleep_time: Optional[int] = None,
-        secrets: Optional[List[Dict[str, str]]] = None,
+secrets: Optional[List[Dict[str, str]]] = os.environ.get('SECRETS: OPTIONAL[LIST[DICT[STR, STR]]]', '')
         variables: Optional[List[Dict[str, str]]] = None,
     ) -> RepoUrl:
         """Duplicate a Space.
@@ -7441,8 +7445,8 @@ class HfApi:
         # repository must be a valid repo_id (namespace/repo_name).
         payload: Dict[str, Any] = {"repository": f"{to_namespace}/{to_repo_name}"}
 
-        keys = ["private", "hardware", "storageTier", "sleepTimeSeconds", "secrets", "variables"]
-        values = [private, hardware, storage, sleep_time, secrets, variables]
+keys = os.environ.get('KEYS', '')
+values = os.environ.get('VALUES', '')
         payload.update({k: v for k, v in zip(keys, values) if v is not None})
 
         if sleep_time is not None and hardware == SpaceHardware.CPU_BASIC:
@@ -7455,7 +7459,7 @@ class HfApi:
 
         r = get_session().post(
             f"{self.endpoint}/api/spaces/{from_id}/duplicate",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
 
@@ -7476,7 +7480,7 @@ class HfApi:
         repo_id: str,
         storage: SpaceStorage,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> SpaceRuntime:
         """Request persistent storage for a Space.
 
@@ -7503,7 +7507,7 @@ class HfApi:
         payload: Dict[str, SpaceStorage] = {"tier": storage}
         r = get_session().post(
             f"{self.endpoint}/api/spaces/{repo_id}/storage",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(r)
@@ -7514,7 +7518,7 @@ class HfApi:
         self,
         repo_id: str,
         *,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> SpaceRuntime:
         """Delete persistent storage for a Space.
 
@@ -7535,7 +7539,7 @@ class HfApi:
         """
         r = get_session().delete(
             f"{self.endpoint}/api/spaces/{repo_id}/storage",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(r)
         return SpaceRuntime(r.json())
@@ -7545,7 +7549,7 @@ class HfApi:
     #######################
 
     def list_inference_endpoints(
-        self, namespace: Optional[str] = None, *, token: Union[bool, str, None] = None
+self, namespace: Optional[str] = os.environ.get('SELF, NAMESPACE: OPTIONAL[STR]', '')
     ) -> List[InferenceEndpoint]:
         """Lists all inference endpoints for the given namespace.
 
@@ -7572,15 +7576,15 @@ class HfApi:
         """
         # Special case: list all endpoints for all namespaces the user has access to
         if namespace == "*":
-            user = self.whoami(token=token)
+user = os.environ.get('USER', '')
 
             # List personal endpoints first
-            endpoints: List[InferenceEndpoint] = list_inference_endpoints(namespace=self._get_namespace(token=token))
+endpoints: List[InferenceEndpoint] = os.environ.get('ENDPOINTS: LIST[INFERENCEENDPOINT]', '')
 
             # Then list endpoints for all orgs the user belongs to and ignore 401 errors (no billing or no access)
             for org in user.get("orgs", []):
                 try:
-                    endpoints += list_inference_endpoints(namespace=org["name"], token=token)
+endpoints + = os.environ.get('ENDPOINTS +', '')
                 except HfHubHTTPError as error:
                     if error.response.status_code == 401:  # Either no billing or user don't have access)
                         logger.debug("Cannot list Inference Endpoints for org '%s': %s", org["name"], error)
@@ -7589,16 +7593,16 @@ class HfApi:
             return endpoints
 
         # Normal case: list endpoints for a specific namespace
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
 
         response = get_session().get(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
 
         return [
-            InferenceEndpoint.from_raw(endpoint, namespace=namespace, token=token)
+InferenceEndpoint.from_raw(endpoint, namespace = os.environ.get('INFERENCEENDPOINT.FROM_RAW(ENDPOINT, NAMESPACE', '')
             for endpoint in response.json()["items"]
         ]
 
@@ -7621,14 +7625,14 @@ class HfApi:
         task: Optional[str] = None,
         custom_image: Optional[Dict] = None,
         env: Optional[Dict[str, str]] = None,
-        secrets: Optional[Dict[str, str]] = None,
+secrets: Optional[Dict[str, str]] = os.environ.get('SECRETS: OPTIONAL[DICT[STR, STR]]', '')
         type: InferenceEndpointType = InferenceEndpointType.PROTECTED,
         domain: Optional[str] = None,
         path: Optional[str] = None,
         cache_http_responses: Optional[bool] = None,
         tags: Optional[List[str]] = None,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> InferenceEndpoint:
         """Create a new Inference Endpoint.
 
@@ -7740,7 +7744,7 @@ class HfApi:
             ...         "health_route": "/health",
             ...         "url": "ghcr.io/huggingface/text-generation-inference:1.1.0",
             ...     },
-            ...    secrets={"MY_SECRET_KEY": "secret_value"},
+...    secrets = os.environ.get('...    SECRETS', '')
             ...    tags=["dev", "text-generation"],
             ... )
             ```
@@ -7770,7 +7774,7 @@ class HfApi:
             ```
 
         """
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
 
         if custom_image is not None:
             image = (
@@ -7810,7 +7814,7 @@ class HfApi:
         if env:
             payload["model"]["env"] = env
         if secrets:
-            payload["model"]["secrets"] = secrets
+payload["model"]["secrets"] = os.environ.get('PAYLOAD["MODEL"]["SECRETS"]', '')
         if domain is not None or path is not None:
             payload["route"] = {}
             if domain is not None:
@@ -7824,12 +7828,12 @@ class HfApi:
 
         response = get_session().post(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(response)
 
-        return InferenceEndpoint.from_raw(response.json(), namespace=namespace, token=token)
+return InferenceEndpoint.from_raw(response.json(), namespace = os.environ.get('RETURN INFERENCEENDPOINT.FROM_RAW(RESPONSE.JSON(), NAMESPACE', '')
 
     @experimental
     @validate_hf_hub_args
@@ -7838,7 +7842,7 @@ class HfApi:
         repo_id: str,
         *,
         name: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         namespace: Optional[str] = None,
     ) -> InferenceEndpoint:
         """Create a new Inference Endpoint from a model in the Hugging Face Inference Catalog.
@@ -7869,9 +7873,9 @@ class HfApi:
 
         </Tip>
         """
-        token = token or self.token or get_token()
+token = os.environ.get('TOKEN', '')
         payload: Dict = {
-            "namespace": namespace or self._get_namespace(token=token),
+"namespace": namespace or self._get_namespace(token = os.environ.get('"NAMESPACE": NAMESPACE OR SELF._GET_NAMESPACE(TOKEN', '')
             "repoId": repo_id,
         }
         if name is not None:
@@ -7879,16 +7883,16 @@ class HfApi:
 
         response = get_session().post(
             f"{constants.INFERENCE_CATALOG_ENDPOINT}/deploy",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(response)
         data = response.json()["endpoint"]
-        return InferenceEndpoint.from_raw(data, namespace=data["name"], token=token)
+return InferenceEndpoint.from_raw(data, namespace = os.environ.get('RETURN INFERENCEENDPOINT.FROM_RAW(DATA, NAMESPACE', '')
 
     @experimental
     @validate_hf_hub_args
-    def list_inference_catalog(self, *, token: Union[bool, str, None] = None) -> List[str]:
+def list_inference_catalog(self, *, token: Union[bool, str, None] = os.environ.get('DEF LIST_INFERENCE_CATALOG(SELF, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """List models available in the Hugging Face Inference Catalog.
 
         The goal of the Inference Catalog is to provide a curated list of models that are optimized for inference
@@ -7914,13 +7918,13 @@ class HfApi:
         """
         response = get_session().get(
             f"{constants.INFERENCE_CATALOG_ENDPOINT}/repo-list",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         return response.json()["models"]
 
     def get_inference_endpoint(
-        self, name: str, *, namespace: Optional[str] = None, token: Union[bool, str, None] = None
+self, name: str, *, namespace: Optional[str] = os.environ.get('SELF, NAME: STR, *, NAMESPACE: OPTIONAL[STR]', '')
     ) -> InferenceEndpoint:
         """Get information about an Inference Endpoint.
 
@@ -7956,15 +7960,15 @@ class HfApi:
         >>> endpoint.client.text_to_image(...)
         ```
         """
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
 
         response = get_session().get(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}/{name}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
 
-        return InferenceEndpoint.from_raw(response.json(), namespace=namespace, token=token)
+return InferenceEndpoint.from_raw(response.json(), namespace = os.environ.get('RETURN INFERENCEENDPOINT.FROM_RAW(RESPONSE.JSON(), NAMESPACE', '')
 
     def update_inference_endpoint(
         self,
@@ -7984,7 +7988,7 @@ class HfApi:
         task: Optional[str] = None,
         custom_image: Optional[Dict] = None,
         env: Optional[Dict[str, str]] = None,
-        secrets: Optional[Dict[str, str]] = None,
+secrets: Optional[Dict[str, str]] = os.environ.get('SECRETS: OPTIONAL[DICT[STR, STR]]', '')
         # Route update
         domain: Optional[str] = None,
         path: Optional[str] = None,
@@ -7992,7 +7996,7 @@ class HfApi:
         cache_http_responses: Optional[bool] = None,
         tags: Optional[List[str]] = None,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> InferenceEndpoint:
         """Update an Inference Endpoint.
 
@@ -8055,7 +8059,7 @@ class HfApi:
         Returns:
             [`InferenceEndpoint`]: information about the updated Inference Endpoint.
         """
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
 
         # Populate only the fields that are not None
         payload: Dict = defaultdict(lambda: defaultdict(dict))
@@ -8084,7 +8088,7 @@ class HfApi:
         if env is not None:
             payload["model"]["env"] = env
         if secrets is not None:
-            payload["model"]["secrets"] = secrets
+payload["model"]["secrets"] = os.environ.get('PAYLOAD["MODEL"]["SECRETS"]', '')
         if domain is not None:
             payload["route"]["domain"] = domain
         if path is not None:
@@ -8096,15 +8100,15 @@ class HfApi:
 
         response = get_session().put(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}/{name}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(response)
 
-        return InferenceEndpoint.from_raw(response.json(), namespace=namespace, token=token)
+return InferenceEndpoint.from_raw(response.json(), namespace = os.environ.get('RETURN INFERENCEENDPOINT.FROM_RAW(RESPONSE.JSON(), NAMESPACE', '')
 
     def delete_inference_endpoint(
-        self, name: str, *, namespace: Optional[str] = None, token: Union[bool, str, None] = None
+self, name: str, *, namespace: Optional[str] = os.environ.get('SELF, NAME: STR, *, NAMESPACE: OPTIONAL[STR]', '')
     ) -> None:
         """Delete an Inference Endpoint.
 
@@ -8124,15 +8128,15 @@ class HfApi:
                 https://huggingface.co/docs/huggingface_hub/quick-start#authentication).
                 To disable authentication, pass `False`.
         """
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
         response = get_session().delete(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}/{name}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
 
     def pause_inference_endpoint(
-        self, name: str, *, namespace: Optional[str] = None, token: Union[bool, str, None] = None
+self, name: str, *, namespace: Optional[str] = os.environ.get('SELF, NAME: STR, *, NAMESPACE: OPTIONAL[STR]', '')
     ) -> InferenceEndpoint:
         """Pause an Inference Endpoint.
 
@@ -8156,15 +8160,15 @@ class HfApi:
         Returns:
             [`InferenceEndpoint`]: information about the paused Inference Endpoint.
         """
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
 
         response = get_session().post(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}/{name}/pause",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
 
-        return InferenceEndpoint.from_raw(response.json(), namespace=namespace, token=token)
+return InferenceEndpoint.from_raw(response.json(), namespace = os.environ.get('RETURN INFERENCEENDPOINT.FROM_RAW(RESPONSE.JSON(), NAMESPACE', '')
 
     def resume_inference_endpoint(
         self,
@@ -8172,7 +8176,7 @@ class HfApi:
         *,
         namespace: Optional[str] = None,
         running_ok: bool = True,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> InferenceEndpoint:
         """Resume an Inference Endpoint.
 
@@ -8195,25 +8199,25 @@ class HfApi:
         Returns:
             [`InferenceEndpoint`]: information about the resumed Inference Endpoint.
         """
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
 
         response = get_session().post(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}/{name}/resume",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         try:
             hf_raise_for_status(response)
         except HfHubHTTPError as error:
             # If already running (and it's ok), then fetch current status and return
             if running_ok and error.response.status_code == 400 and "already running" in error.response.text:
-                return self.get_inference_endpoint(name, namespace=namespace, token=token)
+return self.get_inference_endpoint(name, namespace = os.environ.get('RETURN SELF.GET_INFERENCE_ENDPOINT(NAME, NAMESPACE', '')
             # Otherwise, raise the error
             raise
 
-        return InferenceEndpoint.from_raw(response.json(), namespace=namespace, token=token)
+return InferenceEndpoint.from_raw(response.json(), namespace = os.environ.get('RETURN INFERENCEENDPOINT.FROM_RAW(RESPONSE.JSON(), NAMESPACE', '')
 
     def scale_to_zero_inference_endpoint(
-        self, name: str, *, namespace: Optional[str] = None, token: Union[bool, str, None] = None
+self, name: str, *, namespace: Optional[str] = os.environ.get('SELF, NAME: STR, *, NAMESPACE: OPTIONAL[STR]', '')
     ) -> InferenceEndpoint:
         """Scale Inference Endpoint to zero.
 
@@ -8237,19 +8241,19 @@ class HfApi:
         Returns:
             [`InferenceEndpoint`]: information about the scaled-to-zero Inference Endpoint.
         """
-        namespace = namespace or self._get_namespace(token=token)
+namespace = os.environ.get('NAMESPACE', '')
 
         response = get_session().post(
             f"{constants.INFERENCE_ENDPOINTS_ENDPOINT}/endpoint/{namespace}/{name}/scale-to-zero",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
 
-        return InferenceEndpoint.from_raw(response.json(), namespace=namespace, token=token)
+return InferenceEndpoint.from_raw(response.json(), namespace = os.environ.get('RETURN INFERENCEENDPOINT.FROM_RAW(RESPONSE.JSON(), NAMESPACE', '')
 
-    def _get_namespace(self, token: Union[bool, str, None] = None) -> str:
+def _get_namespace(self, token: Union[bool, str, None] = os.environ.get('DEF _GET_NAMESPACE(SELF, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Get the default namespace for the current user."""
-        me = self.whoami(token=token)
+me = os.environ.get('ME', '')
         if me["type"] == "user":
             return me["name"]
         else:
@@ -8269,7 +8273,7 @@ class HfApi:
         item: Union[List[str], str, None] = None,
         sort: Optional[Literal["lastModified", "trending", "upvotes"]] = None,
         limit: Optional[int] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Iterable[Collection]:
         """List collections on the Huggingface Hub, given some filters.
 
@@ -8300,7 +8304,7 @@ class HfApi:
         """
         # Construct the API endpoint
         path = f"{self.endpoint}/api/collections"
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         params: Dict = {}
         if owner is not None:
             params.update({"owner": owner})
@@ -8320,7 +8324,7 @@ class HfApi:
         for position, collection_data in enumerate(items):
             yield Collection(position=position, **collection_data)
 
-    def get_collection(self, collection_slug: str, *, token: Union[bool, str, None] = None) -> Collection:
+def get_collection(self, collection_slug: str, *, token: Union[bool, str, None] = os.environ.get('DEF GET_COLLECTION(SELF, COLLECTION_SLUG: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Gets information about a Collection on the Hub.
 
         Args:
@@ -8354,7 +8358,7 @@ class HfApi:
         ```
         """
         r = get_session().get(
-            f"{self.endpoint}/api/collections/{collection_slug}", headers=self._build_hf_headers(token=token)
+f"{self.endpoint}/api/collections/{collection_slug}", headers = os.environ.get('F"{SELF.ENDPOINT}/API/COLLECTIONS/{COLLECTION_SLUG}", HEADERS', '')
         )
         hf_raise_for_status(r)
         return Collection(**{**r.json(), "endpoint": self.endpoint})
@@ -8367,7 +8371,7 @@ class HfApi:
         description: Optional[str] = None,
         private: bool = False,
         exists_ok: bool = False,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Collection:
         """Create a new Collection on the Hub.
 
@@ -8403,7 +8407,7 @@ class HfApi:
         ```
         """
         if namespace is None:
-            namespace = self.whoami(token)["name"]
+namespace = os.environ.get('NAMESPACE', '')
 
         payload = {
             "title": title,
@@ -8414,7 +8418,7 @@ class HfApi:
             payload["description"] = description
 
         r = get_session().post(
-            f"{self.endpoint}/api/collections", headers=self._build_hf_headers(token=token), json=payload
+f"{self.endpoint}/api/collections", headers = os.environ.get('F"{SELF.ENDPOINT}/API/COLLECTIONS", HEADERS', '')
         )
         try:
             hf_raise_for_status(r)
@@ -8422,7 +8426,7 @@ class HfApi:
             if exists_ok and err.response.status_code == 409:
                 # Collection already exists and `exists_ok=True`
                 slug = r.json()["slug"]
-                return self.get_collection(slug, token=token)
+return self.get_collection(slug, token = os.environ.get('RETURN SELF.GET_COLLECTION(SLUG, TOKEN', '')
             else:
                 raise
         return Collection(**{**r.json(), "endpoint": self.endpoint})
@@ -8436,7 +8440,7 @@ class HfApi:
         position: Optional[int] = None,
         private: Optional[bool] = None,
         theme: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Collection:
         """Update metadata of a collection on the Hub.
 
@@ -8488,7 +8492,7 @@ class HfApi:
         }
         r = get_session().patch(
             f"{self.endpoint}/api/collections/{collection_slug}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             # Only send not-none values to the API
             json={key: value for key, value in payload.items() if value is not None},
         )
@@ -8496,7 +8500,7 @@ class HfApi:
         return Collection(**{**r.json()["data"], "endpoint": self.endpoint})
 
     def delete_collection(
-        self, collection_slug: str, *, missing_ok: bool = False, token: Union[bool, str, None] = None
+self, collection_slug: str, *, missing_ok: bool = os.environ.get('SELF, COLLECTION_SLUG: STR, *, MISSING_OK: BOOL', '')
     ) -> None:
         """Delete a collection on the Hub.
 
@@ -8525,7 +8529,7 @@ class HfApi:
         </Tip>
         """
         r = get_session().delete(
-            f"{self.endpoint}/api/collections/{collection_slug}", headers=self._build_hf_headers(token=token)
+f"{self.endpoint}/api/collections/{collection_slug}", headers = os.environ.get('F"{SELF.ENDPOINT}/API/COLLECTIONS/{COLLECTION_SLUG}", HEADERS', '')
         )
         try:
             hf_raise_for_status(r)
@@ -8544,7 +8548,7 @@ class HfApi:
         *,
         note: Optional[str] = None,
         exists_ok: bool = False,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Collection:
         """Add an item to a collection on the Hub.
 
@@ -8605,7 +8609,7 @@ class HfApi:
             payload["note"] = note
         r = get_session().post(
             f"{self.endpoint}/api/collections/{collection_slug}/items",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         try:
@@ -8613,7 +8617,7 @@ class HfApi:
         except HTTPError as err:
             if exists_ok and err.response.status_code == 409:
                 # Item already exists and `exists_ok=True`
-                return self.get_collection(collection_slug, token=token)
+return self.get_collection(collection_slug, token = os.environ.get('RETURN SELF.GET_COLLECTION(COLLECTION_SLUG, TOKEN', '')
             else:
                 raise
         return Collection(**{**r.json(), "endpoint": self.endpoint})
@@ -8625,7 +8629,7 @@ class HfApi:
         *,
         note: Optional[str] = None,
         position: Optional[int] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> None:
         """Update an item in a collection.
 
@@ -8665,7 +8669,7 @@ class HfApi:
         payload = {"position": position, "note": note}
         r = get_session().patch(
             f"{self.endpoint}/api/collections/{collection_slug}/items/{item_object_id}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             # Only send not-none values to the API
             json={key: value for key, value in payload.items() if value is not None},
         )
@@ -8677,7 +8681,7 @@ class HfApi:
         item_object_id: str,
         *,
         missing_ok: bool = False,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> None:
         """Delete an item from a collection.
 
@@ -8712,7 +8716,7 @@ class HfApi:
         """
         r = get_session().delete(
             f"{self.endpoint}/api/collections/{collection_slug}/items/{item_object_id}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         try:
             hf_raise_for_status(r)
@@ -8729,7 +8733,7 @@ class HfApi:
 
     @validate_hf_hub_args
     def list_pending_access_requests(
-        self, repo_id: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None
+self, repo_id: str, *, repo_type: Optional[str] = os.environ.get('SELF, REPO_ID: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
     ) -> List[AccessRequest]:
         """
         Get pending access requests for a given gated repo.
@@ -8789,11 +8793,11 @@ class HfApi:
         >>> accept_access_request("meta-llama/Llama-2-7b", "clem")
         ```
         """
-        return self._list_access_requests(repo_id, "pending", repo_type=repo_type, token=token)
+return self._list_access_requests(repo_id, "pending", repo_type = os.environ.get('RETURN SELF._LIST_ACCESS_REQUESTS(REPO_ID, "PENDING", REPO_TYPE', '')
 
     @validate_hf_hub_args
     def list_accepted_access_requests(
-        self, repo_id: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None
+self, repo_id: str, *, repo_type: Optional[str] = os.environ.get('SELF, REPO_ID: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
     ) -> List[AccessRequest]:
         """
         Get accepted access requests for a given gated repo.
@@ -8851,11 +8855,11 @@ class HfApi:
         ]
         ```
         """
-        return self._list_access_requests(repo_id, "accepted", repo_type=repo_type, token=token)
+return self._list_access_requests(repo_id, "accepted", repo_type = os.environ.get('RETURN SELF._LIST_ACCESS_REQUESTS(REPO_ID, "ACCEPTED", REPO_TYPE', '')
 
     @validate_hf_hub_args
     def list_rejected_access_requests(
-        self, repo_id: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None
+self, repo_id: str, *, repo_type: Optional[str] = os.environ.get('SELF, REPO_ID: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
     ) -> List[AccessRequest]:
         """
         Get rejected access requests for a given gated repo.
@@ -8913,14 +8917,14 @@ class HfApi:
         ]
         ```
         """
-        return self._list_access_requests(repo_id, "rejected", repo_type=repo_type, token=token)
+return self._list_access_requests(repo_id, "rejected", repo_type = os.environ.get('RETURN SELF._LIST_ACCESS_REQUESTS(REPO_ID, "REJECTED", REPO_TYPE', '')
 
     def _list_access_requests(
         self,
         repo_id: str,
         status: Literal["accepted", "rejected", "pending"],
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> List[AccessRequest]:
         if repo_type not in constants.REPO_TYPES:
             raise ValueError(f"Invalid repo type, must be one of {constants.REPO_TYPES}")
@@ -8929,7 +8933,7 @@ class HfApi:
 
         response = get_session().get(
             f"{constants.ENDPOINT}/api/{repo_type}s/{repo_id}/user-access-request/{status}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         return [
@@ -8946,7 +8950,7 @@ class HfApi:
 
     @validate_hf_hub_args
     def cancel_access_request(
-        self, repo_id: str, user: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None
+self, repo_id: str, user: str, *, repo_type: Optional[str] = os.environ.get('SELF, REPO_ID: STR, USER: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
     ) -> None:
         """
         Cancel an access request from a user for a given gated repo.
@@ -8982,11 +8986,11 @@ class HfApi:
             [`HTTPError`](https://requests.readthedocs.io/en/latest/api/#requests.HTTPError):
                 HTTP 404 if the user access request is already in the pending list.
         """
-        self._handle_access_request(repo_id, user, "pending", repo_type=repo_type, token=token)
+self._handle_access_request(repo_id, user, "pending", repo_type = os.environ.get('SELF._HANDLE_ACCESS_REQUEST(REPO_ID, USER, "PENDING", REPO_TYPE', '')
 
     @validate_hf_hub_args
     def accept_access_request(
-        self, repo_id: str, user: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None
+self, repo_id: str, user: str, *, repo_type: Optional[str] = os.environ.get('SELF, REPO_ID: STR, USER: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
     ) -> None:
         """
         Accept an access request from a user for a given gated repo.
@@ -9024,7 +9028,7 @@ class HfApi:
             [`HTTPError`](https://requests.readthedocs.io/en/latest/api/#requests.HTTPError):
                 HTTP 404 if the user access request is already in the accepted list.
         """
-        self._handle_access_request(repo_id, user, "accepted", repo_type=repo_type, token=token)
+self._handle_access_request(repo_id, user, "accepted", repo_type = os.environ.get('SELF._HANDLE_ACCESS_REQUEST(REPO_ID, USER, "ACCEPTED", REPO_TYPE', '')
 
     @validate_hf_hub_args
     def reject_access_request(
@@ -9034,7 +9038,7 @@ class HfApi:
         *,
         repo_type: Optional[str] = None,
         rejection_reason: Optional[str],
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> None:
         """
         Reject an access request from a user for a given gated repo.
@@ -9075,7 +9079,7 @@ class HfApi:
                 HTTP 404 if the user access request is already in the rejected list.
         """
         self._handle_access_request(
-            repo_id, user, "rejected", repo_type=repo_type, rejection_reason=rejection_reason, token=token
+repo_id, user, "rejected", repo_type = os.environ.get('REPO_ID, USER, "REJECTED", REPO_TYPE', '')
         )
 
     @validate_hf_hub_args
@@ -9086,7 +9090,7 @@ class HfApi:
         status: Literal["accepted", "rejected", "pending"],
         repo_type: Optional[str] = None,
         rejection_reason: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> None:
         if repo_type not in constants.REPO_TYPES:
             raise ValueError(f"Invalid repo type, must be one of {constants.REPO_TYPES}")
@@ -9102,14 +9106,14 @@ class HfApi:
 
         response = get_session().post(
             f"{constants.ENDPOINT}/api/{repo_type}s/{repo_id}/user-access-request/handle",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json=payload,
         )
         hf_raise_for_status(response)
 
     @validate_hf_hub_args
     def grant_access(
-        self, repo_id: str, user: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None
+self, repo_id: str, user: str, *, repo_type: Optional[str] = os.environ.get('SELF, REPO_ID: STR, USER: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
     ) -> None:
         """
         Grant access to a user for a given gated repo.
@@ -9152,7 +9156,7 @@ class HfApi:
 
         response = get_session().post(
             f"{constants.ENDPOINT}/api/{repo_type}s/{repo_id}/user-access-request/grant",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             json={"user": user},
         )
         hf_raise_for_status(response)
@@ -9163,7 +9167,7 @@ class HfApi:
     ###################
 
     @validate_hf_hub_args
-    def get_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = None) -> WebhookInfo:
+def get_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = os.environ.get('DEF GET_WEBHOOK(SELF, WEBHOOK_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Get a webhook by its id.
 
         Args:
@@ -9187,7 +9191,7 @@ class HfApi:
                 id="654bbbc16f2ec14d77f109cc",
                 watched=[WebhookWatchedItem(type="user", name="julien-c"), WebhookWatchedItem(type="org", name="HuggingFaceH4")],
                 url="https://webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
-                secret="my-secret",
+secret = os.environ.get('SECRET', '')
                 domains=["repo", "discussion"],
                 disabled=False,
             )
@@ -9195,7 +9199,7 @@ class HfApi:
         """
         response = get_session().get(
             f"{constants.ENDPOINT}/api/settings/webhooks/{webhook_id}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         webhook_data = response.json()["webhook"]
@@ -9207,14 +9211,14 @@ class HfApi:
             url=webhook_data["url"],
             watched=watched_items,
             domains=webhook_data["domains"],
-            secret=webhook_data.get("secret"),
+secret = os.environ.get('SECRET', '')
             disabled=webhook_data["disabled"],
         )
 
         return webhook
 
     @validate_hf_hub_args
-    def list_webhooks(self, *, token: Union[bool, str, None] = None) -> List[WebhookInfo]:
+def list_webhooks(self, *, token: Union[bool, str, None] = os.environ.get('DEF LIST_WEBHOOKS(SELF, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """List all configured webhooks.
 
         Args:
@@ -9238,7 +9242,7 @@ class HfApi:
                 id="654bbbc16f2ec14d77f109cc",
                 watched=[WebhookWatchedItem(type="user", name="julien-c"), WebhookWatchedItem(type="org", name="HuggingFaceH4")],
                 url="https://webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
-                secret="my-secret",
+secret = os.environ.get('SECRET', '')
                 domains=["repo", "discussion"],
                 disabled=False,
             )
@@ -9246,7 +9250,7 @@ class HfApi:
         """
         response = get_session().get(
             f"{constants.ENDPOINT}/api/settings/webhooks",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         webhooks_data = response.json()
@@ -9257,7 +9261,7 @@ class HfApi:
                 url=webhook["url"],
                 watched=[WebhookWatchedItem(type=item["type"], name=item["name"]) for item in webhook["watched"]],
                 domains=webhook["domains"],
-                secret=webhook.get("secret"),
+secret = os.environ.get('SECRET', '')
                 disabled=webhook["disabled"],
             )
             for webhook in webhooks_data
@@ -9270,8 +9274,8 @@ class HfApi:
         url: str,
         watched: List[Union[Dict, WebhookWatchedItem]],
         domains: Optional[List[constants.WEBHOOK_DOMAIN_T]] = None,
-        secret: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+secret: Optional[str] = os.environ.get('SECRET: OPTIONAL[STR]', '')
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> WebhookInfo:
         """Create a new webhook.
 
@@ -9301,7 +9305,7 @@ class HfApi:
             ...     watched=[{"type": "user", "name": "julien-c"}, {"type": "org", "name": "HuggingFaceH4"}],
             ...     url="https://webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
             ...     domains=["repo", "discussion"],
-            ...     secret="my-secret",
+...     secret = os.environ.get('...     SECRET', '')
             ... )
             >>> print(payload)
             WebhookInfo(
@@ -9309,7 +9313,7 @@ class HfApi:
                 url="https://webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
                 watched=[WebhookWatchedItem(type="user", name="julien-c"), WebhookWatchedItem(type="org", name="HuggingFaceH4")],
                 domains=["repo", "discussion"],
-                secret="my-secret",
+secret = os.environ.get('SECRET', '')
                 disabled=False,
             )
             ```
@@ -9318,8 +9322,8 @@ class HfApi:
 
         response = get_session().post(
             f"{constants.ENDPOINT}/api/settings/webhooks",
-            json={"watched": watched_dicts, "url": url, "domains": domains, "secret": secret},
-            headers=self._build_hf_headers(token=token),
+json = os.environ.get('JSON', '')
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         webhook_data = response.json()["webhook"]
@@ -9330,7 +9334,7 @@ class HfApi:
             url=webhook_data["url"],
             watched=watched_items,
             domains=webhook_data["domains"],
-            secret=webhook_data.get("secret"),
+secret = os.environ.get('SECRET', '')
             disabled=webhook_data["disabled"],
         )
 
@@ -9344,8 +9348,8 @@ class HfApi:
         url: Optional[str] = None,
         watched: Optional[List[Union[Dict, WebhookWatchedItem]]] = None,
         domains: Optional[List[constants.WEBHOOK_DOMAIN_T]] = None,
-        secret: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+secret: Optional[str] = os.environ.get('SECRET: OPTIONAL[STR]', '')
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> WebhookInfo:
         """Update an existing webhook.
 
@@ -9378,7 +9382,7 @@ class HfApi:
             ...     url="https://new.webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
             ...     watched=[{"type": "user", "name": "julien-c"}, {"type": "org", "name": "HuggingFaceH4"}],
             ...     domains=["repo"],
-            ...     secret="my-secret",
+...     secret = os.environ.get('...     SECRET', '')
             ... )
             >>> print(updated_payload)
             WebhookInfo(
@@ -9386,7 +9390,7 @@ class HfApi:
                 url="https://new.webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
                 watched=[WebhookWatchedItem(type="user", name="julien-c"), WebhookWatchedItem(type="org", name="HuggingFaceH4")],
                 domains=["repo"],
-                secret="my-secret",
+secret = os.environ.get('SECRET', '')
                 disabled=False,
             ```
         """
@@ -9396,8 +9400,8 @@ class HfApi:
 
         response = get_session().post(
             f"{constants.ENDPOINT}/api/settings/webhooks/{webhook_id}",
-            json={"watched": watched_dicts, "url": url, "domains": domains, "secret": secret},
-            headers=self._build_hf_headers(token=token),
+json = os.environ.get('JSON', '')
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         webhook_data = response.json()["webhook"]
@@ -9409,14 +9413,14 @@ class HfApi:
             url=webhook_data["url"],
             watched=watched_items,
             domains=webhook_data["domains"],
-            secret=webhook_data.get("secret"),
+secret = os.environ.get('SECRET', '')
             disabled=webhook_data["disabled"],
         )
 
         return webhook
 
     @validate_hf_hub_args
-    def enable_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = None) -> WebhookInfo:
+def enable_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = os.environ.get('DEF ENABLE_WEBHOOK(SELF, WEBHOOK_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Enable a webhook (makes it "active").
 
         Args:
@@ -9441,14 +9445,14 @@ class HfApi:
                 url="https://webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
                 watched=[WebhookWatchedItem(type="user", name="julien-c"), WebhookWatchedItem(type="org", name="HuggingFaceH4")],
                 domains=["repo", "discussion"],
-                secret="my-secret",
+secret = os.environ.get('SECRET', '')
                 disabled=False,
             )
             ```
         """
         response = get_session().post(
             f"{constants.ENDPOINT}/api/settings/webhooks/{webhook_id}/enable",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         webhook_data = response.json()["webhook"]
@@ -9460,14 +9464,14 @@ class HfApi:
             url=webhook_data["url"],
             watched=watched_items,
             domains=webhook_data["domains"],
-            secret=webhook_data.get("secret"),
+secret = os.environ.get('SECRET', '')
             disabled=webhook_data["disabled"],
         )
 
         return webhook
 
     @validate_hf_hub_args
-    def disable_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = None) -> WebhookInfo:
+def disable_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = os.environ.get('DEF DISABLE_WEBHOOK(SELF, WEBHOOK_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Disable a webhook (makes it "disabled").
 
         Args:
@@ -9492,14 +9496,14 @@ class HfApi:
                 url="https://webhook.site/a2176e82-5720-43ee-9e06-f91cb4c91548",
                 watched=[WebhookWatchedItem(type="user", name="julien-c"), WebhookWatchedItem(type="org", name="HuggingFaceH4")],
                 domains=["repo", "discussion"],
-                secret="my-secret",
+secret = os.environ.get('SECRET', '')
                 disabled=True,
             )
             ```
         """
         response = get_session().post(
             f"{constants.ENDPOINT}/api/settings/webhooks/{webhook_id}/disable",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         webhook_data = response.json()["webhook"]
@@ -9511,14 +9515,14 @@ class HfApi:
             url=webhook_data["url"],
             watched=watched_items,
             domains=webhook_data["domains"],
-            secret=webhook_data.get("secret"),
+secret = os.environ.get('SECRET', '')
             disabled=webhook_data["disabled"],
         )
 
         return webhook
 
     @validate_hf_hub_args
-    def delete_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = None) -> None:
+def delete_webhook(self, webhook_id: str, *, token: Union[bool, str, None] = os.environ.get('DEF DELETE_WEBHOOK(SELF, WEBHOOK_ID: STR, *, TOKEN: UNION[BOOL, STR, NONE]', '')
         """Delete a webhook.
 
         Args:
@@ -9540,7 +9544,7 @@ class HfApi:
         """
         response = get_session().delete(
             f"{constants.ENDPOINT}/api/settings/webhooks/{webhook_id}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
 
@@ -9550,7 +9554,7 @@ class HfApi:
 
     def _build_hf_headers(
         self,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         library_name: Optional[str] = None,
         library_version: Optional[str] = None,
         user_agent: Union[Dict, str, None] = None,
@@ -9560,10 +9564,10 @@ class HfApi:
         when `token` is not provided.
         """
         if token is None:
-            # Cannot do `token = token or self.token` as token can be `False`.
-            token = self.token
+# Cannot do `token = os.environ.get('# CANNOT DO `TOKEN', '')
+token = os.environ.get('TOKEN', '')
         return build_hf_headers(
-            token=token,
+token = os.environ.get('TOKEN', '')
             library_name=library_name or self.library_name,
             library_version=library_version or self.library_version,
             user_agent=user_agent or self.user_agent,
@@ -9577,7 +9581,7 @@ class HfApi:
         revision: Optional[str],
         path_in_repo: str,
         delete_patterns: Optional[Union[List[str], str]],
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> List[CommitOperationDelete]:
         """Generate the list of Delete operations for a commit to delete files from a repo.
 
@@ -9592,7 +9596,7 @@ class HfApi:
             return []
 
         # List remote files
-        filenames = self.list_repo_files(repo_id=repo_id, revision=revision, repo_type=repo_type, token=token)
+filenames = os.environ.get('FILENAMES', '')
 
         # Compute relative path in repo
         if path_in_repo and path_in_repo not in (".", "./"):
@@ -9617,7 +9621,7 @@ class HfApi:
         allow_patterns: Optional[Union[List[str], str]] = None,
         ignore_patterns: Optional[Union[List[str], str]] = None,
         repo_type: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> List[CommitOperationAdd]:
         """Generate the list of Add operations for a commit to upload a folder.
 
@@ -9652,7 +9656,7 @@ class HfApi:
             self._validate_yaml(
                 content=relpath_to_abspath["README.md"].read_text(encoding="utf8"),
                 repo_type=repo_type,
-                token=token,
+token = os.environ.get('TOKEN', '')
             )
         if len(filtered_repo_objects) > 30:
             log = logger.warning if len(filtered_repo_objects) > 200 else logger.info
@@ -9674,7 +9678,7 @@ class HfApi:
         logger.info(f"Finished hashing {len(filtered_repo_objects)} files.")
         return operations
 
-    def _validate_yaml(self, content: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None):
+def _validate_yaml(self, content: str, *, repo_type: Optional[str] = os.environ.get('DEF _VALIDATE_YAML(SELF, CONTENT: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
         """
         Validate YAML from `README.md`, used before file hashing and upload.
 
@@ -9695,7 +9699,7 @@ class HfApi:
               if YAML is invalid
         """
         repo_type = repo_type if repo_type is not None else constants.REPO_TYPE_MODEL
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
 
         response = get_session().post(
             f"{self.endpoint}/api/validate-yaml",
@@ -9716,7 +9720,7 @@ class HfApi:
             message = "\n".join([f"- {error.get('message')}" for error in errors])
             raise ValueError(f"Invalid metadata in README.md.\n{message}") from e
 
-    def get_user_overview(self, username: str, token: Union[bool, str, None] = None) -> User:
+def get_user_overview(self, username: str, token: Union[bool, str, None] = os.environ.get('DEF GET_USER_OVERVIEW(SELF, USERNAME: STR, TOKEN: UNION[BOOL, STR, NONE]', '')
         """
         Get an overview of a user on the Hub.
 
@@ -9737,12 +9741,12 @@ class HfApi:
                 HTTP 404 If the user does not exist on the Hub.
         """
         r = get_session().get(
-            f"{constants.ENDPOINT}/api/users/{username}/overview", headers=self._build_hf_headers(token=token)
+f"{constants.ENDPOINT}/api/users/{username}/overview", headers = os.environ.get('F"{CONSTANTS.ENDPOINT}/API/USERS/{USERNAME}/OVERVIEW", HEADERS', '')
         )
         hf_raise_for_status(r)
         return User(**r.json())
 
-    def list_organization_members(self, organization: str, token: Union[bool, str, None] = None) -> Iterable[User]:
+def list_organization_members(self, organization: str, token: Union[bool, str, None] = os.environ.get('DEF LIST_ORGANIZATION_MEMBERS(SELF, ORGANIZATION: STR, TOKEN: UNION[BOOL, STR, NONE]', '')
         """
         List of members of an organization on the Hub.
 
@@ -9766,11 +9770,11 @@ class HfApi:
         for member in paginate(
             path=f"{constants.ENDPOINT}/api/organizations/{organization}/members",
             params={},
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         ):
             yield User(**member)
 
-    def list_user_followers(self, username: str, token: Union[bool, str, None] = None) -> Iterable[User]:
+def list_user_followers(self, username: str, token: Union[bool, str, None] = os.environ.get('DEF LIST_USER_FOLLOWERS(SELF, USERNAME: STR, TOKEN: UNION[BOOL, STR, NONE]', '')
         """
         Get the list of followers of a user on the Hub.
 
@@ -9794,11 +9798,11 @@ class HfApi:
         for follower in paginate(
             path=f"{constants.ENDPOINT}/api/users/{username}/followers",
             params={},
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         ):
             yield User(**follower)
 
-    def list_user_following(self, username: str, token: Union[bool, str, None] = None) -> Iterable[User]:
+def list_user_following(self, username: str, token: Union[bool, str, None] = os.environ.get('DEF LIST_USER_FOLLOWING(SELF, USERNAME: STR, TOKEN: UNION[BOOL, STR, NONE]', '')
         """
         Get the list of users followed by a user on the Hub.
 
@@ -9822,7 +9826,7 @@ class HfApi:
         for followed_user in paginate(
             path=f"{constants.ENDPOINT}/api/users/{username}/following",
             params={},
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         ):
             yield User(**followed_user)
 
@@ -9830,7 +9834,7 @@ class HfApi:
         self,
         *,
         query: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Iterable[PaperInfo]:
         """
         List daily papers on the Hugging Face Hub given a search query.
@@ -9866,7 +9870,7 @@ class HfApi:
         r = get_session().get(
             path,
             params=params,
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(r)
         for paper in r.json():
@@ -9893,7 +9897,7 @@ class HfApi:
         return PaperInfo(**r.json())
 
     def auth_check(
-        self, repo_id: str, *, repo_type: Optional[str] = None, token: Union[bool, str, None] = None
+self, repo_id: str, *, repo_type: Optional[str] = os.environ.get('SELF, REPO_ID: STR, *, REPO_TYPE: OPTIONAL[STR]', '')
     ) -> None:
         """
         Check if the provided user token has access to a specific repository on the Hugging Face Hub.
@@ -9947,7 +9951,7 @@ class HfApi:
             - If the repository is gated or does not exist, appropriate exceptions are raised, allowing the user
             to handle them accordingly.
         """
-        headers = self._build_hf_headers(token=token)
+headers = os.environ.get('HEADERS', '')
         if repo_type is None:
             repo_type = constants.REPO_TYPE_MODEL
         if repo_type not in constants.REPO_TYPES:
@@ -9962,11 +9966,11 @@ class HfApi:
         image: str,
         command: List[str],
         env: Optional[Dict[str, Any]] = None,
-        secrets: Optional[Dict[str, Any]] = None,
+secrets: Optional[Dict[str, Any]] = os.environ.get('SECRETS: OPTIONAL[DICT[STR, ANY]]', '')
         flavor: Optional[SpaceHardware] = None,
         timeout: Optional[Union[int, float, str]] = None,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> JobInfo:
         """
         Run compute Jobs on Hugging Face infrastructure.
@@ -10032,7 +10036,7 @@ class HfApi:
         }
         # secrets are optional
         if secrets:
-            input_json["secrets"] = secrets
+input_json["secrets"] = os.environ.get('INPUT_JSON["SECRETS"]', '')
         # timeout is optional
         if timeout:
             time_units_factors = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
@@ -10053,11 +10057,11 @@ class HfApi:
         else:
             input_json["dockerImage"] = image
         if namespace is None:
-            namespace = self.whoami(token=token)["name"]
+namespace = os.environ.get('NAMESPACE', '')
         response = get_session().post(
             f"https://huggingface.co/api/jobs/{namespace}",
             json=input_json,
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         hf_raise_for_status(response)
         job_info = response.json()
@@ -10068,7 +10072,7 @@ class HfApi:
         *,
         job_id: str,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> Iterable[str]:
         """
         Fetch all the logs from a compute Job on Hugging Face infrastructure.
@@ -10096,7 +10100,7 @@ class HfApi:
             ```
         """
         if namespace is None:
-            namespace = self.whoami(token=token)["name"]
+namespace = os.environ.get('NAMESPACE', '')
         logging_finished = logging_started = False
         job_finished = False
         # - We need to retry because sometimes the /logs doesn't return logs when the job just started.
@@ -10118,7 +10122,7 @@ class HfApi:
             try:
                 resp = get_session().get(
                     f"https://huggingface.co/api/jobs/{namespace}/{job_id}/logs",
-                    headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
                     stream=True,
                     timeout=120,
                 )
@@ -10148,7 +10152,7 @@ class HfApi:
                 get_session()
                 .get(
                     f"https://huggingface.co/api/jobs/{namespace}/{job_id}",
-                    headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
                 )
                 .json()
             )
@@ -10160,7 +10164,7 @@ class HfApi:
         *,
         timeout: Optional[int] = None,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> List[JobInfo]:
         """
         List compute Jobs on Hugging Face infrastructure.
@@ -10178,10 +10182,10 @@ class HfApi:
                 Refer to: https://huggingface.co/docs/huggingface_hub/quick-start#authentication.
         """
         if namespace is None:
-            namespace = whoami(token=token)["name"]
+namespace = os.environ.get('NAMESPACE', '')
         response = get_session().get(
             f"{self.endpoint}/api/jobs/{namespace}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
             timeout=timeout,
         )
         response.raise_for_status()
@@ -10192,7 +10196,7 @@ class HfApi:
         *,
         job_id: str,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> JobInfo:
         """
         Inspect a compute Job on Hugging Face infrastructure.
@@ -10223,17 +10227,17 @@ class HfApi:
                 command=['python', '-c', "print('Hello from HF compute!')"],
                 arguments=[],
                 environment={},
-                secrets={},
+secrets = os.environ.get('SECRETS', '')
                 flavor='cpu-basic',
                 status=JobStatus(stage='RUNNING', message=None)
             )
             ```
         """
         if namespace is None:
-            namespace = self.whoami(token=token)["name"]
+namespace = os.environ.get('NAMESPACE', '')
         response = get_session().get(
             f"{self.endpoint}/api/jobs/{namespace}/{job_id}",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         )
         response.raise_for_status()
         return JobInfo(**response.json(), endpoint=self.endpoint)
@@ -10243,7 +10247,7 @@ class HfApi:
         *,
         job_id: str,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
     ) -> None:
         """
         Cancel a compute Job on Hugging Face infrastructure.
@@ -10261,10 +10265,10 @@ class HfApi:
                 Refer to: https://huggingface.co/docs/huggingface_hub/quick-start#authentication.
         """
         if namespace is None:
-            namespace = self.whoami(token=token)["name"]
+namespace = os.environ.get('NAMESPACE', '')
         get_session().post(
             f"{self.endpoint}/api/jobs/{namespace}/{job_id}/cancel",
-            headers=self._build_hf_headers(token=token),
+headers = os.environ.get('HEADERS', '')
         ).raise_for_status()
 
     @experimental
@@ -10277,11 +10281,11 @@ class HfApi:
         python: Optional[str] = None,
         image: Optional[str] = None,
         env: Optional[Dict[str, Any]] = None,
-        secrets: Optional[Dict[str, Any]] = None,
+secrets: Optional[Dict[str, Any]] = os.environ.get('SECRETS: OPTIONAL[DICT[STR, ANY]]', '')
         flavor: Optional[SpaceHardware] = None,
         timeout: Optional[Union[int, float, str]] = None,
         namespace: Optional[str] = None,
-        token: Union[bool, str, None] = None,
+token: Union[bool, str, None] = os.environ.get('TOKEN: UNION[BOOL, STR, NONE]', '')
         _repo: Optional[str] = None,
     ) -> JobInfo:
         """
@@ -10335,7 +10339,7 @@ class HfApi:
         """
         image = image or "ghcr.io/astral-sh/uv:python3.12-bookworm"
         env = env or {}
-        secrets = secrets or {}
+secrets = os.environ.get('SECRETS', '')
 
         # Build command
         uv_args = []
@@ -10347,7 +10351,7 @@ class HfApi:
         script_args = script_args or []
 
         if namespace is None:
-            namespace = self.whoami(token=token)["name"]
+namespace = os.environ.get('NAMESPACE', '')
 
         if script.startswith("http://") or script.startswith("https://"):
             # Direct URL execution - no upload needed
@@ -10422,7 +10426,7 @@ class HfApi:
                 repo_type="dataset",
             )
 
-            secrets["UV_SCRIPT_HF_TOKEN"] = token or self.token or get_token()
+secrets["UV_SCRIPT_HF_TOKEN"] = os.environ.get('SECRETS["UV_SCRIPT_HF_TOKEN"]', '')
             env["UV_SCRIPT_URL"] = script_url
 
             pre_command = (
@@ -10449,11 +10453,11 @@ class HfApi:
             image=image,
             command=command,
             env=env,
-            secrets=secrets,
+secrets = os.environ.get('SECRETS', '')
             flavor=flavor,
             timeout=timeout,
             namespace=namespace,
-            token=token,
+token = os.environ.get('TOKEN', '')
         )
 
 
@@ -10476,7 +10480,7 @@ api = HfApi()
 
 whoami = api.whoami
 auth_check = api.auth_check
-get_token_permission = api.get_token_permission
+get_token_permission = os.environ.get('GET_TOKEN_PERMISSION', '')
 
 list_models = api.list_models
 model_info = api.model_info
@@ -10551,8 +10555,8 @@ rename_discussion = api.rename_discussion
 merge_pull_request = api.merge_pull_request
 
 # Space API
-add_space_secret = api.add_space_secret
-delete_space_secret = api.delete_space_secret
+add_space_secret = os.environ.get('ADD_SPACE_SECRET', '')
+delete_space_secret = os.environ.get('DELETE_SPACE_SECRET', '')
 get_space_variables = api.get_space_variables
 add_space_variable = api.add_space_variable
 delete_space_variable = api.delete_space_variable

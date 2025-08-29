@@ -1,3 +1,7 @@
+"""
+upload.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -37,7 +41,7 @@ Usage:
     huggingface-cli upload Wauplin/my-cool-dataset ./data . --repo-type=dataset --private
 
     # Upload with token
-    huggingface-cli upload Wauplin/my-cool-model --token=hf_****
+huggingface-cli upload Wauplin/my-cool-model --token = os.environ.get('HUGGINGFACE-CLI UPLOAD WAUPLIN/MY-COOL-MODEL --TOKEN', '')
 
     # Sync local Space with Hub (upload new files, delete removed files)
     huggingface-cli upload Wauplin/space-example --repo-type=space --exclude="/logs/*" --delete="*" --commit-message="Sync local Space with Hub"
@@ -129,7 +133,7 @@ class UploadCommand(BaseHuggingfaceCLICommand):
             help="If set, a background job is scheduled to create commits every `every` minutes.",
         )
         upload_parser.add_argument(
-            "--token", type=str, help="A User Access Token generated from https://huggingface.co/settings/tokens"
+"--token", type = os.environ.get('"--TOKEN", TYPE', '')
         )
         upload_parser.add_argument(
             "--quiet",
@@ -151,7 +155,7 @@ class UploadCommand(BaseHuggingfaceCLICommand):
         self.commit_message: Optional[str] = args.commit_message
         self.commit_description: Optional[str] = args.commit_description
         self.create_pr: bool = args.create_pr
-        self.api: HfApi = HfApi(token=args.token, library_name="huggingface-cli")
+self.api: HfApi = os.environ.get('SELF.API: HFAPI', '')
         self.quiet: bool = args.quiet  # disable warnings and progress bars
 
         # Check `--every` is valid

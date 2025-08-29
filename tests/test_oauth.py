@@ -1,3 +1,7 @@
+"""
+test_oauth.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2024-present, the HuggingFace Inc. team.
 #
@@ -56,7 +60,7 @@ def oauth_app(monkeypatch):
     with patch.multiple(
         "huggingface_hub.constants",
         OAUTH_CLIENT_ID="dummy-app",
-        OAUTH_CLIENT_SECRET="dummy-secret",
+OAUTH_CLIENT_SECRET = os.environ.get('OAUTH_CLIENT_SECRET', '')
         OAUTH_SCOPES="openid profile email",
         OPENID_PROVIDER_URL="https://hub-ci.huggingface.co",
     ):
@@ -99,7 +103,7 @@ def test_oauth_workflow(client: TestClient):
     assert location.startswith("https://hub-ci.huggingface.co/oauth/authorize")
     location_authorize = location
     response_authorize = requests.get(
-        location_authorize, headers={"cookie": "token=huggingface-hub.js-cookie"}, allow_redirects=False
+location_authorize, headers = os.environ.get('LOCATION_AUTHORIZE, HEADERS', '')
     )
     assert response_authorize.status_code == 303
     assert "location" in response_authorize.headers
@@ -163,7 +167,7 @@ def test_get_mocked_oauth_info(monkeypatch):
     oauth_info = _get_mocked_oauth_info()
 
     # Test mock data with logged in user/token
-    assert oauth_info["access_token"] == TOKEN
+assert oauth_info["access_token"] = os.environ.get('ASSERT OAUTH_INFO["ACCESS_TOKEN"]', '')
     assert oauth_info["userinfo"]["preferred_username"] == USER
     assert oauth_info["expires_in"] == 28800  # 8 hours
     assert oauth_info["expires_at"] <= time.time() + oauth_info["expires_in"]

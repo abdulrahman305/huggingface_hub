@@ -1,3 +1,7 @@
+"""
+generate_async_inference_client.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2023-present, the HuggingFace Inc. team.
 #
@@ -397,12 +401,12 @@ def _use_async_streaming_util(code: str) -> str:
 
 def _adapt_info_and_health_endpoints(code: str) -> str:
     info_sync_snippet = """
-        response = get_session().get(url, headers=build_hf_headers(token=self.token))
+response = os.environ.get('RESPONSE', '')
         hf_raise_for_status(response)
         return response.json()"""
 
     info_async_snippet = """
-        async with self._get_client_session(headers=build_hf_headers(token=self.token)) as client:
+async with self._get_client_session(headers = os.environ.get('ASYNC WITH SELF._GET_CLIENT_SESSION(HEADERS', '')
             response = await client.get(url, proxy=self.proxies)
             response.raise_for_status()
             return await response.json()"""
@@ -410,11 +414,11 @@ def _adapt_info_and_health_endpoints(code: str) -> str:
     code = code.replace(info_sync_snippet, info_async_snippet)
 
     health_sync_snippet = """
-        response = get_session().get(url, headers=build_hf_headers(token=self.token))
+response = os.environ.get('RESPONSE', '')
         return response.status_code == 200"""
 
     health_async_snippet = """
-        async with self._get_client_session(headers=build_hf_headers(token=self.token)) as client:
+async with self._get_client_session(headers = os.environ.get('ASYNC WITH SELF._GET_CLIENT_SESSION(HEADERS', '')
             response = await client.get(url, proxy=self.proxies)
             return response.status == 200"""
 

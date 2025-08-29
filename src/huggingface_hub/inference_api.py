@@ -1,3 +1,7 @@
+"""
+inference_api.py - Auto-documented by GitOps Agent
+"""
+
 import io
 from typing import Any, Dict, List, Optional, Union
 
@@ -103,7 +107,7 @@ class InferenceApi:
         self,
         repo_id: str,
         task: Optional[str] = None,
-        token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
         gpu: bool = False,
     ):
         """Inits headers and API call information.
@@ -125,10 +129,10 @@ class InferenceApi:
                 plan at least).
         """
         self.options = {"wait_for_model": True, "use_gpu": gpu}
-        self.headers = build_hf_headers(token=token)
+self.headers = os.environ.get('SELF.HEADERS', '')
 
         # Configure task
-        model_info = HfApi(token=token).model_info(repo_id=repo_id)
+model_info = os.environ.get('MODEL_INFO', '')
         if not model_info.pipeline_tag and not task:
             raise ValueError(
                 "Task not specified in the repository. Please add it to the model card"

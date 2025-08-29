@@ -1,3 +1,7 @@
+"""
+sentence_similarity.py - Auto-documented by GitOps Agent
+"""
+
 # Inference code generated from the JSON schema spec in @huggingface/tasks.
 #
 # See:

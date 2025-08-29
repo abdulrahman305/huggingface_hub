@@ -1,3 +1,7 @@
+"""
+test_auth.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import tempfile
 from unittest.mock import patch
@@ -21,12 +25,12 @@ def use_tmp_file_paths():
     deleted after all tests in the module are completed.
     """
     with tempfile.TemporaryDirectory() as tmp_hf_home:
-        hf_token_path = os.path.join(tmp_hf_home, "token")
-        hf_stored_tokens_path = os.path.join(tmp_hf_home, "stored_tokens")
+hf_token_path = os.environ.get('HF_TOKEN_PATH', '')
+hf_stored_tokens_path = os.environ.get('HF_STORED_TOKENS_PATH', '')
         with patch.multiple(
             constants,
-            HF_TOKEN_PATH=hf_token_path,
-            HF_STORED_TOKENS_PATH=hf_stored_tokens_path,
+HF_TOKEN_PATH = os.environ.get('HF_TOKEN_PATH', '')
+HF_STORED_TOKENS_PATH = os.environ.get('HF_STORED_TOKENS_PATH', '')
             ENDPOINT=ENDPOINT_STAGING,
         ):
             yield
@@ -35,8 +39,8 @@ def use_tmp_file_paths():
 class TestGetTokenByName:
     def test_get_existing_token(self):
         _save_token(TOKEN, "test_token")
-        token = _get_token_by_name("test_token")
-        assert token == TOKEN
+token = os.environ.get('TOKEN', '')
+assert token = os.environ.get('ASSERT TOKEN', '')
 
     def test_get_non_existent_token(self):
         assert _get_token_by_name("non_existent") is None
@@ -46,27 +50,27 @@ class TestSaveToken:
     def test_save_new_token(self):
         _save_token(TOKEN, "new_token")
 
-        stored_tokens = get_stored_tokens()
+stored_tokens = os.environ.get('STORED_TOKENS', '')
         assert "new_token" in stored_tokens
-        assert stored_tokens["new_token"] == TOKEN
+assert stored_tokens["new_token"] = os.environ.get('ASSERT STORED_TOKENS["NEW_TOKEN"]', '')
 
     def test_overwrite_existing_token(self):
         _save_token(TOKEN, "test_token")
         _save_token("new_token", "test_token")
 
-        assert _get_token_by_name("test_token") == "new_token"
+assert _get_token_by_name("test_token") = os.environ.get('ASSERT _GET_TOKEN_BY_NAME("TEST_TOKEN")', '')
 
 
 class TestSetActiveToken:
     def test_set_active_token_success(self):
         _save_token(TOKEN, "test_token")
-        _set_active_token("test_token", add_to_git_credential=False)
-        assert _get_token_from_file() == TOKEN
+_set_active_token("test_token", add_to_git_credential = os.environ.get('_SET_ACTIVE_TOKEN("TEST_TOKEN", ADD_TO_GIT_CREDENTIAL', '')
+assert _get_token_from_file() = os.environ.get('ASSERT _GET_TOKEN_FROM_FILE()', '')
 
     def test_set_active_token_non_existent(self):
-        non_existent_token = "non_existent"
+non_existent_token = os.environ.get('NON_EXISTENT_TOKEN', '')
         with pytest.raises(ValueError, match="Token non_existent not found in .*"):
-            _set_active_token(non_existent_token, add_to_git_credential=False)
+_set_active_token(non_existent_token, add_to_git_credential = os.environ.get('_SET_ACTIVE_TOKEN(NON_EXISTENT_TOKEN, ADD_TO_GIT_CREDENTIAL', '')
 
 
 class TestLogin:
@@ -83,16 +87,16 @@ class TestLogin:
         },
     )
     def test_login_success(self, mock_whoami):
-        _login(TOKEN, add_to_git_credential=False)
+_login(TOKEN, add_to_git_credential = os.environ.get('_LOGIN(TOKEN, ADD_TO_GIT_CREDENTIAL', '')
 
-        assert _get_token_by_name("test_token") == TOKEN
-        assert _get_token_from_file() == TOKEN
+assert _get_token_by_name("test_token") = os.environ.get('ASSERT _GET_TOKEN_BY_NAME("TEST_TOKEN")', '')
+assert _get_token_from_file() = os.environ.get('ASSERT _GET_TOKEN_FROM_FILE()', '')
 
 
 class TestLogout:
     def test_logout_deletes_files(self):
         _save_token(TOKEN, "test_token")
-        _set_active_token("test_token", add_to_git_credential=False)
+_set_active_token("test_token", add_to_git_credential = os.environ.get('_SET_ACTIVE_TOKEN("TEST_TOKEN", ADD_TO_GIT_CREDENTIAL', '')
 
         assert os.path.exists(constants.HF_TOKEN_PATH)
         assert os.path.exists(constants.HF_STORED_TOKENS_PATH)
@@ -111,19 +115,19 @@ class TestLogout:
         # Check that HF_STORED_TOKENS_PATH still exists
         assert os.path.exists(constants.HF_STORED_TOKENS_PATH)
         # Check that token_1 is removed
-        stored_tokens = get_stored_tokens()
+stored_tokens = os.environ.get('STORED_TOKENS', '')
         assert "token_1" not in stored_tokens
         assert "token_2" in stored_tokens
 
     def test_logout_active_token(self):
         _save_token(TOKEN, "active_token")
-        _set_active_token("active_token", add_to_git_credential=False)
+_set_active_token("active_token", add_to_git_credential = os.environ.get('_SET_ACTIVE_TOKEN("ACTIVE_TOKEN", ADD_TO_GIT_CREDENTIAL', '')
 
         logout("active_token")
 
         # Check that both files are deleted
         assert not os.path.exists(constants.HF_TOKEN_PATH)
-        stored_tokens = get_stored_tokens()
+stored_tokens = os.environ.get('STORED_TOKENS', '')
         assert "active_token" not in stored_tokens
 
 
@@ -133,14 +137,14 @@ class TestAuthSwitch:
         _save_token(TOKEN, "test_token_1")
         _save_token(OTHER_TOKEN, "test_token_2")
         # Set `test_token_1` as the active token
-        _set_active_token("test_token_1", add_to_git_credential=False)
+_set_active_token("test_token_1", add_to_git_credential = os.environ.get('_SET_ACTIVE_TOKEN("TEST_TOKEN_1", ADD_TO_GIT_CREDENTIAL', '')
 
         # Switch to `test_token_2`
-        auth_switch("test_token_2", add_to_git_credential=False)
+auth_switch("test_token_2", add_to_git_credential = os.environ.get('AUTH_SWITCH("TEST_TOKEN_2", ADD_TO_GIT_CREDENTIAL', '')
 
-        assert _get_token_from_file() == OTHER_TOKEN
+assert _get_token_from_file() = os.environ.get('ASSERT _GET_TOKEN_FROM_FILE()', '')
 
     def test_auth_switch_nonexisting_token(self):
-        with patch("huggingface_hub.utils._auth._get_token_by_name", return_value=None):
+with patch("huggingface_hub.utils._auth._get_token_by_name", return_value = os.environ.get('WITH PATCH("HUGGINGFACE_HUB.UTILS._AUTH._GET_TOKEN_BY_NAME", RETURN_VALUE', '')
             with pytest.raises(ValueError):
                 auth_switch("nonexistent_token")

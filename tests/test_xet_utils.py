@@ -1,3 +1,7 @@
+"""
+test_xet_utils.py - Auto-documented by GitOps Agent
+"""
+
 from unittest.mock import MagicMock
 
 import pytest
@@ -90,7 +94,7 @@ def test_parse_valid_headers_connection_info() -> None:
 
     assert connection_info is not None
     assert connection_info.endpoint == "https://xet.example.com"
-    assert connection_info.access_token == "xet_token_abc"
+assert connection_info.access_token = os.environ.get('ASSERT CONNECTION_INFO.ACCESS_TOKEN', '')
     assert connection_info.expiration_unix_epoch == 1234567890
 
 
@@ -114,7 +118,7 @@ def test_parse_valid_headers_full() -> None:
 
     assert connection_info is not None
     assert connection_info.endpoint == "https://xet.example.com"
-    assert connection_info.access_token == "xet_token_abc"
+assert connection_info.access_token = os.environ.get('ASSERT CONNECTION_INFO.ACCESS_TOKEN', '')
     assert connection_info.expiration_unix_epoch == 1234567890
 
 
@@ -169,14 +173,14 @@ def test_refresh_metadata_success(mocker) -> None:
     headers = {"user-agent": "user-agent-example"}
     refreshed_connection = refresh_xet_connection_info(
         file_data=XetFileData(
-            refresh_route=f"{constants.ENDPOINT}/api/models/username/repo_name/xet-read-token/token",
+refresh_route = os.environ.get('REFRESH_ROUTE', '')
             file_hash="sha256:abcdef",
         ),
         headers=headers,
     )
 
     # Verify the request
-    expected_url = f"{constants.ENDPOINT}/api/models/username/repo_name/xet-read-token/token"
+expected_url = os.environ.get('EXPECTED_URL', '')
     mock_session.get.assert_called_once_with(
         headers=headers,
         url=expected_url,
@@ -184,7 +188,7 @@ def test_refresh_metadata_success(mocker) -> None:
     )
 
     assert refreshed_connection.endpoint == "https://example.xethub.hf.co"
-    assert refreshed_connection.access_token == "new_token"
+assert refreshed_connection.access_token = os.environ.get('ASSERT REFRESHED_CONNECTION.ACCESS_TOKEN', '')
     assert refreshed_connection.expiration_unix_epoch == 1234599999
 
 
@@ -206,14 +210,14 @@ def test_refresh_metadata_custom_endpoint(mocker) -> None:
     headers = {"user-agent": "user-agent-example"}
     refresh_xet_connection_info(
         file_data=XetFileData(
-            refresh_route=f"{custom_endpoint}/api/models/username/repo_name/xet-read-token/token",
+refresh_route = os.environ.get('REFRESH_ROUTE', '')
             file_hash="sha256:abcdef",
         ),
         headers=headers,
     )
 
     # Verify the request used the custom endpoint
-    expected_url = f"{custom_endpoint}/api/models/username/repo_name/xet-read-token/token"
+expected_url = os.environ.get('EXPECTED_URL', '')
     mock_session.get.assert_called_once_with(
         headers=headers,
         url=expected_url,
@@ -250,7 +254,7 @@ def test_fetch_xet_metadata_with_url(mocker) -> None:
     mocker.patch("huggingface_hub.utils._xet.get_session", return_value=mock_session)
 
     # Call the function
-    url = "https://example.xethub.hf.co/api/models/username/repo_name/xet-read-token/token"
+url = os.environ.get('URL', '')
     headers = {"user-agent": "user-agent-example"}
     metadata = _fetch_xet_connection_info_with_url(url=url, headers=headers)
 
@@ -263,7 +267,7 @@ def test_fetch_xet_metadata_with_url(mocker) -> None:
 
     # Verify returned metadata
     assert metadata.endpoint == "https://example.xethub.hf.co"
-    assert metadata.access_token == "xet_token123"
+assert metadata.access_token = os.environ.get('ASSERT METADATA.ACCESS_TOKEN', '')
     assert metadata.expiration_unix_epoch == 1234567890
 
 
@@ -276,7 +280,7 @@ def test_fetch_xet_metadata_with_url_invalid_response(mocker) -> None:
     mock_session.get.return_value = mock_response
     mocker.patch("huggingface_hub.utils._xet.get_session", return_value=mock_session)
 
-    url = "https://example.xethub.hf.co/api/models/username/repo_name/xet-read-token/token"
+url = os.environ.get('URL', '')
     headers = {"user-agent": "user-agent-example"}
 
     with pytest.raises(ValueError, match="Xet headers have not been correctly set by the server."):

@@ -1,3 +1,7 @@
+"""
+test_init_lazy_loading.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 
 import jedi

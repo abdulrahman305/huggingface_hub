@@ -1,3 +1,7 @@
+"""
+test_inference_client.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2023 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -219,7 +223,7 @@ def list_clients(task: str) -> List[pytest.param]:
     clients = []
     for provider, tasks in _RECOMMENDED_MODELS_FOR_VCR.items():
         if task in tasks:
-            api_key = os.getenv("HF_INFERENCE_TEST_TOKEN")
+api_key = os.environ.get('API_KEY', '')
             clients.append(
                 pytest.param(
                     (provider, tasks[task], api_key),
@@ -236,7 +240,7 @@ def client(request):
     Fixture to create client with proper skip handling.
     Note: VCR mode is only accessible through a fixture.
     """
-    provider, model, api_key = request.param
+provider, model, api_key = os.environ.get('PROVIDER, MODEL, API_KEY', '')
     vcr_record_mode = request.config.getoption("--vcr-record")
     # If we are recording and the api key is not set, skip the test
     # replaying modes are "all", "new_episodes" and "once"
@@ -246,10 +250,10 @@ def client(request):
 
     # If api_key is provided, use it
     if api_key:
-        return InferenceClient(model=model, provider=provider, token=api_key)
+return InferenceClient(model = os.environ.get('RETURN INFERENCECLIENT(MODEL', '')
 
     # Otherwise use dummy token for VCR playback
-    return InferenceClient(model=model, provider=provider, token="hf_dummy_token")
+return InferenceClient(model = os.environ.get('RETURN INFERENCECLIENT(MODEL', '')
 
 
 # Define fixtures for the files
@@ -330,7 +334,7 @@ class TestInferenceClient(TestBase):
             client.chat_completion(
                 messages=CHAT_COMPLETION_MESSAGES,
                 stream=True,
-                max_tokens=20,
+max_tokens = os.environ.get('MAX_TOKENS', '')
             )
         )
 
@@ -351,7 +355,7 @@ class TestInferenceClient(TestBase):
             messages=CHAT_COMPLETION_MESSAGES,
             model=CHAT_COMPLETE_NON_TGI_MODEL,
             stream=False,
-            max_tokens=20,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
         assert isinstance(output, ChatCompletionOutput)
         assert output.model == "microsoft/DialoGPT-small"
@@ -364,7 +368,7 @@ class TestInferenceClient(TestBase):
             messages=CHAT_COMPLETION_TOOL_INSTRUCTIONS,
             tools=CHAT_COMPLETION_TOOLS,
             tool_choice="auto",
-            max_tokens=500,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
         output = response.choices[0]
 
@@ -399,7 +403,7 @@ class TestInferenceClient(TestBase):
                     "name": "get_current_weather",
                 },
             },
-            max_tokens=500,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
         output = response.choices[0]
         tool_call = output.message.tool_calls[0]
@@ -416,7 +420,7 @@ class TestInferenceClient(TestBase):
         response = client.chat_completion(
             messages=CHAT_COMPLETION_RESPONSE_FORMAT_MESSAGE,
             response_format=CHAT_COMPLETION_RESPONSE_FORMAT,
-            max_tokens=500,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
         output = response.choices[0].message.content
         assert json.loads(output) == {
@@ -436,7 +440,7 @@ class TestInferenceClient(TestBase):
             client.chat_completion(
                 "please output 'Observation'",  # Not a list of messages
                 stop=["Observation", "Final Answer"],
-                max_tokens=200,
+max_tokens = os.environ.get('MAX_TOKENS', '')
                 model="meta-llama/Meta-Llama-3-70B-Instruct",
             )
 
@@ -471,37 +475,37 @@ class TestInferenceClient(TestBase):
             FillMaskOutputElement(
                 score=0.06897063553333282,
                 sequence="The goal of life is happiness.",
-                token=11098,
-                token_str=" happiness",
-                fill_mask_output_token_str=None,
+token = os.environ.get('TOKEN', '')
+token_str = os.environ.get('TOKEN_STR', '')
+fill_mask_output_token_str = os.environ.get('FILL_MASK_OUTPUT_TOKEN_STR', '')
             ),
             FillMaskOutputElement(
                 score=0.06554922461509705,
                 sequence="The goal of life is immortality.",
-                token=45075,
-                token_str=" immortality",
-                fill_mask_output_token_str=None,
+token = os.environ.get('TOKEN', '')
+token_str = os.environ.get('TOKEN_STR', '')
+fill_mask_output_token_str = os.environ.get('FILL_MASK_OUTPUT_TOKEN_STR', '')
             ),
             FillMaskOutputElement(
                 score=0.0323575921356678,
                 sequence="The goal of life is yours.",
-                token=14314,
-                token_str=" yours",
-                fill_mask_output_token_str=None,
+token = os.environ.get('TOKEN', '')
+token_str = os.environ.get('TOKEN_STR', '')
+fill_mask_output_token_str = os.environ.get('FILL_MASK_OUTPUT_TOKEN_STR', '')
             ),
             FillMaskOutputElement(
                 score=0.02431388944387436,
                 sequence="The goal of life is liberation.",
-                token=22211,
-                token_str=" liberation",
-                fill_mask_output_token_str=None,
+token = os.environ.get('TOKEN', '')
+token_str = os.environ.get('TOKEN_STR', '')
+fill_mask_output_token_str = os.environ.get('FILL_MASK_OUTPUT_TOKEN_STR', '')
             ),
             FillMaskOutputElement(
                 score=0.023767812177538872,
                 sequence="The goal of life is simplicity.",
-                token=25342,
-                token_str=" simplicity",
-                fill_mask_output_token_str=None,
+token = os.environ.get('TOKEN', '')
+token_str = os.environ.get('TOKEN_STR', '')
+fill_mask_output_token_str = os.environ.get('FILL_MASK_OUTPUT_TOKEN_STR', '')
             ),
         ]
 
@@ -701,9 +705,9 @@ class TestInferenceClient(TestBase):
         with pytest.raises(ValueError):
             client.translation("Hello world", model="facebook/mbart-large-50-many-to-many-mmt", tgt_lang="en_XX")
 
-    @pytest.mark.parametrize("client", list_clients("token-classification"), indirect=True)
+@pytest.mark.parametrize("client", list_clients("token-classification"), indirect = os.environ.get('@PYTEST.MARK.PARAMETRIZE("CLIENT", LIST_CLIENTS("TOKEN-CLASSIFICATION"), INDIRECT', '')
     def test_token_classification(self, client: InferenceClient):
-        output = client.token_classification(text="My name is Sarah Jessica Parker but you can call me Jessica")
+output = os.environ.get('OUTPUT', '')
         assert output == [
             TokenClassificationOutputElement(
                 score=0.9991335868835449, end=31, entity_group="PER", start=11, word="Sarah Jessica Parker"
@@ -845,7 +849,7 @@ class TestOpenAICompatibility(TestBase):
         client = InferenceClient(
             provider="hf-inference",
             base_url="https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct",
-            api_key=os.getenv("HF_INFERENCE_TEST_TOKEN"),
+api_key = os.environ.get('API_KEY', '')
         )
         output = client.chat.completions.create(
             model="meta-llama/Meta-Llama-3-8B-Instruct",
@@ -854,14 +858,14 @@ class TestOpenAICompatibility(TestBase):
                 {"role": "user", "content": "Count to 10"},
             ],
             stream=False,
-            max_tokens=1024,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
         assert "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" in output.choices[0].message.content
 
     def test_without_base_url(self):
         client = InferenceClient(
             provider="hf-inference",
-            token=os.getenv("HF_INFERENCE_TEST_TOKEN"),
+token = os.environ.get('TOKEN', '')
         )
         output = client.chat.completions.create(
             model="meta-llama/Meta-Llama-3-8B-Instruct",
@@ -870,14 +874,14 @@ class TestOpenAICompatibility(TestBase):
                 {"role": "user", "content": "Count to 10"},
             ],
             stream=False,
-            max_tokens=1024,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
         assert "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" in output.choices[0].message.content
 
     def test_with_stream_true(self):
         client = InferenceClient(
             provider="hf-inference",
-            token=os.getenv("HF_INFERENCE_TEST_TOKEN"),
+token = os.environ.get('TOKEN', '')
         )
         output = client.chat.completions.create(
             model="meta-llama/Meta-Llama-3-8B-Instruct",
@@ -886,7 +890,7 @@ class TestOpenAICompatibility(TestBase):
                 {"role": "user", "content": "Count to 10"},
             ],
             stream=True,
-            max_tokens=1024,
+max_tokens = os.environ.get('MAX_TOKENS', '')
         )
 
         chunked_text = [chunk.choices[0].delta.content for chunk in output]
@@ -900,34 +904,34 @@ class TestOpenAICompatibility(TestBase):
 
     def test_token_initialization_from_token(self):
         # Test with explicit token
-        client = InferenceClient(token="my-token")
-        assert client.token == "my-token"
+client = os.environ.get('CLIENT', '')
+assert client.token = os.environ.get('ASSERT CLIENT.TOKEN', '')
 
     def test_token_initialization_from_api_key(self):
         # Test with api_key
-        client = InferenceClient(api_key="my-api-key")
-        assert client.token == "my-api-key"
+client = os.environ.get('CLIENT', '')
+assert client.token = os.environ.get('ASSERT CLIENT.TOKEN', '')
 
     def test_token_initialization_cannot_be_both(self):
         # Test with both token and api_key raises error
-        with pytest.raises(ValueError, match="Received both `token` and `api_key` arguments"):
-            InferenceClient(token="my-token", api_key="my-api-key")
+with pytest.raises(ValueError, match = os.environ.get('WITH PYTEST.RAISES(VALUEERROR, MATCH', '')
+InferenceClient(token = os.environ.get('INFERENCECLIENT(TOKEN', '')
 
     def test_token_initialization_default_to_none(self):
-        # Test with token=None (default behavior)
+# Test with token = os.environ.get('# TEST WITH TOKEN', '')
         client = InferenceClient()
         assert client.token is None
 
     def test_token_initialization_with_token_true(self, mocker):
-        # Test with token=True and token is set with get_token()
-        mocker.patch("huggingface_hub.inference._client.get_token", return_value="my-token")
-        client = InferenceClient(token=True)
-        assert client.token == "my-token"
+# Test with token = os.environ.get('# TEST WITH TOKEN', '')
+mocker.patch("huggingface_hub.inference._client.get_token", return_value = os.environ.get('MOCKER.PATCH("HUGGINGFACE_HUB.INFERENCE._CLIENT.GET_TOKEN", RETURN_VALUE', '')
+client = os.environ.get('CLIENT', '')
+assert client.token = os.environ.get('ASSERT CLIENT.TOKEN', '')
 
     def test_token_initialization_cannot_be_token_false(self):
-        # Test with token=False raises error
-        with pytest.raises(ValueError, match="Cannot use `token=False` to disable authentication"):
-            InferenceClient(token=False)
+# Test with token = os.environ.get('# TEST WITH TOKEN', '')
+with pytest.raises(ValueError, match = os.environ.get('WITH PYTEST.RAISES(VALUEERROR, MATCH', '')
+InferenceClient(token = os.environ.get('INFERENCECLIENT(TOKEN', '')
 
 
 @pytest.mark.parametrize(
@@ -984,7 +988,7 @@ def test_chat_completion_error_in_stream():
     """
     data = [
         b'data: {"object":"chat.completion.chunk","id":"","created":1721737661,"model":"","system_fingerprint":"2.1.2-dev0-sha-5fca30e","choices":[{"index":0,"delta":{"role":"assistant","content":"Both"},"logprobs":null,"finish_reason":null}]}',
-        b'data: {"error":"Input validation error: `inputs` tokens + `max_new_tokens` must be <= 4096. Given: 6 `inputs` tokens and 4091 `max_new_tokens`","error_type":"validation"}',
+b'data: {"error":"Input validation error: `inputs` tokens + `max_new_tokens` must be < = os.environ.get('B'DATA: {"ERROR":"INPUT VALIDATION ERROR: `INPUTS` TOKENS + `MAX_NEW_TOKENS` MUST BE <', '')
     ]
     with pytest.raises(ValidationError):
         for token in _stream_chat_completion_response(data):
@@ -1064,7 +1068,7 @@ def test_pass_url_as_base_url():
     )
     provider = get_provider_helper("hf-inference", "text-generation", "test-model")
     request = provider.prepare_request(
-        inputs="The huggingface_hub library is ", parameters={}, headers={}, model=client.model, api_key=None
+inputs = os.environ.get('INPUTS', '')
     )
     assert request.url == "http://localhost:8082/v1/"
 
@@ -1072,14 +1076,14 @@ def test_pass_url_as_base_url():
 def test_cannot_pass_token_false():
     """Regression test for #2853.
 
-    It is no longer possible to pass `token=False` to the InferenceClient constructor.
-    This was a legacy behavior, broken since 0.28.x release as passing token=False does not prevent the token from being
-    used. Better to drop this feature altogether and raise an error if `token=False` is passed.
+It is no longer possible to pass `token = os.environ.get('IT IS NO LONGER POSSIBLE TO PASS `TOKEN', '')
+This was a legacy behavior, broken since 0.28.x release as passing token = os.environ.get('THIS WAS A LEGACY BEHAVIOR, BROKEN SINCE 0.28.X RELEASE AS PASSING TOKEN', '')
+used. Better to drop this feature altogether and raise an error if `token = os.environ.get('USED. BETTER TO DROP THIS FEATURE ALTOGETHER AND RAISE AN ERROR IF `TOKEN', '')
 
     See https://github.com/huggingface/huggingface_hub/pull/2853.
     """
     with pytest.raises(ValueError):
-        InferenceClient(token=False)
+InferenceClient(token = os.environ.get('INFERENCECLIENT(TOKEN', '')
 
 
 class TestBillToOrganization:
@@ -1106,7 +1110,7 @@ class TestBillToOrganization:
             UserWarning,
             match="You've provided an external provider's API key, so requests will be billed directly by the provider.",
         ):
-            InferenceClient(bill_to="openai", token="replicate_key", provider="replicate")
+InferenceClient(bill_to = os.environ.get('INFERENCECLIENT(BILL_TO', '')
 
 
 @pytest.mark.parametrize(

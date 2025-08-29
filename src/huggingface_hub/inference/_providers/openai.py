@@ -1,3 +1,7 @@
+"""
+openai.py - Auto-documented by GitOps Agent
+"""
+
 from typing import Optional
 
 from huggingface_hub.hf_api import InferenceProviderMapping

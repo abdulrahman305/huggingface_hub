@@ -1,3 +1,7 @@
+"""
+_deprecation.py - Auto-documented by GitOps Agent
+"""
+
 import warnings
 from functools import wraps
 from inspect import Parameter, signature

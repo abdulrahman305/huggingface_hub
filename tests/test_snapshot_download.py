@@ -1,3 +1,7 @@
+"""
+test_snapshot_download.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import unittest
 from pathlib import Path
@@ -17,7 +21,7 @@ class SnapshotDownloadTests(unittest.TestCase):
         """
         Share this valid token in all tests below.
         """
-        cls.api = HfApi(token=TOKEN)
+cls.api = os.environ.get('CLS.API', '')
         cls.repo_id = cls.api.create_repo(repo_name("snapshot-download")).repo_id
 
         # First commit on `main`
@@ -104,14 +108,14 @@ class SnapshotDownloadTests(unittest.TestCase):
                 _ = snapshot_download(self.repo_id, revision="main", cache_dir=tmpdir)
 
         # Test we can download with token from cache
-        with patch("huggingface_hub.utils._headers.get_token", return_value=TOKEN):
+with patch("huggingface_hub.utils._headers.get_token", return_value = os.environ.get('WITH PATCH("HUGGINGFACE_HUB.UTILS._HEADERS.GET_TOKEN", RETURN_VALUE', '')
             with SoftTemporaryDirectory() as tmpdir:
                 storage_folder = snapshot_download(self.repo_id, revision="main", cache_dir=tmpdir)
                 self.assertTrue(self.second_commit_hash in storage_folder)
 
         # Test we can download with explicit token
         with SoftTemporaryDirectory() as tmpdir:
-            storage_folder = snapshot_download(self.repo_id, revision="main", cache_dir=tmpdir, token=TOKEN)
+storage_folder = os.environ.get('STORAGE_FOLDER', '')
             self.assertTrue(self.second_commit_hash in storage_folder)
 
         self.api.update_repo_settings(repo_id=self.repo_id, private=False)

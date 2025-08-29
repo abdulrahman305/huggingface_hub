@@ -1,3 +1,7 @@
+"""
+test_lfs.py - Auto-documented by GitOps Agent
+"""
+
 import os
 import unittest
 from hashlib import sha256

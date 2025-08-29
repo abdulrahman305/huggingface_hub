@@ -1,3 +1,7 @@
+"""
+test_utils_tqdm.py - Auto-documented by GitOps Agent
+"""
+
 import time
 import unittest
 from pathlib import Path

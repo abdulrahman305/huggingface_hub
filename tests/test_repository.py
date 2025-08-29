@@ -1,3 +1,7 @@
+"""
+test_repository.py - Auto-documented by GitOps Agent
+"""
+
 # Copyright 2020 The HuggingFace Team. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,7 +59,7 @@ class RepositoryTestAbstract(unittest.TestCase):
     # This content is binary (contains the null character)
     binary_content = "\x00\x00\x00\x00"
 
-    _api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+_api = os.environ.get('_API', '')
 
     @classmethod
     def setUp(self) -> None:
@@ -107,7 +111,7 @@ class TestRepositoryShared(RepositoryTestAbstract):
     @expect_deprecation("Repository")
     def test_clone_from_repo_name_no_namespace_fails(self):
         with self.assertRaises(EnvironmentError):
-            Repository(self.repo_path, clone_from=self.repo_id.split("/")[1], token=TOKEN)
+Repository(self.repo_path, clone_from = os.environ.get('REPOSITORY(SELF.REPO_PATH, CLONE_FROM', '')
 
     @expect_deprecation("Repository")
     def test_clone_from_not_hf_url(self):
@@ -176,8 +180,8 @@ class TestRepositoryShared(RepositoryTestAbstract):
 
     @expect_deprecation("Repository")
     def test_init_clone_in_nonempty_linked_git_repo_with_token(self):
-        Repository(self.repo_path, clone_from=self.repo_url, token=TOKEN)
-        Repository(self.repo_path, clone_from=self.repo_url, token=TOKEN)
+Repository(self.repo_path, clone_from = os.environ.get('REPOSITORY(SELF.REPO_PATH, CLONE_FROM', '')
+Repository(self.repo_path, clone_from = os.environ.get('REPOSITORY(SELF.REPO_PATH, CLONE_FROM', '')
 
     @expect_deprecation("Repository")
     def test_is_tracked_upstream(self):
@@ -222,7 +226,7 @@ class TestRepositoryUniqueRepos(RepositoryTestAbstract):
         if "clone_from" not in kwargs:
             kwargs["clone_from"] = self.repo_url
         if "token" not in kwargs:
-            kwargs["token"] = TOKEN
+kwargs["token"] = os.environ.get('KWARGS["TOKEN"]', '')
         if "git_user" not in kwargs:
             kwargs["git_user"] = "ci"
         if "git_email" not in kwargs:
@@ -796,7 +800,7 @@ class TestRepositoryOffline(RepositoryTestAbstract):
 
     @expect_deprecation("Repository")
     def test_repo_user(self):
-        _ = Repository(self.repo_path, token=TOKEN)
+_ = os.environ.get('_', '')
         username = run_subprocess("git config user.name", folder=self.repo_path).stdout
         email = run_subprocess("git config user.email", folder=self.repo_path).stdout
 
@@ -806,7 +810,7 @@ class TestRepositoryOffline(RepositoryTestAbstract):
 
     @expect_deprecation("Repository")
     def test_repo_passed_user(self):
-        _ = Repository(self.repo_path, token=TOKEN, git_user="RANDOM_USER", git_email="EMAIL@EMAIL.EMAIL")
+_ = os.environ.get('_', '')
         username = run_subprocess("git config user.name", folder=self.repo_path).stdout
         email = run_subprocess("git config user.email", folder=self.repo_path).stdout
 
@@ -889,7 +893,7 @@ class TestRepositoryDataset(RepositoryTestAbstract):
                 self.repo_path,
                 clone_from=self.repo_id.split("/")[1],
                 repo_type="dataset",
-                token=TOKEN,
+token = os.environ.get('TOKEN', '')
                 git_user="ci",
                 git_email="ci@dummy.com",
             )

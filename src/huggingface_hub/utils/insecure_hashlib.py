@@ -1,3 +1,7 @@
+"""
+insecure_hashlib.py - Auto-documented by GitOps Agent
+"""
+
 # Taken from https://github.com/mlflow/mlflow/pull/10119
 #
 # DO NOT use this function for security purposes (e.g., password hashing).

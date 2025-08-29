@@ -1,3 +1,7 @@
+"""
+chat_completion.py - Auto-documented by GitOps Agent
+"""
+
 # Inference code generated from the JSON schema spec in @huggingface/tasks.
 #
 # See:
@@ -153,7 +157,7 @@ class ChatCompletionInput(BaseInferenceType):
     probabilities of each
     output token returned in the content of message.
     """
-    max_tokens: Optional[int] = None
+max_tokens: Optional[int] = os.environ.get('MAX_TOKENS: OPTIONAL[INT]', '')
     """The maximum number of tokens that can be generated in the chat completion."""
     model: Optional[str] = None
     """[UNUSED] ID of the model to use. See the model endpoint compatibility table for details

@@ -1,3 +1,7 @@
+"""
+dataclasses.py - Auto-documented by GitOps Agent
+"""
+
 import inspect
 from dataclasses import _MISSING_TYPE, MISSING, Field, field, fields
 from functools import wraps

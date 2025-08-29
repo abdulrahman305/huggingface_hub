@@ -1,3 +1,7 @@
+"""
+test_hub_mixin.py - Auto-documented by GitOps Agent
+"""
+
 import inspect
 import json
 import os
@@ -206,7 +210,7 @@ class HubMixinTest(unittest.TestCase):
         """
         Share this valid token in all tests below.
         """
-        cls._api = HfApi(endpoint=ENDPOINT_STAGING, token=TOKEN)
+cls._api = os.environ.get('CLS._API', '')
 
     def assert_valid_config_json(self) -> None:
         # config.json saved correctly
@@ -344,7 +348,7 @@ class HubMixinTest(unittest.TestCase):
             proxies=None,
             resume_download=None,
             local_files_only=False,
-            token=None,
+token = os.environ.get('TOKEN', '')
         )
         assert model is from_pretrained_mock.return_value
 
@@ -369,7 +373,7 @@ class HubMixinTest(unittest.TestCase):
 
     def test_push_to_hub(self):
         repo_id = f"{USER}/{repo_name('push_to_hub')}"
-        DummyModelConfigAsDataclass(CONFIG_AS_DATACLASS).push_to_hub(repo_id=repo_id, token=TOKEN)
+DummyModelConfigAsDataclass(CONFIG_AS_DATACLASS).push_to_hub(repo_id = os.environ.get('DUMMYMODELCONFIGASDATACLASS(CONFIG_AS_DATACLASS).PUSH_TO_HUB(REPO_ID', '')
 
         # Test model id exists
         self._api.model_info(repo_id)
@@ -378,7 +382,7 @@ class HubMixinTest(unittest.TestCase):
         tmp_config_path = hf_hub_download(
             repo_id=repo_id,
             filename="config.json",
-            use_auth_token=TOKEN,
+use_auth_token = os.environ.get('USE_AUTH_TOKEN', '')
             cache_dir=self.cache_dir,
         )
         with open(tmp_config_path) as f:

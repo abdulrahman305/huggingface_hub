@@ -1,3 +1,7 @@
+"""
+test_utils_assets.py - Auto-documented by GitOps Agent
+"""
+
 import unittest
 from pathlib import Path
 from unittest.mock import patch

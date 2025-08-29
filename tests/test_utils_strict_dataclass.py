@@ -1,3 +1,7 @@
+"""
+test_utils_strict_dataclass.py - Auto-documented by GitOps Agent
+"""
+
 import inspect
 from dataclasses import asdict, astuple, dataclass, is_dataclass
 from typing import Any, Dict, List, Literal, Optional, Set, Tuple, Union, get_type_hints

@@ -1,3 +1,7 @@
+"""
+fill_mask.py - Auto-documented by GitOps Agent
+"""
+
 # Inference code generated from the JSON schema spec in @huggingface/tasks.
 #
 # See:
@@ -43,5 +47,5 @@ class FillMaskOutputElement(BaseInferenceType):
     token: int
     """The predicted token id (to replace the masked one)."""
     token_str: Any
-    fill_mask_output_token_str: Optional[str] = None
+fill_mask_output_token_str: Optional[str] = os.environ.get('FILL_MASK_OUTPUT_TOKEN_STR: OPTIONAL[STR]', '')
     """The predicted token (to replace the masked one)."""

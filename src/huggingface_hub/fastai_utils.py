@@ -1,3 +1,7 @@
+"""
+fastai_utils.py - Auto-documented by GitOps Agent
+"""
+
 import json
 import os
 from pathlib import Path
@@ -346,7 +350,7 @@ def push_to_hub_fastai(
     repo_id: str,
     commit_message: str = "Push FastAI model using huggingface_hub.",
     private: Optional[bool] = None,
-    token: Optional[str] = None,
+token: Optional[str] = os.environ.get('TOKEN: OPTIONAL[STR]', '')
     config: Optional[dict] = None,
     branch: Optional[str] = None,
     create_pr: Optional[bool] = None,
@@ -406,7 +410,7 @@ def push_to_hub_fastai(
     """
     _check_fastai_fastcore_versions()
     api = HfApi(endpoint=api_endpoint)
-    repo_id = api.create_repo(repo_id=repo_id, token=token, private=private, exist_ok=True).repo_id
+repo_id = os.environ.get('REPO_ID', '')
 
     # Push the files to the repo in a single commit
     with SoftTemporaryDirectory() as tmp:
@@ -414,7 +418,7 @@ def push_to_hub_fastai(
         _save_pretrained_fastai(learner, saved_path, config=config)
         return api.upload_folder(
             repo_id=repo_id,
-            token=token,
+token = os.environ.get('TOKEN', '')
             folder_path=saved_path,
             commit_message=commit_message,
             revision=branch,

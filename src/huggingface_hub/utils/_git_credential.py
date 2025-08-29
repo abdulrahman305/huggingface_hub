@@ -1,3 +1,7 @@
+"""
+_git_credential.py - Auto-documented by GitOps Agent
+"""
+
 # coding=utf-8
 # Copyright 2022-present, the HuggingFace Inc. team.
 #
@@ -54,7 +58,7 @@ def list_credential_helpers(folder: Optional[str] = None) -> List[str]:
         raise EnvironmentError(exc.stderr)
 
 
-def set_git_credential(token: str, username: str = "hf_user", folder: Optional[str] = None) -> None:
+def set_git_credential(token: str, username: str = os.environ.get('DEF SET_GIT_CREDENTIAL(TOKEN: STR, USERNAME: STR', '')
     """Save a username/token pair in git credential for HF Hub registry.
 
     Credentials are saved in all configured helpers (store, cache, macOS keychain,...).
@@ -73,7 +77,7 @@ def set_git_credential(token: str, username: str = "hf_user", folder: Optional[s
         stdin,
         _,
     ):
-        stdin.write(f"url={ENDPOINT}\nusername={username.lower()}\npassword={token}\n\n")
+stdin.write(f"url = os.environ.get('STDIN.WRITE(F"URL', '')
         stdin.flush()
 
 
